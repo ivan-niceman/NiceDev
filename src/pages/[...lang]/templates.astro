@@ -1,0 +1,239 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Tourism from '../../components/Tourism.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Contact from '../../components/Contact.astro';
+import { websiteTemplates } from '../../data/templates';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+const { lang: paramLang } = Astro.params;
+const lang = (paramLang === 'en' ? 'en' : 'ru') as 'ru' | 'en';
+const isRu = lang === 'ru';
+const homeLink = isRu ? '/' : '/en/';
+const canonicalPath = isRu ? '/templates' : '/en/templates';
+
+const pageTitle = isRu
+  ? "Готовые шаблоны сайтов под ключ | NiceDev Web Studio"
+  : "Turnkey Website Templates | NiceDev Web Studio";
+
+const pageDescription = isRu
+  ? "Каталог готовых шаблонов сайтов под ключ от 15 000 рублей. Уникальный дизайн, высокая скорость загрузки, адаптивность и интеграция модулей бронирования."
+  : "Curated collection of turnkey website templates starting from 15 000 ₽. Bespoke design, high-speed performance, and mobile optimization.";
+
+const totalTemplates = websiteTemplates.length;
+const initialTemplatesCount = 6;
+---
+
+<Layout
+  title={pageTitle}
+  description={pageDescription}
+  lang={lang}
+  canonicalPath={canonicalPath}
+>
+  {/* Ambient Background Engine */}
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <Header lang={lang} />
+
+  <main class="container" id="main-content">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li><a href={homeLink} class="breadcrumb-link">{isRu ? 'Главная' : 'Home'}</a></li>
+          <li class="breadcrumb-separator" aria-hidden="true">/</li>
+          <li class="breadcrumb-current" id="templates-breadcrumb-current" aria-current="page">{isRu ? 'Шаблоны' : 'Templates'}</li>
+        </ol>
+      </nav>
+
+    {/* Dedicated Tourism Content */}
+    <Tourism lang={lang} />
+
+    {/* Featured Website Templates */}
+    {totalTemplates > 0 && (
+      <section id="travel-portfolio" class="templates-catalog-section" aria-labelledby="travel-portfolio-title">
+        <div class="container">
+          <div class="section-header reveal">
+            <h2 id="travel-portfolio-title" class="travel-portfolio-title">
+              {isRu ? 'Каталог готовых шаблонов' : 'Turnkey Templates Catalog'}
+            </h2>
+            <p class="section-header__desc" id="travel-portfolio-desc">
+              {isRu 
+                ? 'Выберите готовый шаблон для вашего бизнеса или закажите индивидуальную доработку под ваш бренд.' 
+                : 'Select a turnkey template for your business or request custom branding tailored to your vision.'}
+            </p>
+          </div>
+
+          <div class="travel-grid" id="templates-grid">
+            {websiteTemplates.map((template, index) => (
+              <div 
+                class={`template-grid-item reveal delay-${(index % 4) + 1} ${index >= initialTemplatesCount ? 'template-item--hidden' : ''}`}
+                data-index={index}
+              >
+                <ProjectCard project={template} lang={lang} priority={index < 2} index={index} />
+              </div>
+            ))}
+          </div>
+
+          {totalTemplates > initialTemplatesCount && (
+            <div class="templates-more-controls">
+              <div class="controls-status">
+                <span id="templates-counter-text">
+                  {isRu 
+                    ? `Показано ${initialTemplatesCount} из ${totalTemplates} шаблонов` 
+                    : `Showing ${initialTemplatesCount} of ${totalTemplates} templates`}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn--gold load-more-btn"
+                id="templates-load-more-btn"
+                data-initial={initialTemplatesCount}
+                data-total={totalTemplates}
+                data-batch="6"
+              >
+                <span>{isRu ? 'Показать еще шаблоны' : 'Load More Templates'}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="load-more-icon">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+    )}
+
+    {/* Contact Form for Travel Inquiries */}
+    <Contact lang={lang} />
+  </main>
+
+  <Footer lang={lang} />
+</Layout>
+
+<script is:inline>
+  (function() {
+    const loadMoreBtn = document.getElementById('templates-load-more-btn');
+    const counterText = document.getElementById('templates-counter-text');
+    if (!loadMoreBtn || !counterText) return;
+
+    const isRussian = document.documentElement.lang === 'ru' || !window.location.pathname.startsWith('/en');
+    let currentVisible = parseInt(loadMoreBtn.getAttribute('data-initial') || '6', 10);
+    const totalCount = parseInt(loadMoreBtn.getAttribute('data-total') || '6', 10);
+    const batchSize = parseInt(loadMoreBtn.getAttribute('data-batch') || '6', 10);
+
+    loadMoreBtn.addEventListener('click', function() {
+      const hiddenItems = Array.from(document.querySelectorAll('.template-item--hidden'));
+      const toShow = hiddenItems.slice(0, batchSize);
+
+      toShow.forEach(function(item, idx) {
+        setTimeout(function() {
+          item.classList.remove('template-item--hidden');
+          item.classList.add('template-item--revealed');
+          item.querySelectorAll('.mockup-desktop__screen, .mockup-mobile__screen').forEach(function(screen) {
+            var img = screen.querySelector('.mockup-scroll-img');
+            if (img && img.complete && img.naturalWidth > 0) {
+              screen.setAttribute('data-screen-state', 'loaded');
+            }
+          });
+        }, idx * 60);
+      });
+
+      currentVisible += toShow.length;
+
+      if (currentVisible >= totalCount) {
+        currentVisible = totalCount;
+        counterText.textContent = isRussian 
+          ? `Все ${totalCount} шаблонов показаны`
+          : `All ${totalCount} templates displayed`;
+        
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.style.opacity = '0.5';
+        loadMoreBtn.style.cursor = 'default';
+        loadMoreBtn.innerHTML = `<span>${isRussian ? 'Все шаблоны открыты' : 'All templates opened'}</span>`;
+      } else {
+        counterText.textContent = isRussian
+          ? `Показано ${currentVisible} из ${totalCount} шаблонов`
+          : `Showing ${currentVisible} of ${totalCount} templates`;
+      }
+    });
+  })();
+</script>
+
+<style>
+  .breadcrumb-link {
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .breadcrumb-link:hover {
+    color: var(--color-gold);
+  }
+
+  .breadcrumb-separator {
+    color: var(--glass-border);
+    font-size: 0.75rem;
+  }
+
+  .breadcrumb-current {
+    color: var(--color-amethyst-light);
+    font-weight: 600;
+  }
+
+  .travel-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 36px;
+  }
+
+  @media (max-width: 1024px) {
+    .travel-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .template-item--hidden {
+    display: none !important;
+  }
+
+  .template-item--revealed {
+    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .templates-more-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 12px;
+  }
+
+  .controls-status {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+</style>

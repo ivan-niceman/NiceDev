@@ -1,0 +1,430 @@
+---
+// Premium Interactive Ambient Background System for NiceDev Web Studio
+// Features:
+// 1. Organic Fluid Aurora / Amorphous Glowing Orbs (Amethyst, Gold, Indigo)
+// 2. Interactive Cursor Ambient Spotlight with smooth lerping
+// 3. Subtle Luminous Stardust / Micro-Particles Canvas (Zero CPU lag)
+// 4. Full Dark & Light theme integration
+// 5. Native prefers-reduced-motion support
+---
+
+<div class="ambient-background" id="ambient-bg" aria-hidden="true">
+  {/* Layer 1: Deep Atmospheric Aurora Mesh */}
+  <div class="ambient-mesh">
+    <div class="ambient-orb ambient-orb--amethyst"></div>
+    <div class="ambient-orb ambient-orb--gold"></div>
+    <div class="ambient-orb ambient-orb--cyan"></div>
+    <div class="ambient-orb ambient-orb--deep"></div>
+  </div>
+
+  {/* Layer 2: Subtle Digital Grid / Noise texture overlay */}
+  <div class="ambient-noise"></div>
+
+  {/* Layer 3: Interactive Smooth Cursor Spotlight */}
+  <div class="ambient-cursor-spotlight" id="ambient-cursor-glow"></div>
+
+  {/* Layer 4: Ultra-lightweight Cosmic Stardust Particles */}
+  <canvas class="ambient-canvas" id="ambient-particles-canvas"></canvas>
+</div>
+
+<style>
+  .ambient-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  /* -------------------------------------------------------------------------
+     Layer 1: Aurora Orbs
+     ------------------------------------------------------------------------- */
+  .ambient-mesh {
+    position: absolute;
+    inset: -20%;
+    width: 140%;
+    height: 140%;
+    filter: blur(90px);
+    opacity: 0.55;
+    transition: opacity 0.6s ease;
+    will-change: transform;
+  }
+
+  :global([data-theme="light"]) .ambient-mesh {
+    opacity: 0.32;
+    filter: blur(110px);
+  }
+
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    will-change: transform, opacity;
+  }
+
+  :global([data-theme="light"]) .ambient-orb {
+    mix-blend-mode: multiply;
+  }
+
+  .ambient-orb--amethyst {
+    top: 15%;
+    left: 10%;
+    width: clamp(350px, 45vw, 650px);
+    height: clamp(350px, 45vw, 650px);
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.45) 0%, rgba(121, 40, 202, 0.2) 50%, transparent 75%);
+    animation: floatOrbAmethyst 28s infinite alternate ease-in-out;
+  }
+
+  .ambient-orb--gold {
+    top: 55%;
+    right: 8%;
+    width: clamp(300px, 40vw, 550px);
+    height: clamp(300px, 40vw, 550px);
+    background: radial-gradient(circle, rgba(255, 200, 87, 0.32) 0%, rgba(255, 170, 0, 0.12) 50%, transparent 75%);
+    animation: floatOrbGold 32s infinite alternate ease-in-out;
+  }
+
+  .ambient-orb--cyan {
+    bottom: 12%;
+    left: 25%;
+    width: clamp(280px, 35vw, 500px);
+    height: clamp(280px, 35vw, 500px);
+    background: radial-gradient(circle, rgba(0, 245, 212, 0.22) 0%, rgba(0, 180, 216, 0.08) 55%, transparent 75%);
+    animation: floatOrbCyan 24s infinite alternate ease-in-out;
+  }
+
+  .ambient-orb--deep {
+    top: 35%;
+    left: 45%;
+    width: clamp(400px, 50vw, 750px);
+    height: clamp(400px, 50vw, 750px);
+    background: radial-gradient(circle, rgba(59, 7, 100, 0.5) 0%, rgba(20, 10, 35, 0.2) 60%, transparent 80%);
+    animation: floatOrbDeep 36s infinite alternate ease-in-out;
+  }
+
+  @keyframes floatOrbAmethyst {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(8vw, -6vh, 0) scale(1.12); }
+    100% { transform: translate3d(-5vw, 8vh, 0) scale(0.92); }
+  }
+
+  @keyframes floatOrbGold {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-7vw, 7vh, 0) scale(1.15); }
+    100% { transform: translate3d(4vw, -8vh, 0) scale(0.95); }
+  }
+
+  @keyframes floatOrbCyan {
+    0% { transform: translate3d(0, 0, 0) scale(0.95); }
+    50% { transform: translate3d(6vw, 6vh, 0) scale(1.1); }
+    100% { transform: translate3d(-8vw, -5vh, 0) scale(1); }
+  }
+
+  @keyframes floatOrbDeep {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(-5vw, -8vh, 0) scale(1.18); }
+    100% { transform: translate3d(6vw, 5vh, 0) scale(0.88); }
+  }
+
+  /* -------------------------------------------------------------------------
+     Layer 2: Subtle Digital Micro-grid / Film Texture
+     ------------------------------------------------------------------------- */
+  .ambient-noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.025;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 85%);
+  }
+
+  :global([data-theme="light"]) .ambient-noise {
+    opacity: 0.04;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.35) 1px, transparent 1px);
+  }
+
+  /* -------------------------------------------------------------------------
+     Layer 3: Interactive Cursor Spotlight Glow
+     ------------------------------------------------------------------------- */
+  .ambient-cursor-spotlight {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    margin-left: -300px;
+    margin-top: -300px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(157, 78, 221, 0.16) 0%,
+      rgba(255, 200, 87, 0.08) 35%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    will-change: transform;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  :global([data-theme="light"]) .ambient-cursor-spotlight {
+    background: radial-gradient(
+      circle,
+      rgba(157, 78, 221, 0.12) 0%,
+      rgba(255, 200, 87, 0.05) 40%,
+      transparent 70%
+    );
+    mix-blend-mode: multiply;
+  }
+
+  /* -------------------------------------------------------------------------
+     Layer 4: Stardust Canvas
+     ------------------------------------------------------------------------- */
+  .ambient-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.75;
+    transition: opacity 0.5s ease;
+  }
+
+  :global([data-theme="light"]) .ambient-canvas {
+    opacity: 0.4;
+  }
+
+  /* -------------------------------------------------------------------------
+     Reduced Motion Fallback
+     ------------------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .ambient-orb {
+      animation: none !important;
+    }
+    .ambient-canvas {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initAmbientBackground() {
+    const bgContainer = document.getElementById('ambient-bg');
+    const glowEl = document.getElementById('ambient-cursor-glow');
+    const canvas = document.getElementById('ambient-particles-canvas') as HTMLCanvasElement | null;
+    if (!bgContainer || !canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Cursor position tracking with smooth lerp
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let targetMouseX = -1000;
+    let targetMouseY = -1000;
+    let isMouseActive = false;
+
+    // Window dimensions
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    function handleResize() {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initParticles();
+    }
+
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    // Stardust Particle Definition — Distributed across the full document height, drifting chaotically
+    interface Particle {
+      x: number;
+      y: number; // Page-space Y coordinate (0 to docHeight)
+      vx: number;
+      vy: number;
+      radius: number;
+      alpha: number;
+      targetAlpha: number;
+      pulseSpeed: number;
+      color: string;
+      glowColor: string;
+    }
+
+    let particles: Particle[] = [];
+
+    const colorPalette = [
+      { color: 'rgba(199, 125, 255,', glow: 'rgba(157, 78, 221, 0.5)' }, // Amethyst
+      { color: 'rgba(255, 200, 87,',  glow: 'rgba(255, 200, 87, 0.45)' }, // Gold
+      { color: 'rgba(0, 245, 212,',   glow: 'rgba(0, 245, 212, 0.4)' },  // Cyan neon
+      { color: 'rgba(245, 243, 255,', glow: 'rgba(199, 125, 255, 0.35)' } // Diamond white
+    ];
+
+    function getDocHeight(): number {
+      return Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        window.innerHeight
+      );
+    }
+
+    let docHeight = getDocHeight();
+
+    function initParticles() {
+      particles = [];
+      docHeight = getDocHeight();
+
+      // Density: increased count (~1 particle per 15 vertical pixels)
+      const count = Math.min(460, Math.max(160, Math.floor(docHeight / 15)));
+
+      for (let i = 0; i < count; i++) {
+        const item = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        const x = Math.random() * width;
+        const y = Math.random() * docHeight;
+        // Uniform velocities: slow, serene linear drift
+        const speed = Math.random() * 0.10 + 0.08; // 0.08 to 0.18 px/frame
+        const angle = Math.random() * Math.PI * 2;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        const radius = Math.random() * 1.3 + 0.6; // 0.6px to 1.9px
+        const initialAlpha = Math.random() * 0.6 + 0.15;
+
+        particles.push({
+          x,
+          y,
+          vx,
+          vy,
+          radius,
+          alpha: initialAlpha,
+          targetAlpha: Math.random() * 0.7 + 0.15,
+          pulseSpeed: Math.random() * 0.008 + 0.003,
+          color: item.color,
+          glowColor: item.glow
+        });
+      }
+    }
+
+    initParticles();
+
+    // Recompute on content changes / load
+    window.addEventListener('load', () => {
+      docHeight = getDocHeight();
+      initParticles();
+    });
+
+    // Mouse movement listener (tracking both screen and page coordinates)
+    const onMouseMove = (e: MouseEvent) => {
+      targetMouseX = e.clientX;
+      targetMouseY = e.clientY;
+      if (!isMouseActive) {
+        isMouseActive = true;
+        if (glowEl) glowEl.style.opacity = '1';
+      }
+    };
+
+    const onMouseLeave = () => {
+      isMouseActive = false;
+      if (glowEl) glowEl.style.opacity = '0';
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeave);
+
+    // Animation Loop with Visibility API & RAF
+    let animationFrameId = 0;
+    let isTabVisible = true;
+
+    document.addEventListener('visibilitychange', () => {
+      isTabVisible = !document.hidden;
+      if (isTabVisible && !prefersReducedMotion) {
+        render();
+      } else if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    });
+
+    function render() {
+      if (!isTabVisible || prefersReducedMotion) return;
+
+      // Current page scroll offset (particles scroll with the page, not fixed to screen)
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+
+      // Smooth cursor lerping for subtle ambient spotlight
+      if (isMouseActive && glowEl) {
+        mouseX += (targetMouseX - mouseX) * 0.08;
+        mouseY += (targetMouseY - mouseY) * 0.08;
+        glowEl.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+      }
+
+      ctx!.clearRect(0, 0, width, height);
+
+      const cursorPageX = mouseX;
+      const cursorPageY = mouseY + scrollY;
+
+      // Render cosmic stardust particles distributed across page height
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // 1. Uniform steady drift in page space
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Gentle, smooth nudge if cursor is near in page space
+        if (isMouseActive) {
+          const dx = p.x - cursorPageX;
+          const dy = p.y - cursorPageY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 90 && dist > 1) {
+            const force = (90 - dist) / 90;
+            p.x += (dx / dist) * force * 0.22;
+            p.y += (dy / dist) * force * 0.22;
+          }
+        }
+
+        // Wrap boundaries in page space
+        if (p.x < -10) p.x = width + 10;
+        else if (p.x > width + 10) p.x = -10;
+        if (p.y < -10) p.y = docHeight + 10;
+        else if (p.y > docHeight + 10) p.y = -10;
+
+        // 2. Twinkling alpha
+        p.alpha += (p.targetAlpha - p.alpha) * p.pulseSpeed;
+        if (Math.abs(p.targetAlpha - p.alpha) < 0.02) {
+          p.targetAlpha = Math.random() * 0.7 + 0.15;
+        }
+
+        // 3. Screen coordinate conversion: NOT fixed to screen, moves with scroll!
+        const screenY = p.y - scrollY;
+
+        // Viewport culling: only draw particles currently inside the visible screen
+        if (screenY >= -15 && screenY <= height + 15) {
+          ctx!.beginPath();
+          ctx!.arc(p.x, screenY, p.radius, 0, Math.PI * 2);
+          ctx!.fillStyle = `${p.color} ${p.alpha})`;
+          ctx!.shadowColor = p.glowColor;
+          ctx!.shadowBlur = p.radius > 1.2 ? 5 : 2;
+          ctx!.fill();
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    }
+
+    if (!prefersReducedMotion) {
+      render();
+    }
+  }
+
+  // Initialize on load and page transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAmbientBackground);
+  } else {
+    initAmbientBackground();
+  }
+  document.addEventListener('astro:page-load', initAmbientBackground);
+</script>

@@ -1,0 +1,903 @@
+---
+import { Image } from 'astro:assets';
+import { translations } from '../i18n/translations';
+import { clientReviews, type ClientReview } from '../data/reviews';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const isRu = lang === 'ru';
+const totalReviews = clientReviews.length;
+
+// Prepend 3 clones and append 3 clones for seamless 100% infinite looping
+const beforeClones = clientReviews.slice(-3).map((r, i) => ({
+  ...r,
+  slideId: `clone-before-${i}`,
+  realIndex: totalReviews - 3 + i,
+  isClone: true,
+}));
+const afterClones = clientReviews.slice(0, 3).map((r, i) => ({
+  ...r,
+  slideId: `clone-after-${i}`,
+  realIndex: i,
+  isClone: true,
+}));
+const mainSlides = clientReviews.map((r, i) => ({
+  ...r,
+  slideId: `review-card-${i}`,
+  realIndex: i,
+  isClone: false,
+}));
+const allSlides = [...beforeClones, ...mainSlides, ...afterClones];
+
+// Schema.org structured data for SEO rich snippets
+const reviewsSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  'name': 'NiceDev Web Studio',
+  'image': 'https://nice-dev.ru/og-image.png',
+  'aggregateRating': {
+    '@type': 'AggregateRating',
+    'ratingValue': '5.0',
+    'reviewCount': totalReviews.toString(),
+    'bestRating': '5',
+    'worstRating': '1',
+  },
+  'review': clientReviews.map((rev) => ({
+    '@type': 'Review',
+    'author': {
+      '@type': 'Person',
+      'name': rev.name,
+    },
+    'datePublished': rev.dateTime,
+    'reviewRating': {
+      '@type': 'Rating',
+      'ratingValue': rev.rating.toString(),
+      'bestRating': '5',
+    },
+    'reviewBody': rev.description,
+  })),
+};
+---
+
+<section id="reviews" aria-labelledby="reviews-heading">
+  {/* SEO JSON-LD Reviews Schema */}
+  <script type="application/ld+json" set:html={JSON.stringify(reviewsSchema)} />
+
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-header__subtitle">{t.reviews.subtitle}</div>
+      <h2 id="reviews-heading">{t.reviews.title}</h2>
+      <p class="section-header__desc">
+        {t.reviews.description}
+      </p>
+    </div>
+
+    {/* Infinite Slider Carousel */}
+    <div class="reviews-carousel reveal delay-1" id="reviews-carousel" data-total={totalReviews}>
+      <div class="reviews-carousel__viewport" id="reviews-viewport">
+        <div class="reviews-carousel__track" id="reviews-track">
+          {allSlides.map((review, slideIdx) => {
+            const text = review.description;
+
+            return (
+              <div
+                class="reviews-carousel__slide"
+                data-slide-index={slideIdx}
+                data-is-clone={review.isClone ? 'true' : 'false'}
+              >
+                <article
+                  class="review-speech-card"
+                  id={review.isClone ? undefined : review.slideId}
+                  data-review-id={review.realIndex}
+                >
+                  {/* Top: Client Logo + Author Info */}
+                  <div class="review-speech-card__header">
+                    <div class="review-speech-card__logo-frame">
+                      {typeof review.logo === 'string' ? (
+                        <img
+                          src={review.logo}
+                          alt={`Логотип ${review.website}`}
+                          class="review-speech-card__logo"
+                          loading="lazy"
+                          width="44"
+                          height="44"
+                        />
+                      ) : (
+                        <Image
+                          src={review.logo}
+                          alt={`Логотип ${review.website}`}
+                          class="review-speech-card__logo"
+                          loading="lazy"
+                          width={44}
+                          height={44}
+                        />
+                      )}
+                    </div>
+
+                    <div class="review-speech-card__author-box">
+                      <div class="review-speech-card__name-row">
+                        <span class="review-speech-card__name">{review.name}</span>
+                        <span class="review-speech-card__verified" title={t.reviews.badgeVerified}>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                          </svg>
+                        </span>
+                      </div>
+                      <time class="review-speech-card__date" datetime={review.dateTime}>{review.date}</time>
+                    </div>
+                  </div>
+
+                  {/* Body: Full-width Review Text */}
+                  <div class="review-speech-card__body">
+                    <p class="review-speech-card__text">{text}</p>
+                  </div>
+
+                  {/* Divider line */}
+                  <div class="review-speech-card__divider" aria-hidden="true"></div>
+
+                  {/* Bottom bar: Website domain link on right */}
+                  <div class="review-speech-card__bottom">
+                    <div class="review-speech-card__links-box">
+                      <a
+                        href={review.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="review-speech-card__website"
+                        title={`${t.reviews.visitSite}: ${review.website}`}
+                      >
+                        <span>{review.website}</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                          <polyline points="15 3 21 3 21 9"></polyline>
+                          <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Slider Controls Bottom Row */}
+      <div class="reviews-carousel__bottom-controls">
+        {/* Left side: Interactive indicator dots */}
+        <div class="reviews-carousel__pagination" id="reviews-pagination">
+          {clientReviews.map((_, idx) => (
+            <button
+              type="button"
+              class={`pagination-dot ${idx === 0 ? 'is-active' : ''}`}
+              data-dot-index={idx}
+              aria-label={isRu ? `Перейти к отзыву ${idx + 1}` : `Go to review ${idx + 1}`}
+            ></button>
+          ))}
+        </div>
+
+        {/* Right side: Circular Navigation Arrows matching screenshot */}
+        <div class="reviews-carousel__nav-btns">
+          <button
+            type="button"
+            class="slider-arrow-btn slider-arrow-btn--prev"
+            id="reviews-prev-btn"
+            aria-label={isRu ? 'Предыдущие отзывы' : 'Previous reviews'}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="slider-arrow-btn slider-arrow-btn--next"
+            id="reviews-next-btn"
+            aria-label={isRu ? 'Следующие отзывы' : 'Next reviews'}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Center Action Button Under Slider: "Оставить отзыв в ВК" */}
+    <div class="reviews__cta-wrap reveal delay-2">
+      <a
+        href="https://vk.com/reviews-225101044"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="reviews-leave-btn"
+        id="reviews-leave-btn"
+        title={t.reviews.leaveReview}
+      >
+        <span>{t.reviews.leaveReview}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Carousel Structure */
+  .reviews-carousel {
+    position: relative;
+    margin-top: 48px;
+    width: 100%;
+  }
+
+  .reviews-carousel__viewport {
+    overflow: hidden;
+    padding: 10px 0 40px;
+    width: 100%;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .reviews-carousel__viewport.is-dragging {
+    cursor: grabbing;
+  }
+
+  .reviews-carousel__track {
+    display: flex;
+    will-change: transform;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Slide sizing: default 3 cards on desktop with 20px gap */
+  .reviews-carousel__slide {
+    flex: 0 0 calc((100% - 40px) / 3);
+    margin-right: 20px;
+    box-sizing: border-box;
+    display: flex;
+  }
+
+  @media (max-width: 992px) {
+    .reviews-carousel__slide {
+      flex: 0 0 calc((100% - 20px) / 2);
+      margin-right: 20px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .reviews-carousel__slide {
+      flex: 0 0 100%;
+      margin-right: 16px;
+    }
+  }
+
+  /* Speech Bubble Card Design - Dark Theme (Approved) */
+  .review-speech-card {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #171122;
+    border: 1px solid rgba(157, 78, 221, 0.28);
+    border-radius: 14px;
+    padding: 20px 22px 18px 22px;
+    box-shadow: 0 2px 10px #7b2cbf14, 0 2px 8px #0000000a;
+    transition: background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  }
+
+  /* Speech bubble tail pointer at the bottom left */
+  .review-speech-card::before {
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    left: 28px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 11px 11px 0 0;
+    border-color: rgba(157, 78, 221, 0.35) transparent transparent transparent;
+    z-index: 1;
+    pointer-events: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  .review-speech-card::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 29px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 0;
+    border-color: #171122 transparent transparent transparent;
+    z-index: 2;
+    pointer-events: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  .review-speech-card:hover {
+    border-color: rgba(255, 200, 87, 0.45);
+    box-shadow: 0 5px 15px #7b2cbf2e, 0 4px 10px #0000000a;
+  }
+
+  .review-speech-card:hover::before {
+    border-color: rgba(255, 200, 87, 0.45) transparent transparent transparent;
+  }
+
+  /* Speech Bubble Card Design - Light Theme (Crisp Light Background & High Contrast) */
+  :global([data-theme="light"]) .review-speech-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(123, 44, 191, 0.22);
+    box-shadow: 0 5px 20px #7b2cbf14, 0 2px 8px #0000000a;
+  }
+
+  :global([data-theme="light"]) .review-speech-card::before {
+    border-color: rgba(123, 44, 191, 0.3) transparent transparent transparent;
+  }
+
+  :global([data-theme="light"]) .review-speech-card::after {
+    border-color: #FFFFFF transparent transparent transparent;
+  }
+
+  :global([data-theme="light"]) .review-speech-card:hover {
+    border-color: #7B2CBF;
+    box-shadow: 0 16px 38px rgba(123, 44, 191, 0.18), 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  :global([data-theme="light"]) .review-speech-card:hover::before {
+    border-color: #7B2CBF transparent transparent transparent;
+  }
+
+  /* Header: Logo + Author Info */
+  .review-speech-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .review-speech-card__logo-frame {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    flex-shrink: 0;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .review-speech-card__logo-frame {
+    background: #F7F3FC;
+    border-color: rgba(123, 44, 191, 0.2);
+    box-shadow: inset 0 1px 3px rgba(123, 44, 191, 0.08);
+  }
+
+  .review-speech-card__logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  :global([data-theme="light"]) .review-speech-card__logo {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.12));
+  }
+
+  /* Body: Full-width review text clamped to 5 lines */
+  .review-speech-card__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .review-speech-card__text {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0;
+    white-space: pre-line;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .review-speech-card__text {
+    color: #2D253B;
+    font-weight: 450;
+  }
+
+  /* Divider */
+  .review-speech-card__divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 14px 0 12px 0;
+    transition: background var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .review-speech-card__divider {
+    background: rgba(123, 44, 191, 0.14);
+  }
+
+  /* Bottom bar: Website domain link on right */
+  .review-speech-card__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .review-speech-card__author-box {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .review-speech-card__name-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .review-speech-card__name {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    transition: color var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .review-speech-card__name {
+    color: #1A1028;
+  }
+
+  .review-speech-card__verified {
+    display: inline-flex;
+    color: #00F5D4;
+    flex-shrink: 0;
+  }
+
+  :global([data-theme="light"]) .review-speech-card__verified {
+    color: #009688;
+  }
+
+  .review-speech-card__date {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .review-speech-card__date {
+    color: #6C627D;
+    font-weight: 500;
+  }
+
+  .review-speech-card__links-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .review-speech-card__website {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .review-speech-card__website:hover {
+    color: var(--color-gold-hover);
+    text-decoration: underline;
+  }
+
+  :global([data-theme="light"]) .review-speech-card__website {
+    color: #7B2CBF;
+    font-weight: 700;
+  }
+
+  :global([data-theme="light"]) .review-speech-card__website:hover {
+    color: #5A189A;
+  }
+
+  /* Center Action Button Under Slider: "Оставить отзыв" */
+  .reviews__cta-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 36px;
+  }
+
+  .reviews-leave-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 26px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, rgba(39, 135, 245, 0.16) 0%, rgba(157, 78, 221, 0.22) 100%);
+    border: 1.5px solid rgba(39, 135, 245, 0.45);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all var(--transition-fast);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .reviews-leave-btn:hover {
+    background: linear-gradient(135deg, rgba(39, 135, 245, 0.3) 0%, rgba(157, 78, 221, 0.4) 100%);
+    border-color: #2787F5;
+    box-shadow: 0 0 24px rgba(39, 135, 245, 0.45), 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .reviews-leave-btn:active {
+    transform: translateY(0);
+  }
+
+  /* Light Mode styling for "Оставить отзыв в ВК" */
+  :global([data-theme="light"]) .reviews-leave-btn {
+    background: #FFFFFF;
+    border: 2px solid #2787F5;
+    color: #1B74E4;
+    box-shadow: 0 4px 16px rgba(39, 135, 245, 0.14);
+  }
+
+  :global([data-theme="light"]) .reviews-leave-btn:hover {
+    background: #2787F5;
+    border-color: #2787F5;
+    color: #FFFFFF;
+    box-shadow: 0 8px 26px rgba(39, 135, 245, 0.35);
+  }
+
+  /* Bottom Controls: Pagination on left, Arrows on right */
+  .reviews-carousel__bottom-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+  }
+
+  .reviews-carousel__pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Pagination Dots - Dark Theme */
+  .pagination-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    padding: 0;
+    cursor: pointer;
+    transition: background var(--transition-fast), border-color var(--transition-fast), width var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .pagination-dot:hover {
+    background: rgba(255, 200, 87, 0.6);
+    border-color: var(--color-gold);
+  }
+
+  .pagination-dot.is-active {
+    width: 26px;
+    border-radius: var(--radius-pill);
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    box-shadow: 0 0 10px rgba(255, 200, 87, 0.5);
+  }
+
+  /* Pagination Dots - Light Theme (Ultra-clear, visible contrast, no washed out yellow) */
+  :global([data-theme="light"]) .pagination-dot {
+    background: rgba(123, 44, 191, 0.25);
+    border: 1.5px solid rgba(123, 44, 191, 0.45);
+  }
+
+  :global([data-theme="light"]) .pagination-dot:hover {
+    background: rgba(123, 44, 191, 0.5);
+    border-color: #7B2CBF;
+  }
+
+  :global([data-theme="light"]) .pagination-dot.is-active {
+    background: #7B2CBF;
+    border-color: #7B2CBF;
+    box-shadow: 0 0 12px rgba(123, 44, 191, 0.4);
+  }
+
+  /* Circular navigation arrows - Matching Screenshot, ZERO scale on hover, Perfect Light Contrast */
+  .reviews-carousel__nav-btns {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .slider-arrow-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(157, 78, 221, 0.45);
+    color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    transform: none !important;
+  }
+
+  /* Dark theme hover (Approved) */
+  .slider-arrow-btn:hover {
+    background: rgba(157, 78, 221, 0.25);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    box-shadow: 0 0 16px rgba(255, 200, 87, 0.35);
+    transform: none !important;
+  }
+
+  .slider-arrow-btn:active {
+    opacity: 0.85;
+    transform: none !important;
+  }
+
+  /* Light theme default: clean white background, distinct amethyst outline & icon */
+  :global([data-theme="light"]) .slider-arrow-btn {
+    background: #FFFFFF;
+    border: 2px solid #7B2CBF;
+    color: #7B2CBF;
+    box-shadow: 0 4px 14px rgba(123, 44, 191, 0.12);
+    transform: none !important;
+  }
+
+  /* Light theme hover: NO YELLOW, solid amethyst background with crisp white icon, NO scale */
+  :global([data-theme="light"]) .slider-arrow-btn:hover {
+    background: #7B2CBF !important;
+    border-color: #7B2CBF !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 20px rgba(123, 44, 191, 0.35);
+    transform: none !important;
+  }
+
+  :global([data-theme="light"]) .slider-arrow-btn:active {
+    background: #5A189A !important;
+    border-color: #5A189A !important;
+    color: #FFFFFF !important;
+    opacity: 1;
+    transform: none !important;
+  }
+
+  @media (max-width: 640px) {
+    .review-speech-card {
+      padding: 18px 16px;
+    }
+
+    .review-speech-card__logo-frame {
+      width: 44px;
+      height: 44px;
+    }
+
+    .review-speech-card__text {
+      /* font-size: 0.86rem; */
+      -webkit-line-clamp: 6;
+    }
+
+    .slider-arrow-btn {
+      width: 42px;
+      height: 42px;
+    }
+  }
+</style>
+
+<script>
+  function initReviewsSlider() {
+    const carousel = document.getElementById('reviews-carousel');
+    if (!carousel) return;
+
+    const track = document.getElementById('reviews-track') as HTMLElement | null;
+    const viewport = document.getElementById('reviews-viewport') as HTMLElement | null;
+    const prevBtn = document.getElementById('reviews-prev-btn') as HTMLButtonElement | null;
+    const nextBtn = document.getElementById('reviews-next-btn') as HTMLButtonElement | null;
+    const dots = carousel.querySelectorAll<HTMLButtonElement>('.pagination-dot');
+
+    if (!track || !viewport) return;
+
+    const totalRealReviews = parseInt(carousel.getAttribute('data-total') || '6', 10);
+    const cloneOffset = 3; // 3 clones prepended
+    let currentIndex = cloneOffset; // Start at first original review (index 3)
+    let isTransitioning = false;
+
+    function getCardWidthWithGap(): number {
+      const slides = track?.querySelectorAll<HTMLElement>('.reviews-carousel__slide');
+      if (!slides || slides.length === 0) return 0;
+      const firstSlide = slides[0];
+      const style = window.getComputedStyle(firstSlide);
+      const marginRight = parseFloat(style.marginRight) || 0;
+      return firstSlide.getBoundingClientRect().width + marginRight;
+    }
+
+    function updateCounterAndDots() {
+      // Calculate active real index: 0..5
+      const realIndex = ((currentIndex - cloneOffset) % totalRealReviews + totalRealReviews) % totalRealReviews;
+
+      dots.forEach((dot, idx) => {
+        if (idx === realIndex) {
+          dot.classList.add('is-active');
+        } else {
+          dot.classList.remove('is-active');
+        }
+      });
+    }
+
+    function moveTo(index: number, animate = true) {
+      if (!track) return;
+      currentIndex = index;
+
+      if (animate) {
+        track.style.transition = 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)';
+        isTransitioning = true;
+      } else {
+        track.style.transition = 'none';
+        isTransitioning = false;
+      }
+
+      const cardWidth = getCardWidthWithGap();
+      const targetTranslateX = -(currentIndex * cardWidth);
+      track.style.transform = `translateX(${targetTranslateX}px)`;
+
+      updateCounterAndDots();
+    }
+
+    // Handle seamless infinite wrap when slide animation completes
+    track.addEventListener('transitionend', () => {
+      isTransitioning = false;
+      if (!track) return;
+
+      // If we slid past the last real item into after-clones
+      if (currentIndex >= cloneOffset + totalRealReviews) {
+        const wrappedIndex = currentIndex - totalRealReviews;
+        moveTo(wrappedIndex, false); // jump instantly without animation
+      }
+      // If we slid before the first real item into before-clones
+      else if (currentIndex < cloneOffset) {
+        const wrappedIndex = currentIndex + totalRealReviews;
+        moveTo(wrappedIndex, false); // jump instantly without animation
+      }
+    });
+
+    function nextSlide() {
+      if (isTransitioning) return;
+      moveTo(currentIndex + 1, true);
+    }
+
+    function prevSlide() {
+      if (isTransitioning) return;
+      moveTo(currentIndex - 1, true);
+    }
+
+    nextBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextSlide();
+    });
+
+    prevBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      prevSlide();
+    });
+
+    // Dot clicks
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        if (isTransitioning) return;
+        const targetReal = parseInt(dot.getAttribute('data-dot-index') || '0', 10);
+        moveTo(cloneOffset + targetReal, true);
+      });
+    });
+
+    // Touch and swipe gestures (no auto-scroll, only manual gesture/click)
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    let startTranslateX = 0;
+
+    function onDragStart(clientX: number) {
+      if (isTransitioning) return;
+      isDragging = true;
+      startX = clientX;
+      currentX = clientX;
+      const cardWidth = getCardWidthWithGap();
+      startTranslateX = -(currentIndex * cardWidth);
+      if (track) track.style.transition = 'none';
+      viewport?.classList.add('is-dragging');
+    }
+
+    function onDragMove(clientX: number) {
+      if (!isDragging || !track) return;
+      currentX = clientX;
+      const diff = currentX - startX;
+      track.style.transform = `translateX(${startTranslateX + diff}px)`;
+    }
+
+    function onDragEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      viewport?.classList.remove('is-dragging');
+      const diff = currentX - startX;
+      const threshold = 50;
+
+      if (diff < -threshold) {
+        nextSlide();
+      } else if (diff > threshold) {
+        prevSlide();
+      } else {
+        moveTo(currentIndex, true);
+      }
+    }
+
+    viewport.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) onDragStart(e.touches[0].clientX);
+    }, { passive: true });
+
+    viewport.addEventListener('touchmove', (e) => {
+      if (isDragging && e.touches.length === 1) onDragMove(e.touches[0].clientX);
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', onDragEnd);
+    viewport.addEventListener('touchcancel', onDragEnd);
+
+    // Mouse drag support
+    viewport.addEventListener('mousedown', (e) => {
+      onDragStart(e.clientX);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDragging) onDragMove(e.clientX);
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) onDragEnd();
+    });
+
+    // Keyboard navigation when hovering or focused
+    carousel.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    // Check which review cards overflow 5 lines and add ellipsis class
+    // Handle resize smoothly
+    let resizeTimer: number;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        moveTo(currentIndex, false);
+      }, 100);
+    });
+
+    // Initial positioning
+    moveTo(currentIndex, false);
+  }
+
+  initReviewsSlider();
+  document.addEventListener('astro:page-load', initReviewsSlider);
+</script>

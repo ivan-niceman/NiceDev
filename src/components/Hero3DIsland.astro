@@ -1,0 +1,239 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+---
+
+<div 
+  class="stage-3d" 
+  id="hero-3d-abstract-island"
+  aria-label="Interactive 3D Technology Island"
+>
+  <div class="scene-3d" id="hero-3d-scene">
+    {/* Luminous Glass Orb Core */}
+    <div class="orb-3d"></div>
+
+    {/* Floating Glassmorphic Layer 1: Performance & Speed */}
+    <div class="card-3d card-3d--primary">
+      <div class="speed-header">
+        <div class="speed-icon-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </div>
+        <div>
+          <div class="speed-title" id="hero-island-speed-title">{t.hero.islandCoreSpeed}</div>
+          <div class="speed-sub" id="hero-island-speed-sub">{t.hero.islandCoreSub}</div>
+        </div>
+      </div>
+      <div class="speed-bar-track">
+        <div class="speed-bar-fill"></div>
+      </div>
+    </div>
+
+    {/* Floating Glassmorphic Layer 2: Digital Luxury Aesthetics */}
+    <div class="card-3d card-3d--secondary">
+      <div class="luxury-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+        </svg>
+        <span class="luxury-title" id="hero-island-luxury-title">{t.hero.islandLuxury}</span>
+      </div>
+      <p class="luxury-sub" id="hero-island-luxury-sub">
+        {t.hero.islandLuxurySub}
+      </p>
+    </div>
+
+    {/* Floating Badge 3: Security & High Load */}
+    <div class="card-3d card-3d--badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-cyan-neon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        <path d="m9 12 2 2 4-4"></path>
+      </svg>
+      <span class="highload-title" id="hero-island-highload-title">
+        {t.hero.islandHighLoad}
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .stage-3d {
+    perspective: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 440px;
+    position: relative;
+  }
+
+  .scene-3d {
+    max-width: 320px;
+    width: 100%;
+    height: 320px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+  }
+
+  .orb-3d {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(49, 245, 216, 0.4) 0%, rgba(157, 78, 221, 0.3) 40%, rgba(11, 7, 16, 0.1) 80%);
+    /* background: radial-gradient(circle at 35% 35%, rgba(255, 200, 87, 0.4) 0%, rgba(157, 78, 221, 0.3) 40%, rgba(11, 7, 16, 0.1) 80%); */
+    filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 60px var(--color-amethyst-glow), inset 0 0 40px rgba(49, 245, 216, 0.4);
+    /* box-shadow: 0 0 60px var(--color-amethyst-glow), inset 0 0 40px rgba(255, 200, 87, 0.3); */
+    animation: float3D 6s ease-in-out infinite alternate;
+  }
+
+  .card-3d {
+    position: absolute;
+    border-radius: var(--radius-lg);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+  }
+
+  .card-3d--primary {
+    max-width: 260px;
+    width: 100%;
+    padding: 20px;
+    top: 60px;
+    left: 30px;
+    transform: translateZ(60px) rotateX(8deg) rotateY(-12deg);
+    border-color: rgba(157, 78, 221, 0.4);
+  }
+
+  .card-3d--secondary {
+    width: 220px;
+    padding: 16px;
+    bottom: 30px;
+    right: -10px;
+    transform: translateZ(90px) rotateX(-5deg) rotateY(15deg);
+    border-color: rgba(255, 200, 87, 0.4);
+  }
+
+  .card-3d--badge {
+    padding: 10px 18px;
+    top: 0;
+    right: 20px;
+    transform: translateZ(110px);
+    background: linear-gradient(135deg, rgba(157, 78, 221, 0.2) 0%, rgba(255, 200, 87, 0.2) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @keyframes float3D {
+    0% { transform: rotateZ(0deg); }
+    100% { transform: rotateZ(6deg); }
+  }
+
+  @media(max-width: 400px) {
+    .card-3d--secondary {
+      right: 5px;
+    }
+    .card-3d--badge {
+      right: 40px;
+    }
+  }
+
+  .speed-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .speed-icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #9D4EDD, #FFC857);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0B0710;
+  }
+
+  .speed-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .speed-sub {
+    font-size: 12px;
+    color: var(--color-cyan-neon);
+  }
+
+  .speed-bar-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .speed-bar-fill {
+    width: 98%;
+    height: 100%;
+    background: linear-gradient(90deg, #9D4EDD, #00F5D4);
+  }
+
+  .luxury-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .luxury-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-gold);
+  }
+
+  .luxury-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .highload-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+</style>
+
+<script>
+  const stage = document.getElementById('hero-3d-abstract-island');
+  const scene = document.getElementById('hero-3d-scene');
+
+  if (stage && scene) {
+    stage.addEventListener('mousemove', (e) => {
+      const rect = stage.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotY = (x / (rect.width / 2)) * 25;
+      const rotX = -(y / (rect.height / 2)) * 25;
+      scene.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    });
+
+    stage.addEventListener('mouseleave', () => {
+      scene.style.transform = 'rotateX(8deg) rotateY(-12deg)';
+    });
+  }
+</script>

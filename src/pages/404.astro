@@ -1,0 +1,552 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { translations } from '../i18n/translations';
+
+// Default to Russian for static 404.html fallback, dynamic hydration handles language preference
+const t = translations.ru;
+---
+
+<Layout
+  title="404 — Страница не найдена | NiceDev Web Studio"
+  description="Запрашиваемая страница не найдена на сайте студии веб-разработки NiceDev. Перейдите на главную страницу или воспользуйтесь калькулятором стоимости проекта."
+  lang="ru"
+  canonicalPath="/404"
+  is404={true}
+>
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+  </div>
+
+  <Header lang="ru" />
+
+  <main id="main-content" class="not-found-page">
+    <div class="container not-found-container">
+      
+      <div class="not-found-card">
+        {/* Decorative Background 404 Watermark */}
+        <div aria-hidden="true" class="not-found-watermark">
+          404
+        </div>
+
+        <div class="not-found-content">
+          {/* Badge */}
+          <div class="not-found-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="notfound-subtitle">{t.notFound.subtitle}</span>
+          </div>
+
+          <h1 class="not-found-title" id="notfound-title">
+            {t.notFound.title}
+          </h1>
+
+          <p class="not-found-desc" id="notfound-desc">
+            {t.notFound.description}
+          </p>
+
+          {/* Action Buttons */}
+          <div class="not-found-actions">
+            <a href="/" class="btn btn--gold not-found-action-btn" id="btn-404-home">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span id="notfound-btn-home">{t.notFound.homeBtn}</span>
+            </a>
+
+            <a href="/#calculator" class="btn btn--glass not-found-action-btn" id="btn-404-calc">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+                <line x1="8" x2="16" y1="6" y2="6"></line>
+                <line x1="16" x2="16" y1="14" y2="18"></line>
+                <path d="M16 10h.01"></path>
+                <path d="M12 10h.01"></path>
+                <path d="M8 10h.01"></path>
+                <path d="M12 14h.01"></path>
+                <path d="M8 14h.01"></path>
+                <path d="M12 18h.01"></path>
+                <path d="M8 18h.01"></path>
+              </svg>
+              <span id="notfound-btn-calc">{t.notFound.calcBtn}</span>
+            </a>
+          </div>
+
+          {/* Quick Nav Links */}
+          <div class="not-found-nav">
+            <div class="not-found-nav-heading" id="notfound-nav-heading">
+              {t.notFound.popularHeading}
+            </div>
+            <div class="not-found-nav-links">
+              <a href="/#services" class="footer__link not-found-link" id="notfound-link-services">
+                {t.notFound.linkServices}
+              </a>
+              <a href="/templates" class="footer__link not-found-link" id="notfound-link-templates">
+                {t.notFound.linkTourism}
+              </a>
+              <a href="/portfolio" class="footer__link not-found-link" id="notfound-link-portfolio">
+                {t.notFound.linkPortfolio}
+              </a>
+              <a href="/#contact" class="footer__link not-found-link" id="notfound-link-contact">
+                {t.notFound.linkContact}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="ru" />
+</Layout>
+
+<script>
+  import type { SupportedLanguage } from '../i18n/translations';
+
+  const i18n404 = {
+    ru: {
+      pageTitle: '404 — Страница не найдена | NiceDev Web Studio',
+      card: {
+        subtitle: 'Код ответа 404',
+        title: 'Страница не найдена',
+        desc: 'Запрашиваемая страница была перемещена, удалена или вы указали неверный адрес в строке браузера.',
+        homeBtn: 'На главную страницу',
+        calcBtn: 'Рассчитать стоимость проекта',
+        heading: 'Популярные разделы сайта:',
+        services: 'Премиальные услуги',
+        templates: 'Шаблоны сайтов',
+        portfolio: 'Портфолио проектов',
+        contact: 'Контакты'
+      },
+      nav: {
+        services: 'Услуги',
+        templates: 'Шаблоны',
+        'geo-speed': 'Скорость и SEO',
+        portfolio: 'Портфолио',
+        calculator: 'Калькулятор',
+        contact: 'Контакты',
+        discuss: 'Обсудить проект'
+      },
+      footer: {
+        brandDesc: 'Разрабатываем скоростные лендинги, масштабные корпоративные экосистемы, интернет-магазины и интеллектуальные решения с премиальной визуальной эстетикой и максимальной скоростью отклика.',
+        navHeading: 'Навигация',
+        servicesHeading: 'Решения',
+        geoHeading: 'Связь',
+        linkTourism: 'Шаблоны сайтов',
+        linkCorporate: 'Корпоративные порталы',
+        linkEcommerce: 'Интернет-магазины',
+        linkSpeed: 'Скорость и GEO',
+        linkCalc: 'Калькулятор проекта',
+        areaServed: 'Работаем по всему миру • МСК',
+        rights: '© 2026 NiceDev Web Studio. Все права защищены.',
+        privacy: 'Политика конфиденциальности',
+        consent: 'Согласие на обработку персональных данных',
+        cookie: 'Настройки Cookie',
+        whatsappDisclaimer: '* WhatsApp принадлежит компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории РФ.'
+      },
+      prefix: '',
+      portfolioPrefix: '/portfolio',
+      privacyPrefix: '/privacy-policy',
+      consentPrefix: '/personal-data-consent'
+    },
+    en: {
+      pageTitle: '404 — Page Not Found | NiceDev Web Studio',
+      card: {
+        subtitle: 'HTTP Error 404',
+        title: 'Page Not Found',
+        desc: 'The requested page has been relocated, removed, or the address URL was entered incorrectly.',
+        homeBtn: 'Back to Homepage',
+        calcBtn: 'Calculate Project Budget',
+        heading: 'Explore Essential Sections:',
+        services: 'Studio Services',
+        templates: 'Website Templates',
+        portfolio: 'Featured Portfolio',
+        contact: 'Contact Us'
+      },
+      nav: {
+        services: 'Services',
+        templates: 'Templates',
+        'geo-speed': 'Speed & GEO',
+        portfolio: 'Portfolio',
+        calculator: 'Calculator',
+        contact: 'Contacts',
+        discuss: 'Discuss Project'
+      },
+      footer: {
+        brandDesc: 'We engineer responsive landing pages, expansive corporate ecosystems, e-commerce platforms, and intelligent AI solutions with digital luxury aesthetics and instant load response.',
+        navHeading: 'Navigation',
+        servicesHeading: 'Solutions',
+        geoHeading: 'Contact',
+        linkTourism: 'Website Templates',
+        linkCorporate: 'Corporate Systems',
+        linkEcommerce: 'E-Commerce',
+        linkSpeed: 'Speed & GEO AI',
+        linkCalc: 'Project Calculator',
+        areaServed: 'Worldwide Service • GMT+3',
+        rights: '© 2026 NiceDev Web Studio. All rights reserved.',
+        privacy: 'Privacy Policy',
+        consent: 'Personal Data Processing Consent',
+        cookie: 'Cookie Settings',
+        whatsappDisclaimer: '* WhatsApp is owned by Meta Platforms Inc., whose activities are recognized as extremist and banned in the Russian Federation.'
+      },
+      prefix: '/en',
+      portfolioPrefix: '/en/portfolio',
+      privacyPrefix: '/en/privacy-policy',
+      consentPrefix: '/en/personal-data-consent'
+    }
+  };
+
+  function update404Language(lang: SupportedLanguage) {
+    const data = i18n404[lang] || i18n404.ru;
+    const homeLink = data.prefix === '' ? '/' : '/en/';
+
+    // 1. Document & HTML lang
+    document.title = data.pageTitle;
+    document.documentElement.setAttribute('lang', lang);
+
+    // 2. 404 Card Content
+    const subtitleEl = document.getElementById('notfound-subtitle');
+    if (subtitleEl) subtitleEl.textContent = data.card.subtitle;
+
+    const titleEl = document.getElementById('notfound-title');
+    if (titleEl) titleEl.textContent = data.card.title;
+
+    const descEl = document.getElementById('notfound-desc');
+    if (descEl) descEl.textContent = data.card.desc;
+
+    const homeBtnEl = document.getElementById('notfound-btn-home');
+    if (homeBtnEl) homeBtnEl.textContent = data.card.homeBtn;
+
+    const btnHome = document.getElementById('btn-404-home');
+    if (btnHome) btnHome.setAttribute('href', homeLink);
+
+    const calcBtnEl = document.getElementById('notfound-btn-calc');
+    if (calcBtnEl) calcBtnEl.textContent = data.card.calcBtn;
+
+    const btnCalc = document.getElementById('btn-404-calc');
+    if (btnCalc) btnCalc.setAttribute('href', `${homeLink}#calculator`);
+
+    const navHeadingEl = document.getElementById('notfound-nav-heading');
+    if (navHeadingEl) navHeadingEl.textContent = data.card.heading;
+
+    const linkServices = document.getElementById('notfound-link-services');
+    if (linkServices) {
+      linkServices.textContent = data.card.services;
+      linkServices.setAttribute('href', `${homeLink}#services`);
+    }
+
+    const linkTourism = document.getElementById('notfound-link-templates');
+    if (linkTourism) {
+      linkTourism.textContent = data.card.templates;
+      linkTourism.setAttribute('href', isRu ? '/templates' : '/en/templates');
+    }
+
+    const linkPortfolio = document.getElementById('notfound-link-portfolio');
+    if (linkPortfolio) {
+      linkPortfolio.textContent = data.card.portfolio;
+      linkPortfolio.setAttribute('href', data.portfolioPrefix);
+    }
+
+    const linkContact = document.getElementById('notfound-link-contact');
+    if (linkContact) {
+      linkContact.textContent = data.card.contact;
+      linkContact.setAttribute('href', `${homeLink}#contact`);
+    }
+
+    // 3. Header & Navigation Links
+    const brandLogo = document.getElementById('brand-logo');
+    if (brandLogo) brandLogo.setAttribute('href', homeLink);
+
+    const drawerBrandLogo = document.getElementById('drawer-brand-logo');
+    if (drawerBrandLogo) drawerBrandLogo.setAttribute('href', homeLink);
+
+    // Update all nav links via data-nav-id
+    document.querySelectorAll('[data-nav-id]').forEach((el) => {
+      const navId = el.getAttribute('data-nav-id') as keyof typeof data.nav;
+      if (navId && data.nav[navId]) {
+        const span = el.querySelector('span');
+        if (span) {
+          span.textContent = data.nav[navId];
+        } else {
+          el.textContent = data.nav[navId];
+        }
+
+        if (navId === 'portfolio') {
+          el.setAttribute('href', data.portfolioPrefix);
+        } else if (navId === 'templates') {
+          el.setAttribute('href', isRu ? '/templates' : '/en/templates');
+        } else if (navId === 'services' || navId === 'geo-speed' || navId === 'calculator' || navId === 'contact') {
+          el.setAttribute('href', `${homeLink}#${navId}`);
+        }
+      }
+    });
+
+    // CTA buttons in Header & Drawer
+    const headerCta = document.getElementById('header-cta-btn');
+    if (headerCta) {
+      headerCta.setAttribute('href', `${homeLink}#contact`);
+      const span = headerCta.querySelector('span');
+      if (span) span.textContent = data.nav.discuss;
+    }
+
+    const drawerCta = document.getElementById('drawer-cta-btn');
+    if (drawerCta) {
+      drawerCta.setAttribute('href', `${homeLink}#contact`);
+      const span = drawerCta.querySelector('span');
+      if (span) span.textContent = data.nav.discuss;
+    }
+
+    // 4. Footer Elements
+    const footerBrandLogo = document.querySelector('.footer-logo');
+    if (footerBrandLogo) footerBrandLogo.setAttribute('href', homeLink);
+
+    const footerDesc = document.getElementById('footer-brand-desc');
+    if (footerDesc) footerDesc.textContent = data.footer.brandDesc;
+
+    const footerHeadingNav = document.getElementById('footer-heading-nav');
+    if (footerHeadingNav) footerHeadingNav.textContent = data.footer.navHeading;
+
+    const footerHeadingServices = document.getElementById('footer-heading-services');
+    if (footerHeadingServices) footerHeadingServices.textContent = data.footer.servicesHeading;
+
+    const footerHeadingGeo = document.getElementById('footer-heading-geo');
+    if (footerHeadingGeo) footerHeadingGeo.textContent = data.footer.geoHeading;
+
+    const footerLinkTourism = document.getElementById('footer-link-templates');
+    if (footerLinkTourism) {
+      footerLinkTourism.textContent = data.footer.linkTourism;
+      footerLinkTourism.setAttribute('href', isRu ? '/templates' : '/en/templates');
+    }
+
+    const footerLinkCorporate = document.getElementById('footer-link-corporate');
+    if (footerLinkCorporate) {
+      footerLinkCorporate.textContent = data.footer.linkCorporate;
+      footerLinkCorporate.setAttribute('href', `${homeLink}#services`);
+    }
+
+    const footerLinkEcommerce = document.getElementById('footer-link-ecommerce');
+    if (footerLinkEcommerce) {
+      footerLinkEcommerce.textContent = data.footer.linkEcommerce;
+      footerLinkEcommerce.setAttribute('href', `${homeLink}#services`);
+    }
+
+    const footerLinkSpeed = document.getElementById('footer-link-speed');
+    if (footerLinkSpeed) {
+      footerLinkSpeed.textContent = data.footer.linkSpeed;
+      footerLinkSpeed.setAttribute('href', `${homeLink}#geo-speed`);
+    }
+
+    const footerLinkCalc = document.getElementById('footer-link-calc');
+    if (footerLinkCalc) {
+      footerLinkCalc.textContent = data.footer.linkCalc;
+      footerLinkCalc.setAttribute('href', `${homeLink}#calculator`);
+    }
+
+    const footerAreaServed = document.getElementById('footer-area-served');
+    if (footerAreaServed) footerAreaServed.textContent = data.footer.areaServed;
+
+    const footerCopy = document.getElementById('footer-copy');
+    if (footerCopy) footerCopy.textContent = data.footer.rights;
+
+    const footerLegalPrivacy = document.getElementById('footer-legal-privacy');
+    if (footerLegalPrivacy) {
+      footerLegalPrivacy.textContent = data.footer.privacy;
+      footerLegalPrivacy.setAttribute('href', data.privacyPrefix);
+    }
+
+    const footerLegalConsent = document.getElementById('footer-legal-consent');
+    if (footerLegalConsent) {
+      footerLegalConsent.textContent = data.footer.consent;
+      footerLegalConsent.setAttribute('href', data.consentPrefix);
+    }
+
+    const footerCookieBtn = document.getElementById('footer-cookie-btn');
+    if (footerCookieBtn) {
+      footerCookieBtn.textContent = data.footer.cookie;
+    }
+
+    const footerDisclaimer = document.getElementById('footer-whatsapp-disclaimer');
+    if (footerDisclaimer) {
+      footerDisclaimer.textContent = data.footer.whatsappDisclaimer;
+    }
+  }
+
+  function init404Language() {
+    const pathname = window.location.pathname;
+    const isEnRoute = pathname === '/en' || pathname.startsWith('/en/');
+    let preferredLang: SupportedLanguage = 'ru';
+    try {
+      const stored = localStorage.getItem('nicedev-language-preference');
+      if (stored === 'en' || stored === 'ru') {
+        preferredLang = stored as SupportedLanguage;
+      } else {
+        preferredLang = isEnRoute ? 'en' : 'ru';
+      }
+    } catch {
+      preferredLang = isEnRoute ? 'en' : 'ru';
+    }
+
+    const targetLang: SupportedLanguage = isEnRoute || preferredLang === 'en' ? 'en' : 'ru';
+    update404Language(targetLang);
+
+    // Also sync LanguageSelect component state
+    window.dispatchEvent(new CustomEvent('nice-dev:language-change', { detail: { lang: targetLang } }));
+  }
+
+  // Listen to language change events from LanguageSelect dropdown
+  window.addEventListener('nice-dev:language-change', (e) => {
+    const detail = (e as CustomEvent<{ lang: SupportedLanguage }>).detail;
+    if (detail?.lang && (detail.lang === 'ru' || detail.lang === 'en')) {
+      update404Language(detail.lang);
+    }
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init404Language);
+  } else {
+    init404Language();
+  }
+</script>
+
+<style>
+  .not-found-page {
+    min-height: calc(100vh - 280px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 140px 0 80px 0;
+  }
+
+  .not-found-container {
+    max-width: 760px;
+    text-align: center;
+  }
+
+  .not-found-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: clamp(15px, 6vw, 40px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: var(--glass-shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .not-found-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(8rem, 22vw, 16rem);
+    font-weight: 900;
+    font-family: var(--font-heading);
+    color: rgba(255, 200, 87, 0.04);
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+    z-index: 0;
+  }
+
+  .not-found-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .not-found-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 200, 87, 0.1);
+    border: 1px solid rgba(255, 200, 87, 0.25);
+    color: var(--color-gold);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  :global([data-theme="light"]) .not-found-badge {
+    background: rgba(207, 130, 71, 0.1);
+    border-color: rgba(207, 130, 71, 0.3);
+    color: var(--color-gold);
+  }
+
+  .not-found-title {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-family: var(--font-heading);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+  }
+
+  .not-found-desc {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 540px;
+    margin: 0 auto 32px auto;
+  }
+
+  .not-found-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+
+  .not-found-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+  }
+
+  @media(max-width: 425px) {
+    .not-found-action-btn {
+      width: 100%;
+    }
+  }
+
+  .not-found-nav {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 24px;
+  }
+
+  .not-found-nav-heading {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .not-found-nav-links {
+    display: flex;
+    gap: 12px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+
+  @media(max-width: 425px) {
+    .not-found-nav-links {
+      flex-direction: column;
+    }
+  }
+
+  .not-found-link {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: underline;
+  }
+
+  .not-found-divider {
+    color: var(--glass-border);
+  }
+</style>

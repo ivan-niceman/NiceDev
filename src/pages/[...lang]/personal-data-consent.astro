@@ -1,0 +1,310 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+const { lang: paramLang } = Astro.params;
+const lang = (paramLang === 'en' ? 'en' : 'ru') as 'ru' | 'en';
+
+const isRu = lang === 'ru';
+const homeLink = isRu ? '/' : '/en/';
+const canonicalPath = isRu ? '/personal-data-consent' : '/en/personal-data-consent';
+const privacyLink = isRu ? '/privacy-policy' : '/en/privacy-policy';
+---
+
+<Layout
+  title={isRu ? "Согласие на обработку персональных данных | NiceDev Web Studio" : "Personal Data Processing Consent | NiceDev Web Studio"}
+  description={isRu 
+    ? "Форма и условия предоставления согласия на обработку персональных данных в соответствии с требованиями Федерального закона № 152-ФЗ на 15 сентября 2026 г." 
+    : "Terms and conditions for granting consent to personal data processing with NiceDev Web Studio in compliance with Federal Law No. 152-FZ and GDPR standards."}
+  lang={lang}
+  canonicalPath={canonicalPath}
+>
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+  </div>
+
+  <Header lang={lang} />
+
+  <main id="main-content">
+    <div class="container doc-container">
+      
+      {/* Document Header - RU */}
+      <div class="doc-header lang-block lang-block--ru">
+        <a href="/" class="btn btn--glass doc-back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Вернуться на главную
+        </a>
+
+        <div class="section-header__subtitle doc-subtitle">
+          Юридический регламент • Федеральный закон № 152-ФЗ • Редакция 2026 года
+        </div>
+        <h1 class="doc-title">
+          Согласие на обработку персональных данных
+        </h1>
+        <p class="doc-intro">
+          Предоставляется физическим лицом при отправке любых форм обратной связи, заявок на расчет сметы, онлайн-калькулятора или контактных запросов на веб-сайте <strong>https://nice-dev.ru</strong>.
+        </p>
+      </div>
+
+      {/* Document Header - EN */}
+      <div class="doc-header lang-block lang-block--en">
+        <a href="/en/" class="btn btn--glass doc-back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back to Home
+        </a>
+
+        <div class="section-header__subtitle doc-subtitle">
+          Consent Declaration • Federal Law No. 152-FZ & GDPR Standards • 2026 Edition
+        </div>
+        <h1 class="doc-title">
+          Consent to Personal Data Processing
+        </h1>
+        <p class="doc-intro">
+          Granted by individuals upon submitting consultation inquiries, request forms, calculator estimates, or contact messages on the website <strong>https://nice-dev.ru</strong>.
+        </p>
+      </div>
+
+      {/* Document Content Card */}
+      <article class="doc-card">
+        {/* Russian Content */}
+        <div class="lang-block lang-block--ru">
+          <div class="doc-section">
+            <p class="doc-p-lead">
+              Я, субъект персональных данных, свободно, своей волей и в своем интересе, действуя осознанно и дееспособно, оставляя свои персональные данные на веб-сайте <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a> путем заполнения полей интерактивных электронных форм (заявка на консультацию, расчет сметы, заказ обратного звонка, форма калькулятора), <strong>даю свое согласие</strong>:
+            </p>
+            <ul class="doc-list">
+              <li><strong>Оператору персональных данных:</strong> Самозанятой Гребневой Наталье Олеговне (плательщик налога на профессиональный доход);</li>
+              <li><strong>Лицу, ответственному за организацию обработки и безопасность персональных данных (ст. 22.1 152-ФЗ):</strong> Снитко Ивану Валерьевичу (руководитель проектов / технический директор студии NiceDev);</li>
+            </ul>
+            <p class="doc-p">
+              на обработку моих персональных данных на следующих условиях в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных»:
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">1. Перечень персональных данных, на обработку которых дается согласие</h2>
+            <ul class="doc-list">
+              <li>Фамилия, имя, отчество (или имя);</li>
+              <li>Контактный номер телефона;</li>
+              <li>Адрес электронной почты (E-mail);</li>
+              <li>Имя пользователя / аккаунт в мессенджере Telegram;</li>
+              <li>Информация о проекте, пожелания к разработке и комментарии, указанные в полях ввода;</li>
+              <li>Пользовательские и технические данные сессии: IP-адрес, файлы cookie, сведения об используемом браузере, устройстве и источнике перехода на сайт.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">2. Цели обработки персональных данных</h2>
+            <ul class="doc-list">
+              <li>Идентификация пользователя и предоставление обратной связи по его запросу;</li>
+              <li>Проведение консультаций по веб-разработке, UI/UX дизайну, SEO-оптимизации и цифровым решениям;</li>
+              <li>Расчет предварительной и точной стоимости услуг (формирование сметы и коммерческого предложения);</li>
+              <li>Подготовка, заключение и надлежащее исполнение гражданско-правовых договоров;</li>
+              <li>Аналитика посещаемости, защита ресурса от спам-ботов и обеспечение высокой скорости работы сайта.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">3. Перечень разрешенных действий и условия обработки</h2>
+            <p class="doc-p">
+              3.1. Настоящее согласие предоставляется на совершение следующих действий (операций) с персональными данными: сбор, запись, систематизация, накопление, хранение на серверах в пределах Российской Федерации (в соответствии с ч. 5 ст. 18 152-ФЗ), уточнение (обновление, изменение), извлечение, использование, обезличивание, блокирование, удаление и уничтожение.
+            </p>
+            <p class="doc-p">
+              3.2. Обработка персональных данных может осуществляться как с использованием средств автоматизации, так и без их использования (смешанная обработка).
+            </p>
+            <p class="doc-p">
+              3.3. Передача персональных данных третьим лицам не осуществляется, кроме случаев, строго предусмотренных законодательством РФ.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">4. Срок действия согласия и порядок его отзыва</h2>
+            <p class="doc-p">
+              4.1. Согласие вступает в силу с момента отправки электронной формы на сайте и действует до достижения целей обработки либо до момента его отзыва.
+            </p>
+            <p class="doc-p">
+              4.2. Согласие может быть отозвано субъектом персональных данных в любой момент путем направления письменного обращения на адрес электронной почты: <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a> с темой «Отзыв согласия на обработку персональных данных».
+            </p>
+            <p class="doc-p">
+              4.3. Оператор прекращает обработку данных и уничтожает их в срок, не превышающий 10 (десяти) рабочих дней с момента получения отзыва.
+            </p>
+            <p class="doc-p">
+              4.4. Полный порядок и правовые принципы обеспечения безопасности изложены в <a href="/privacy-policy" class="doc-link">Политике конфиденциальности</a>.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">5. Реквизиты и контакты</h2>
+            <div class="doc-requisites">
+              <p class="doc-p"><strong>Оператор:</strong> Самозанятая Гребнева Наталья Олеговна (плательщик НПД)</p>
+              <p class="doc-p"><strong>Ответственный за защиту данных (ст. 22.1 152-ФЗ):</strong> Снитко Иван Валерьевич</p>
+              <p class="doc-p"><strong>Email для юридических обращений:</strong> <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a></p>
+            </div>
+          </div>
+        </div>
+
+        {/* English Content */}
+        <div class="lang-block lang-block--en">
+          <div class="doc-section">
+            <p class="doc-p-lead">
+              I, as a subject of personal data, freely, voluntarily, and in my own interest, acting consciously and with full legal capacity, providing my personal details on the website <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a> by completing electronic interactive forms (inquiry for consultation, project cost calculator, callback request, quote estimation), <strong>hereby grant my consent</strong> to:
+            </p>
+            <ul class="doc-list">
+              <li><strong>Data Operator:</strong> Self-employed Grebneva Natalia Olegovna (Professional Income Tax payer under Russian Federation legislation);</li>
+              <li><strong>Data Protection & Information Security Officer (Art. 22.1 Federal Law No. 152-FZ):</strong> Snitko Ivan Valerievich (Project Director & Technical Lead at NiceDev studio);</li>
+            </ul>
+            <p class="doc-p">
+              for the processing of my personal data under the following terms in strict adherence to Federal Law No. 152-FZ "On Personal Data":
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">1. Categories of Processed Personal Data</h2>
+            <ul class="doc-list">
+              <li>First name, last name, or chosen moniker;</li>
+              <li>Contact phone number;</li>
+              <li>Email address;</li>
+              <li>Telegram account username or handle;</li>
+              <li>Project scope description, design preferences, and comments submitted through input fields;</li>
+              <li>Session telemetry and technical parameters: IP address, cookies, device and browser specifications, referral URL.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">2. Processing Purposes</h2>
+            <ul class="doc-list">
+              <li>User identification and delivery of direct communication regarding the submitted request;</li>
+              <li>Conducting technical consultations on web engineering, UI/UX design, SEO architecture, and turnkey digital solutions;</li>
+              <li>Calculating preliminary and final project quotes (commercial proposals and budget estimates);</li>
+              <li>Drafting, negotiating, concluding, and fulfilling service contracts;</li>
+              <li>Platform analytics, anti-bot protection, and continuous optimization of website performance and speed.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">3. Permitted Actions & Processing Conditions</h2>
+            <p class="doc-p">
+              3.1. This consent authorizes the following operations with personal data: collection, recording, systematization, accumulation, storage on secure server facilities located within the Russian Federation (pursuant to Part 5, Art. 18 of Federal Law No. 152-FZ), updating, extraction, usage, depersonalization, blocking, deletion, and permanent destruction.
+            </p>
+            <p class="doc-p">
+              3.2. Personal data may be processed using automated computational systems, manual methods, or a combined approach.
+            </p>
+            <p class="doc-p">
+              3.3. Personal data is never transferred or disclosed to third parties, except as explicitly mandated by applicable statutory law.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">4. Term of Validity & Revocation Procedure</h2>
+            <p class="doc-p">
+              4.1. This consent becomes effective immediately upon form submission and remains valid until processing purposes are accomplished or until revoked by the data subject.
+            </p>
+            <p class="doc-p">
+              4.2. The data subject may revoke this consent at any time by transmitting a formal email request to: <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a> with the subject line "Personal Data Consent Revocation".
+            </p>
+            <p class="doc-p">
+              4.3. The Operator shall cease data processing and destroy all associated records within 10 (ten) business days upon receiving the revocation notice.
+            </p>
+            <p class="doc-p">
+              4.4. Full data protection standards, operational details, and rights are elaborated in the <a href="/en/privacy-policy" class="doc-link">Privacy Policy</a>.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">5. Requisites & Contact Details</h2>
+            <div class="doc-requisites">
+              <p class="doc-p"><strong>Data Operator:</strong> Self-employed Grebneva Natalia Olegovna (Professional Income Tax payer)</p>
+              <p class="doc-p"><strong>Designated Data Protection Officer:</strong> Snitko Ivan Valerievich</p>
+              <p class="doc-p"><strong>Legal & Inquiry Email:</strong> <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a></p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</Layout>
+
+<style>
+  .doc-container {
+    max-width: 880px;
+  }
+
+  .doc-header {
+    margin-bottom: 40px;
+  }
+
+  .doc-back-btn {
+    margin-bottom: 24px;
+    padding: 6px 14px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .doc-subtitle {
+    text-align: left;
+  }
+
+  .doc-title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .doc-intro {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .doc-p-lead {
+    color: var(--text-primary);
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .doc-p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .doc-list {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-left: 20px;
+    margin-bottom: 14px;
+  }
+
+  .doc-link {
+    color: var(--color-gold);
+    text-decoration: underline;
+  }
+
+  /* Dual-language dynamic switching */
+  html[lang="ru"] .lang-block--en {
+    display: none !important;
+  }
+  html[lang="en"] .lang-block--ru {
+    display: none !important;
+  }
+</style>

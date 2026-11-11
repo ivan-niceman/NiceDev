@@ -1,0 +1,124 @@
+---
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const toggleLabel = lang === 'ru' ? 'Переключить тему' : 'Toggle theme';
+---
+
+<button
+  type="button"
+  class="theme-toggle"
+  id="theme-toggle-btn"
+  title={toggleLabel}
+  aria-label={toggleLabel}
+>
+  <div class="theme-toggle__thumb" id="theme-toggle-thumb">
+    <svg id="theme-moon-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B0710" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+    </svg>
+    <svg id="theme-sun-icon" class="theme-sun-icon-hidden" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0B0710" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2"></path>
+      <path d="M12 20v2"></path>
+      <path d="m4.93 4.93 1.41 1.41"></path>
+      <path d="m17.66 17.66 1.41 1.41"></path>
+      <path d="M2 12h2"></path>
+      <path d="M20 12h2"></path>
+      <path d="m6.34 17.66-1.41 1.41"></path>
+      <path d="m19.07 4.93-1.41 1.41"></path>
+    </svg>
+  </div>
+</button>
+
+<style>
+  .theme-toggle {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    border-radius: var(--radius-pill);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--color-amethyst);
+    box-shadow: 0 0 7px var(--color-amethyst-glow);
+  }
+
+  .theme-toggle__thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-amethyst) 100%);
+    transform: translateX(0);
+    transition: transform var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0B0710;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  :global([data-theme="light"]) .theme-toggle__thumb {
+    transform: translateX(24px);
+    background: linear-gradient(135deg, var(--color-amethyst) 0%, var(--color-gold) 100%);
+  }
+
+  @media(max-width: 400px) {
+    .theme-toggle {
+      width: 45px;
+    }
+    :global([data-theme="light"]) .theme-toggle__thumb {
+    transform: translateX(18px);
+  }
+  }
+
+  .theme-sun-icon-hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  function initThemeToggle() {
+    const btn = document.getElementById('theme-toggle-btn');
+    const moonIcon = document.getElementById('theme-moon-icon');
+    const sunIcon = document.getElementById('theme-sun-icon');
+    
+    function updateIcons(isDark: boolean) {
+      if (moonIcon && sunIcon) {
+        moonIcon.style.display = isDark ? 'block' : 'none';
+        sunIcon.style.display = isDark ? 'none' : 'block';
+      }
+    }
+
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 
+      (document.documentElement.classList.contains('light') ? 'light' : 'dark');
+    updateIcons(currentTheme === 'dark');
+
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const isCurrentlyDark = document.documentElement.getAttribute('data-theme') !== 'light' && 
+                                !document.documentElement.classList.contains('light');
+        const nextTheme = isCurrentlyDark ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', nextTheme);
+        document.documentElement.className = nextTheme;
+        localStorage.setItem('nicedev-theme', nextTheme);
+        localStorage.setItem('nice-dev-theme', nextTheme);
+        updateIcons(nextTheme === 'dark');
+      });
+    }
+  }
+
+  initThemeToggle();
+  document.addEventListener('astro:page-load', initThemeToggle);
+</script>

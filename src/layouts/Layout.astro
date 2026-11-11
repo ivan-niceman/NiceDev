@@ -1,0 +1,338 @@
+---
+import "../styles/global.css";
+
+import CookieConsent from '../components/CookieConsent.astro';
+import SkipLink from '../components/SkipLink.astro';
+import AmbientBackground from '../components/AmbientBackground.astro';
+import LeadModal from '../components/LeadModal.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  lang?: 'ru' | 'en';
+  canonicalPath?: string;
+  is404?: boolean;
+}
+
+const {
+  title = "NiceDev — Создание сайтов под ключ и веб-разработка",
+  description = "Создание сайтов под ключ и готовых шаблонов от веб-студии NiceDev. Авторский дизайн, быстрая загрузка и адаптивность. Рассчитайте стоимость проекта онлайн!",
+  keywords = "создание сайтов под ключ, разработка сайтов, веб студия, заказать сайт, шаблоны сайтов, дизайн сайтов, разработка сайтов под ключ, NiceDev",
+  lang = "ru",
+  canonicalPath = lang === "ru" ? "/" : "/en",
+  is404 = false
+} = Astro.props;
+
+const siteUrl = "https://nice-dev.ru";
+const canonicalURL = `${siteUrl}${canonicalPath === '/' ? '' : canonicalPath}`;
+const ogLocale = lang === 'ru' ? 'ru_RU' : 'en_US';
+const ogAlternateLocale = lang === 'ru' ? 'en_US' : 'ru_RU';
+
+// Comprehensive JSON-LD Structured Data for Search Engines & Generative AI (GEO)
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      "url": siteUrl,
+      "name": "NiceDev Web Studio",
+      "description": description,
+      "inLanguage": lang === 'ru' ? 'ru-RU' : 'en-US',
+      "keywords": keywords
+    },
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      "name": "NiceDev Web Studio",
+      "url": siteUrl,
+      "logo": `${siteUrl}/favicon.svg`,
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "description": lang === 'ru'
+        ? "Студия веб-разработки NiceDev: создание сайтов под ключ, авторский дизайн, логотипы, брендбуки, разработка сервисов для туризма и оптимизация под генеративные поисковые системы (GEO)."
+        : "NiceDev Web Studio: turnkey web development, custom UI/UX design, brand identity, travel tech platforms, and Generative Engine Optimization (GEO).",
+      "slogan": lang === 'ru'
+        ? "Премиальная веб-разработка, дизайн и GEO-оптимизация под ИИ-поиск"
+        : "Bespoke Web Engineering, Branding & Generative Engine Optimization (GEO)",
+      "knowsAbout": [
+        "Generative Engine Optimization (GEO)",
+        "Artificial Intelligence Search Optimization (AIO)",
+        "Web Development",
+        "Astro Web Framework",
+        "React & TypeScript",
+        "Turnkey Websites",
+        "UI/UX Design",
+        "Brand Identity & Brandbook",
+        "Logo Design",
+        "Travel Tech & Booking Systems",
+        "Core Web Vitals Optimization"
+      ],
+      "email": "info@nice-dev.ru",
+      "priceRange": "$$$$",
+      "currenciesAccepted": "RUB, USD, EUR, KZT, BYN, USDT",
+      "paymentAccepted": "Bank Transfer, Credit Card, Invoices, Online Payments",
+      "areaServed": {
+        "@type": "AdministrativeArea",
+        "name": "Worldwide"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": lang === 'ru' ? "Услуги веб-студии NiceDev" : "NiceDev Services Catalog",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": lang === 'ru' ? "Создание сайтов под ключ" : "Turnkey Website Development",
+              "description": lang === 'ru'
+                ? "Полный цикл от прототипирования и дизайна до верстки, интеграции CRM, платежных систем и оптимизации Core Web Vitals 100/100."
+                : "Full cycle from custom UI/UX design to high-speed coding, CRM & payment integration with 100/100 Core Web Vitals."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": lang === 'ru' ? "GEO-оптимизация (Generative Engine Optimization)" : "Generative Engine Optimization (GEO)",
+              "description": lang === 'ru'
+                ? "Оптимизация структуры сайта, семантики и микроразметки для цитирования и рекомендаций в ChatGPT, Perplexity, Google AI Overviews и Яндекс Нейро."
+                : "Optimizing content, structure, and machine-readable data for citation across ChatGPT, Perplexity, Google AI Overviews, and Claude."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": lang === 'ru' ? "Дизайн логотипов и брендбука" : "Logo & Brandbook Design",
+              "description": lang === 'ru'
+                ? "Создание визуальной идентичности бренда, логотипов, гайдлайнов, фирменных стилей и дизайн-систем."
+                : "Brand identity design, logo concepts, typography standards, and complete brand books."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": lang === 'ru' ? "Платформы для туризма и отелей" : "Travel & Hospitality Platforms",
+              "description": lang === 'ru'
+                ? "Специализированные сайты для туроператоров, глэмпингов и отелей с модулями онлайн-бронирования и интерактивными картами."
+                : "Specialized platforms for tour operators and hotels with direct booking engines and dynamic itineraries."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${siteUrl}/#faq`,
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": lang === 'ru' ? "Что такое GEO-оптимизация сайтов от NiceDev?" : "What is Generative Engine Optimization (GEO) by NiceDev?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": lang === 'ru'
+              ? "GEO (Generative Engine Optimization) — это оптимизация сайта под ИИ-ассистентов и генеративные поисковые системы (ChatGPT Search, Perplexity, Google AI Overviews, Яндекс Нейро). NiceDev внедряет структурированные данные llms.txt, расширенную микроразметку Schema.org и высокую скорость отклика (Core Web Vitals), что обеспечивает приоритетное цитирование бизнеса в ответах нейросетей."
+              : "GEO (Generative Engine Optimization) prepares websites for AI search engines like ChatGPT Search, Perplexity, and Google AI Overviews using structured schemas, llms.txt, and fast server rendering."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": lang === 'ru' ? "Какие услуги предоставляет студия NiceDev?" : "What services does NiceDev provide?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": lang === 'ru'
+              ? "Студия NiceDev выполняет разработку сайтов под ключ, авторский UI/UX дизайн, создание логотипов и брендбуков, специализированные платформы для туризма с модулями бронирования, а также GEO и SEO оптимизацию."
+              : "NiceDev provides turnkey website engineering, UI/UX design, brand identity & logo design, specialized travel platforms with booking engines, and Generative Engine Optimization (GEO)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<!doctype html>
+<html lang={lang} class="dark" data-is-404={is404 ? "true" : "false"}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Crawlers & Robots Directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="yandex" content="index, follow" />
+
+    <!-- Multi-regional & Multi-language Alternate Hreflang Tags -->
+    <link rel="alternate" hreflang="ru" href={`${siteUrl}/`} />
+    <link rel="alternate" hreflang="en" href={`${siteUrl}/en`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}/`} />
+
+    <!-- Generative Engine Optimization (GEO) & AI Search Directives -->
+    <meta name="ai-content-declaration" content="human-crafted" />
+    <meta name="citation_title" content={title} />
+    <meta name="citation_author" content="NiceDev Web Studio" />
+    <link rel="help" href="/llms.txt" title="LLM Context & Documentation" />
+    <link rel="alternate" type="text/plain" href="/llms-full.txt" title="Full AI Context Document" />
+
+    <!-- Open Graph / Facebook / Telegram / VK -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="NiceDev Web Studio" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogAlternateLocale} />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="NiceDev Digital Web Studio" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" />
+
+    <!-- JSON-LD Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="nice-dev" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+
+    <!-- Google Fonts Preconnect & High-Speed Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Safe fetch descriptor shim for sandbox compatibility -->
+    <script is:inline>
+      try {
+        if (typeof window !== 'undefined' && window.fetch) {
+          var nativeFetch = window.fetch.bind(window);
+          var currentFetch = nativeFetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() { return currentFetch || nativeFetch; },
+            set: function(fn) { currentFetch = fn; },
+            configurable: true,
+            enumerable: true
+          });
+        }
+      } catch {
+        // Fallback silently if window.fetch cannot be redefined
+      }
+    </script>
+
+    <!-- Update OG locale on language change -->
+    <script is:inline>
+      function updateOGLocale(lang) {
+        const ogLocaleMeta = document.querySelector('meta[property="og:locale"]');
+        const ogLocaleAltMeta = document.querySelector('meta[property="og:locale:alternate"]');
+        if (!ogLocaleMeta || !ogLocaleAltMeta) return;
+        const locale = lang === 'ru' ? 'ru_RU' : 'en_US';
+        const alternate = lang === 'ru' ? 'en_US' : 'ru_RU';
+        ogLocaleMeta.setAttribute('content', locale);
+        ogLocaleAltMeta.setAttribute('content', alternate);
+      }
+      window.addEventListener('nice-dev:language-change', e => {
+        const detail = e.detail;
+        if (detail?.lang) {
+          updateOGLocale(detail.lang);
+        }
+      });
+      // Set initial
+      (() => {
+        const initLang = document.documentElement.lang || 'ru';
+        updateOGLocale(initLang);
+      })();
+    </script>
+
+    <!-- Clean legacy session keys -->
+    <script is:inline>
+      try {
+        sessionStorage.removeItem('nicedev_active_route');
+        sessionStorage.removeItem('nicedev_last_route');
+      } catch {}
+    </script>
+
+    <!-- Theme Initialization Script (prevents flash of unstyled theme) -->
+    <script is:inline>
+      const savedTheme = localStorage.getItem('nicedev-theme') || localStorage.getItem('nice-dev-theme');
+      const theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'dark');
+      document.documentElement.className = theme;
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+  </head>
+  <body>
+    <div id="lang-overlay" aria-hidden="true"></div>
+    <AmbientBackground />
+    <SkipLink lang={lang} />
+    <div id="root" style="position: relative; z-index: 1;">
+      <slot />
+    </div>
+
+    <CookieConsent lang={lang} />
+    <LeadModal lang={lang} />
+
+    <!-- Global Scroll Reveal Observer -->
+    <script>
+      function setupScrollReveal() {
+        if (!('IntersectionObserver' in window)) {
+          document.querySelectorAll('.reveal').forEach((el) => {
+            el.classList.add('is-revealed');
+          });
+          return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.08,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        document.querySelectorAll('.reveal:not(.is-revealed)').forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.9) {
+            setTimeout(() => el.classList.add('is-revealed'), 40);
+          } else {
+            observer.observe(el);
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupScrollReveal);
+      } else {
+        setupScrollReveal();
+      }
+      document.addEventListener('astro:page-load', setupScrollReveal);
+      window.addEventListener('hashchange', () => {
+        setTimeout(setupScrollReveal, 100);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,266 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const showcases = t.templates.showcases;
+---
+
+<section id="templates" aria-labelledby="templates-heading">
+  <div class="nd-container">
+    <div class="nd-section-header">
+      <div class="nd-section-header__subtitle">{t.templates.subtitle}</div>
+      <h2 id="templates-heading">{t.templates.title}</h2>
+      <p class="nd-templates-description">
+        {t.templates.description}
+      </p>
+    </div>
+
+    <div class="nd-templates__grid">
+      {/* Left Column: Visual Showcase & Interactive Island Demo */}
+      <div>
+        <div class="nd-templates__showcase" id="templates-showcase">
+          <img 
+            id="templates-img"
+            src={showcases.tours.image} 
+            alt={showcases.tours.imageAlt} 
+            class="nd-templates__img"
+            loading="lazy"
+          />
+          <div class="nd-templates__overlay">
+            <span class="nd-templates__badge-gold">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="7"></circle>
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+              </svg>
+              <span id="templates-tag">{showcases.tours.tag}</span>
+            </span>
+            <h3 id="templates-title" class="nd-templates-showcase-title">
+              {showcases.tours.title}
+            </h3>
+            <p id="templates-desc" class="nd-templates-showcase-description">
+              {showcases.tours.desc}
+            </p>
+          </div>
+        </div>
+
+        {/* Quick Filter Tabs Demo */}
+        <div class="nd-templates-tabs-bar">
+          <button 
+            type="button"
+            class="nd-badge nd-btn--gold templates-tab-btn is-active"
+            
+            data-tab="tours"
+          >
+            {t.templates.tabTours}
+          </button>
+          <button 
+            type="button"
+            class="nd-badge templates-tab-btn"
+            
+            data-tab="hotels"
+          >
+            {t.templates.tabHotels}
+          </button>
+          <button 
+            type="button"
+            class="nd-badge templates-tab-btn"
+            
+            data-tab="expeditions"
+          >
+            {t.templates.tabExpeditions}
+          </button>
+        </div>
+      </div>
+
+      {/* Right Column: Key Advantages for Travel Brands */}
+      <div>
+        <h3 class="nd-templates-why-title">
+          {t.templates.whyHeading}
+        </h3>
+        <p class="nd-templates-why-description">
+          {t.templates.whyDesc}
+        </p>
+
+        <div class="nd-templates-features">
+          <div class="nd-templates-feature-box">
+            <div class="nd-templates-feature-box__title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-amethyst-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span>{t.templates.feat1Title}</span>
+            </div>
+            <div class="nd-templates-feature-box__desc">
+              {t.templates.feat1Desc}
+            </div>
+          </div>
+
+          <div class="nd-templates-feature-box">
+            <div class="nd-templates-feature-box__title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>{t.templates.feat2Title}</span>
+            </div>
+            <div class="nd-templates-feature-box__desc">
+              {t.templates.feat2Desc}
+            </div>
+          </div>
+
+          <div class="nd-templates-feature-box">
+            <div class="nd-templates-feature-box__title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-cyan-neon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>{t.templates.feat3Title}</span>
+            </div>
+            <div class="nd-templates-feature-box__desc">
+              {t.templates.feat3Desc}
+            </div>
+          </div>
+
+          <div class="nd-templates-feature-box">
+            <div class="nd-templates-feature-box__title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-amethyst-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>{t.templates.feat4Title}</span>
+            </div>
+            <div class="nd-templates-feature-box__desc">
+              {t.templates.feat4Desc}
+            </div>
+          </div>
+        </div>
+
+        <div class="nd-templates-cta">
+          <a href="#calculator" class="nd-btn nd-btn--gold">
+            <span>{t.templates.calculateTourPlatform}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nd-templates-description {
+    margin-top: 14px;
+  }
+
+  .nd-templates-showcase-title,
+  .nd-templates-showcase-description {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .nd-templates-showcase-title {
+    font-size: 1.4rem;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+  }
+
+  .nd-templates-showcase-description {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .nd-templates-tabs-bar {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 6px;
+    background: var(--glass-bg);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--glass-border);
+    width: fit-content;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .templates-tab-btn {
+    cursor: pointer;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nd-templates-why-title {
+    font-size: 1.75rem;
+    margin-bottom: 16px;
+  }
+
+  .nd-templates-why-description {
+    margin-bottom: 24px;
+  }
+
+  .nd-templates-cta {
+    margin-top: 24px;
+  }
+</style>
+
+<script define:vars={{ showcases }}>
+  function initTourismTabs() {
+    const tabButtons = document.querySelectorAll('.templates-tab-btn');
+    const imgEl = document.getElementById('templates-img');
+    const tagEl = document.getElementById('templates-tag');
+    const titleEl = document.getElementById('templates-title');
+    const descEl = document.getElementById('templates-desc');
+
+    if (!imgEl || !tagEl || !titleEl || !descEl || !tabButtons.length) return;
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tabKey = button.getAttribute('data-tab');
+        const data = showcases[tabKey];
+        if (!data) return;
+
+        // Toggle active button style
+        tabButtons.forEach(b => {
+          b.classList.remove('nd-btn--gold', 'is-active');
+        });
+        button.classList.add('nd-btn--gold', 'is-active');
+
+        // Smooth visual crossfade
+        imgEl.style.opacity = '0.3';
+        imgEl.style.transform = 'scale(0.98)';
+        titleEl.style.opacity = '0';
+        descEl.style.opacity = '0';
+        tagEl.style.opacity = '0';
+
+        setTimeout(() => {
+          imgEl.src = data.image;
+          imgEl.alt = data.imageAlt || data.title;
+          tagEl.textContent = data.tag;
+          titleEl.textContent = data.title;
+          descEl.textContent = data.desc;
+
+          imgEl.style.opacity = '1';
+          imgEl.style.transform = 'scale(1)';
+          titleEl.style.opacity = '1';
+          descEl.style.opacity = '1';
+          tagEl.style.opacity = '1';
+        }, 180);
+      });
+    });
+  }
+
+  initTourismTabs();
+  document.addEventListener('astro:page-load', initTourismTabs);
+</script>

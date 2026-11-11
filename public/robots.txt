@@ -1,0 +1,4 @@
+# robots.txt for NiceDev
+User-agent: *
+Allow: /
+Sitemap: https://nice-dev.ru/sitemap.xml

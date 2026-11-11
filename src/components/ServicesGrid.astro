@@ -1,0 +1,72 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+---
+
+<section id="services" aria-labelledby="services-heading">
+  <div class="nd-container">
+    {/* Section Header */}
+    <div class="nd-section-header">
+      <div class="nd-section-header__subtitle">{t.services.subtitle}</div>
+      <h2 id="services-heading">{t.services.title}</h2>
+      <p class="nd-services-description">
+        {t.services.description}
+      </p>
+    </div>
+
+    {/* Services Cards Grid */}
+    <div class="nd-services-grid">
+      {t.services.items.map((service) => (
+        <article class="nd-service-card" id={`service-card-${service.id}`}>
+          <div>
+            <h3 class="nd-service-card__title">{service.title}</h3>
+            <p class="nd-service-card__desc">{service.description}</p>
+            
+            <ul class="nd-service-card__features">
+              {service.features.map((feature) => (
+                <li class="nd-service-card__feature-item">
+                  <svg class="nd-service-card__feature-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <div class="nd-service-card__tags">
+              {service.tags.map((tag) => (
+                <span class="nd-badge">{tag}</span>
+              ))}
+            </div>
+
+            <a href="#contact" class="nd-service-card__link">
+              <span>{t.services.orderService}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .nd-services-description {
+    margin-top: 14px;
+  }
+
+  .nd-service-card__feature-icon {
+    flex-shrink: 0;
+  }
+</style>

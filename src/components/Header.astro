@@ -1,0 +1,609 @@
+---
+import telegramIcon from '../assets/icons/telegram.svg?raw';
+import whatsappIcon from '../assets/icons/whatsapp.svg?raw';
+import maxIcon from '../assets/icons/max.svg?raw';
+import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSelect from './LanguageSelect.astro';
+import Navbar from './Navbar.astro';
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const homeLink = '/';
+---
+
+<header class="header" id="main-header">
+  <div class="container header__inner">
+    {/* Brand Logo & Direct Messengers Group */}
+    <div class="header__brand-group">
+
+      <Logo/>
+
+      {/* Direct Messengers Icons */}
+      <div class="header__messengers" aria-label={lang === 'en' ? 'Quick contact via messengers' : 'Быстрая связь в мессенджерах'}>
+        <a 
+          href="https://t.me/ivan_niceman" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="header-messenger-btn header-messenger-btn--tg" 
+          aria-label="Telegram" 
+          title="Telegram"
+        >
+          <Fragment set:html={telegramIcon} />
+        </a>
+
+        <a 
+          href="https://wa.me/79067075235" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="header-messenger-btn header-messenger-btn--wa" 
+          aria-label="WhatsApp" 
+          title="WhatsApp"
+        >
+          <Fragment set:html={whatsappIcon} />
+        </a>
+
+        <a 
+          href="https://max.ru/u/f9LHodD0cOKVE5qofs_rxTYqArSbNOWAMh5acGm-JdIQJTRyQVCBrugo8Zk" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="header-messenger-btn header-messenger-btn--max" 
+          aria-label={lang === 'en' ? 'Max: chat' : 'Max: чат'} 
+          title="Max"
+        >
+          <Fragment set:html={maxIcon} />
+        </a>
+      </div>
+    </div>
+
+    {/* Header Action Controls */}
+    <div class="header__actions">
+      {/* Language Selector Dropdown */}
+      <LanguageSelect currentLang={lang} />
+
+      {/* Theme Toggle */}
+      <ThemeToggle lang={lang} />
+
+      {/* Universal Navigation Menu Toggle (Shown on all resolutions) */}
+      <button 
+        type="button" 
+        class="btn--glass menu-toggle mobile-toggle" 
+        id="mobile-menu-btn"
+        aria-label={lang === 'en' ? 'Open navigation menu' : 'Открыть меню навигации'}
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+        title={t.nav.menu}
+      >
+        <span class="menu-toggle__text">{t.nav.menu}</span>
+        <svg class="burger-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        <svg class="close-icon close-icon-hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+{/* Navigation Menu Backdrop (Outside <header> so backdrop-filter does not trap fixed positioning) */}
+<div class="drawer-backdrop" id="mobile-drawer-backdrop" aria-hidden="true"></div>
+
+{/* Navigation Slide-in Drawer from Right (All resolutions) */}
+<div class="drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label={lang === 'en' ? 'Navigation Menu' : 'Меню навигации'}>
+  <div class="drawer__header">
+    <Logo/>
+    <button 
+      type="button" 
+      class="drawer__close" 
+      id="mobile-drawer-close" 
+      aria-label={lang === 'en' ? 'Close menu' : 'Закрыть меню'}
+      title={lang === 'en' ? 'Close menu' : 'Закрыть меню'}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  {/* Navigation Links via pure Navbar Component */}
+  <Navbar lang={lang} variant="drawer" />
+
+  <div class="drawer__footer">
+    <div class="drawer__socials">
+      <a 
+        href="https://t.me/ivan_niceman" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="drawer__social-link"
+        aria-label="Telegram: @ivan_niceman"
+      >
+        <Fragment set:html={telegramIcon} />
+        <span>Telegram</span>
+      </a>
+      <a 
+        href="https://wa.me/79067075235" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="drawer__social-link"
+        aria-label="WhatsApp"
+      >
+        <Fragment set:html={whatsappIcon} />
+        <span>WhatsApp</span>
+      </a>
+      <a 
+        href="https://max.ru/u/f9LHodD0cOKVE5qofs_rxTYqArSbNOWAMh5acGm-JdIQJTRyQVCBrugo8Zk" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="drawer__social-link"
+        aria-label={lang === 'en' ? 'Max: chat' : 'Max: чат'}
+      >
+        <Fragment set:html={maxIcon} />
+        <span>Max</span>
+      </a>
+    </div>
+
+    <a 
+      href={`${homeLink}#contact`} 
+      class="btn btn--gold drawer-cta-btn mobile-link" 
+      id="drawer-cta-btn"
+      data-open-modal="lead-modal"
+      data-modal-title={lang === 'en' ? 'Discuss Project' : 'Обсудить проект'}
+      data-modal-source="Navigation Drawer: Обсудить проект"
+    >
+      <span>{t.nav.discussProject}</span>
+    </a>
+  </div>
+</div>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 16px 0;
+    background: var(--nav-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: padding var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .header.is-drawer-open {
+    z-index: 100000;
+  }
+
+  .header.is-scrolled {
+    padding: 11px 0;
+    background: var(--nav-bg-scrolled);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.4);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header__brand-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header__messengers {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-messenger-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .header-messenger-btn--tg:hover {
+    color: #229ED9;
+    border-color: #229ED9;
+    background: rgba(34, 158, 217, 0.12);
+    box-shadow: 0 0 7px rgba(34, 158, 217, 0.35);
+  }
+
+  .header-messenger-btn--wa:hover {
+    color: #25D366;
+    border-color: #25D366;
+    background: rgba(37, 211, 102, 0.12);
+    box-shadow: 0 0 7px rgba(37, 211, 102, 0.35);
+  }
+
+  .header-messenger-btn--max:hover {
+    color: #4b1df9;
+    border-color: #4b1df9;
+    background: rgba(75, 29, 249, 0.12);
+    box-shadow: 0 0 7px rgba(75, 29, 249, 0.35);
+  }
+
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .header-cta-btn {
+    padding: 9px 18px;
+    font-size: 0.88rem;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    height: 28px;
+    padding: 0 14px;
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .menu-toggle:hover,
+  :global([data-theme="light"]) .mobile-toggle:hover {
+    color: var(--color-amethyst);
+  }
+
+  .menu-toggle__text {
+    letter-spacing: 0.02em;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .close-icon-hidden {
+    display: none;
+  }
+
+  @media (max-width: 580px) {
+    .menu-toggle,
+    .mobile-toggle {
+      padding: 8px;
+      width: 40px;
+    }
+    .header__messengers,
+    .menu-toggle__text {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    #header-cta-btn {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header__actions {
+      gap: 8px;
+    }
+    .header-cta-btn {
+      padding: 7px 12px !important;
+      font-size: 0.8rem !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .header-cta-btn span {
+      display: none;
+    }
+    .header-cta-btn {
+      padding: 7px 9px !important;
+    }
+  }
+
+  /* Drawer Backdrop */
+  .drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 2, 8, 0.78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 100001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+    /* pointer-events: none; */
+    cursor: pointer;
+  }
+
+  .drawer-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  :global([data-theme="light"]) .drawer-backdrop {
+    background: rgba(14, 10, 24, 0.6);
+  }
+
+  /* Drawer Box */
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    width: min(390px, 88vw);
+    background: #0E0915;
+    border-left: 1px solid var(--glass-border);
+    box-shadow: -14px 0 50px rgba(0, 0, 0, 0.85);
+    z-index: 100002;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transform: translateX(100%);
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  :global([data-theme="light"]) .drawer {
+    background: #FFFFFF;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: -12px 0 45px rgba(0, 0, 0, 0.22);
+  }
+
+  .drawer.is-open {
+    transform: translateX(0);
+  }
+
+  .drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  :global([data-theme="light"]) .drawer__header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* High-Contrast Dedicated Close Button */
+  .drawer__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    margin: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #F8F9FA;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .drawer__close svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    pointer-events: none;
+    transition: transform var(--transition-fast);
+  }
+
+  .drawer__close:hover {
+    background: rgba(157, 78, 221, 0.22);
+    border-color: var(--color-amethyst);
+    color: var(--color-amethyst-light);
+  }
+
+  .drawer__close:active {
+    transform: scale(0.92);
+  }
+
+  :global([data-theme="light"]) .drawer__close {
+    background: #F0EDF5;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    color: #120D1A;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  :global([data-theme="light"]) .drawer__close:hover {
+    background: rgba(157, 78, 221, 0.14);
+    border-color: var(--color-amethyst);
+    color: var(--color-amethyst);
+  }
+
+  .drawer__footer {
+    padding: 18px 20px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  :global([data-theme="light"]) .drawer__footer {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .drawer__socials {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .drawer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 9px 4px;
+    border-radius: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .drawer__social-link svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+  }
+
+  .drawer__social-link span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .drawer__social-link:hover {
+    color: var(--text-primary);
+    border-color: var(--color-amethyst);
+    background: rgba(142, 68, 173, 0.12);
+  }
+
+  @media (max-width: 500px) {
+    .drawer__social-link span {
+      display: none;
+    }
+  }
+
+  :global([data-theme="light"]) .drawer__social-link {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  :global([data-theme="light"]) .drawer__social-link:hover {
+    background: rgba(142, 68, 173, 0.08);
+    color: var(--color-amethyst);
+  }
+
+  .drawer-cta-btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 12px 18px;
+  }
+</style>
+
+<script>
+  function initHeader() {
+    const header = document.getElementById('main-header');
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const backdrop = document.getElementById('mobile-drawer-backdrop');
+    const drawerCloseBtn = document.getElementById('mobile-drawer-close');
+    const burgerIcon = mobileBtn?.querySelector('.burger-icon') as HTMLElement | null;
+    const closeIcon = mobileBtn?.querySelector('.close-icon') as HTMLElement | null;
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    // Teleport drawer and backdrop to document.body to ensure zero stacking context trapping
+    if (backdrop && backdrop.parentElement !== document.body) {
+      document.body.appendChild(backdrop);
+    }
+    if (mobileDrawer && mobileDrawer.parentElement !== document.body) {
+      document.body.appendChild(mobileDrawer);
+    }
+
+    // Scroll styling detection
+    function handleScroll() {
+      if (!header) return;
+      if (window.scrollY > 20) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    // Drawer management
+    function openDrawer() {
+      if (!mobileDrawer || !backdrop) return;
+      header?.classList.add('is-drawer-open');
+      mobileDrawer.classList.add('is-open');
+      backdrop.classList.add('is-open');
+      mobileBtn?.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      if (burgerIcon) burgerIcon.style.display = 'none';
+      if (closeIcon) closeIcon.style.display = 'block';
+    }
+
+    function closeDrawer() {
+      if (!mobileDrawer || !backdrop) return;
+      header?.classList.remove('is-drawer-open');
+      mobileDrawer.classList.remove('is-open');
+      backdrop.classList.remove('is-open');
+      mobileBtn?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      if (burgerIcon) burgerIcon.style.display = 'block';
+      if (closeIcon) closeIcon.style.display = 'none';
+    }
+
+    mobileBtn?.addEventListener('click', () => {
+      const isOpen = mobileDrawer?.classList.contains('is-open');
+      if (isOpen) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+
+    backdrop?.addEventListener('click', closeDrawer);
+    drawerCloseBtn?.addEventListener('click', closeDrawer);
+
+    mobileLinks.forEach((link) => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDrawer();
+      }
+    });
+  }
+
+  initHeader();
+  document.addEventListener('astro:page-load', initHeader);
+</script>

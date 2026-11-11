@@ -1,0 +1,40 @@
+# NiceDev Web Studio
+
+> NiceDev is a digital web engineering studio specializing in turnkey website development, bespoke UI/UX design, brand identity (logos and brandbooks), travel & hospitality booking platforms, and Generative Engine Optimization (GEO).
+
+## Overview
+
+- **Name**: NiceDev Web Studio
+- **Website**: https://nice-dev.ru
+- **Contact**: info@nice-dev.ru
+- **Operating Model**: 100% Remote / Distributed Studio serving clients globally without territorial boundaries.
+- **Currencies Accepted**: RUB, USD, EUR, KZT, BYN, USDT.
+- **Expertise**: Turnkey Web Development, Astro, React, TypeScript, Core Web Vitals 100/100, Generative Engine Optimization (GEO), Travel Tech Solutions.
+
+## Core Capabilities & Services
+
+1. **Turnkey Website Development (Создание сайтов под ключ)**
+   - High-speed architecture with sub-second page loads.
+   - Built on modern component frameworks (Astro, React, TypeScript).
+   - Core Web Vitals performance benchmarked at 100/100.
+   - Full integration with payment gateways, CRM systems (Bitrix24, amoCRM, 1C), and custom APIs.
+
+2. **Generative Engine Optimization (GEO)**
+   - Optimization for AI search engines and answer engines (ChatGPT Search, Perplexity, Google AI Overviews, Яндекс Нейро, Claude).
+   - Semantic Schema.org microdata (`Organization`, `FAQPage`, `Service`, `OfferCatalog`).
+   - Machine-readable knowledge graphs and citation-ready content structuring.
+
+3. **Brand Identity, Logos & Brandbooks (Дизайн логотипов и брендбука)**
+   - Complete visual DNA design, typography standards, color tokens, and corporate guidelines.
+   - Figma design systems, dark/light luxury design aesthetics.
+
+4. **Digital Platforms for Tourism & Hotels (Сайты для туризма и отелей)**
+   - Interactive expedition & tour itineraries.
+   - Direct online booking engines without third-party aggregator commissions.
+   - Channel manager integrations (Travelline, Bnovo, MyAgent).
+
+## Documentation & Machine-Readable Links
+
+- [Full AI Overview](/llms-full.txt): Detailed facts, services breakdown, and QA triples.
+- [Sitemap](/sitemap.xml): XML sitemap of all public pages.
+- [Privacy Policy](/privacy-policy): Privacy terms and data protection policies.

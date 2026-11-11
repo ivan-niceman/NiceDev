@@ -1,0 +1,103 @@
+---
+export interface Props {
+  lang?: 'ru' | 'en';
+  id?: string;
+  className?: string;
+}
+
+const { lang = 'ru', id, className = '' } = Astro.props;
+const homeLink = '/';
+---
+
+<a href={homeLink} class={`logo ${className}`} id={id} aria-label="NiceDev Web Studio">
+  <div class="logo__mark">
+    <span class="logo__initial">N</span>
+  </div>
+  <div class="logo__text-wrap">
+    <span class="logo__brand">
+      Nice<span class="logo__text-gold">Dev</span>
+    </span>
+    <span class="logo__sub">Web&#8209;Studio</span>
+  </div>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+  }
+
+  .logo__mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--color-amethyst) 0%, var(--color-gold) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0B0710;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .logo:hover .logo__mark {
+    box-shadow: 0 0 5px var(--color-amethyst);
+  }
+
+  .logo__initial {
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  .logo__text-wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo__brand {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .logo__text-gold {
+    color: var(--color-gold);
+  }
+
+  .logo__sub {
+    font-family: var(--font-heading);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 3.3px;
+    text-transform: uppercase;
+    color: var(--color-amethyst-light);
+    margin-top: 3px;
+  }
+
+  [data-theme="light"] .logo__sub {
+    color: var(--color-amethyst);
+  }
+
+  @media(max-width: 400px) {
+    .logo {
+      gap: 5px;
+    }
+    .logo__mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+    }
+    .logo__brand {
+      font-size: 16px;
+    }
+    .logo__sub {
+      font-size: 8px;
+        letter-spacing: 2.2px;
+        margin-top: 0px;
+    }
+  }
+</style>

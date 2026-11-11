@@ -1,0 +1,209 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const projectTypes = t.calculator.projectTypes;
+const addons = t.calculator.addons;
+const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
+---
+
+<section id="calculator" aria-labelledby="calc-heading">
+  <div class="nd-container">
+    <div class="nd-section-header nd-reveal">
+      <div class="nd-section-header__subtitle">{t.calculator.subtitle}</div>
+      <h2 id="calc-heading">{t.calculator.title}</h2>
+      <p class="nd-calc-description">
+        {t.calculator.description}
+      </p>
+    </div>
+
+    <div class="nd-calc-box nd-reveal nd-reveal--scale">
+      {/* Step 1: Project Type Selection */}
+      <div class="nd-calc-step nd-calc-step--type">
+        <label class="nd-label nd-calc-label">
+          {t.calculator.step1}
+        </label>
+        <div class="nd-calc-options" id="calc-type-options">
+          {projectTypes.map((type, idx) => (
+            <button
+              type="button"
+              class={`nd-calc-btn ${idx === 0 ? 'is-selected' : ''}`}
+              data-type-id={type.id}
+              data-base-price={type.basePrice}
+              data-days={type.days}
+            >
+              {type.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Step 2: Add-on Capabilities */}
+      <div>
+        <label class="nd-label nd-calc-label">
+          {t.calculator.step2}
+        </label>
+        <div class="nd-calc-addon-options" id="calc-addon-options">
+          {addons.map((addon) => {
+            const isDefaultChecked = addon.id === 'seo-pro';
+            return (
+              <button
+                type="button"
+                class={`nd-calc-btn nd-calc-btn--addon ${isDefaultChecked ? 'is-selected' : ''}`}
+                data-addon-id={addon.id}
+                data-addon-price={addon.price}
+                data-addon-days={addon.days}
+              >
+                <span>{addon.name}</span>
+                <span class="nd-calc-addon-price">
+                  +{addon.price.toLocaleString(locale)} {t.calculator.currency}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Summary Box */}
+      <div class="nd-calc-summary">
+        <div>
+          <div class="nd-calc-budget-label">{t.calculator.budgetEst}</div>
+          <div class="nd-calc-price">
+            <span id="calc-total-display">0</span> <span class="nd-calc-currency">{t.calculator.currency}</span>
+          </div>
+          <div class="nd-calc-deadline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-cyan-neon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>{t.calculator.deadline}<strong id="calc-days-display">0</strong> {t.calculator.workDays}</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="#contact" class="nd-btn nd-btn--gold" id="calc-submit-btn">
+            <span>{t.calculator.submitBtn}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nd-calc-description {
+    margin-top: 14px;
+  }
+
+  .nd-calc-step--type {
+    margin-bottom: 28px;
+  }
+
+  .nd-calc-label {
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .nd-calc-addon-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .nd-calc-btn--addon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    padding: 14px 16px;
+  }
+
+  .nd-calc-addon-price {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    font-family: var(--font-mono);
+  }
+
+  .nd-calc-budget-label {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .nd-calc-currency {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+  }
+
+  .nd-calc-deadline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+</style>
+
+<script define:vars={{ locale }}>
+  function initCalculator() {
+    const typeButtons = document.querySelectorAll('#calc-type-options .nd-calc-btn');
+    const addonButtons = document.querySelectorAll('#calc-addon-options .nd-calc-btn');
+    const totalDisplay = document.getElementById('calc-total-display');
+    const daysDisplay = document.getElementById('calc-days-display');
+
+    function calculate() {
+      let activeTypeBtn = document.querySelector('#calc-type-options .nd-calc-btn.is-selected');
+      if (!activeTypeBtn && typeButtons.length > 0) {
+        activeTypeBtn = typeButtons[0];
+        activeTypeBtn.classList.add('is-selected');
+      }
+
+      let total = parseInt(activeTypeBtn?.getAttribute('data-base-price') || '0', 10);
+      let days = parseInt(activeTypeBtn?.getAttribute('data-days') || '0', 10);
+
+      const activeAddons = document.querySelectorAll('#calc-addon-options .nd-calc-btn.is-selected');
+      activeAddons.forEach((btn) => {
+        total += parseInt(btn.getAttribute('data-addon-price') || '0', 10);
+        days += parseInt(btn.getAttribute('data-addon-days') || '0', 10);
+      });
+
+      if (totalDisplay) {
+        totalDisplay.textContent = total.toLocaleString(locale);
+      }
+      if (daysDisplay) {
+        daysDisplay.textContent = String(days);
+      }
+    }
+
+    typeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        typeButtons.forEach((b) => b.classList.remove('is-selected'));
+        btn.classList.add('is-selected');
+        calculate();
+      });
+    });
+
+    addonButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('is-selected');
+        calculate();
+      });
+    });
+
+    calculate();
+  }
+
+  initCalculator();
+  document.addEventListener('astro:page-load', initCalculator);
+</script>

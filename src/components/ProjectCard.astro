@@ -1,0 +1,811 @@
+---
+import { Image } from 'astro:assets';
+import type { PortfolioProject } from '../data/portfolio';
+import type { WebsiteTemplate } from '../data/templates';
+
+export interface Props {
+  project: PortfolioProject | WebsiteTemplate;
+  lang?: 'ru' | 'en';
+  priority?: boolean;
+  index?: number;
+}
+
+const { project, lang = 'ru', priority = false } = Astro.props;
+const isRu = lang === 'ru';
+const homeLink = '/';
+const title = isRu ? project.title.ru : project.title.en;
+const pauseHint = isRu ? 'Пауза при наведении' : 'Hover to pause';
+const loadingText = isRu ? 'Загрузка...' : 'Loading...';
+const discussText = isRu ? 'Обсудить проект' : 'Discuss Project';
+
+const hasDescription = 'description' in project && Boolean(project.description);
+const description = hasDescription && project.description
+  ? (isRu ? project.description.ru : project.description.en)
+  : undefined;
+
+const desktopImage: ImageMetadata | undefined = typeof project.desktopImg !== 'string'
+  ? project.desktopImg
+  : undefined;
+
+const mobileImage: ImageMetadata | undefined = typeof project.mobileImg !== 'string'
+  ? project.mobileImg
+  : undefined;
+
+const desktopFallbackSrc = typeof project.desktopImg === 'string'
+  ? project.desktopImg
+  : project.desktopImg.src;
+
+const mobileFallbackSrc = typeof project.mobileImg === 'string'
+  ? project.mobileImg
+  : project.mobileImg.src;
+
+const projectSlug = project.domain.replace(/[^a-zA-Z0-9_-]/g, '-');
+---
+
+<article class="project-card" id={`project-${projectSlug}`} data-project-id={project.domain} data-project-domain={project.domain}>
+  {/* Showcase Preview with Desktop & Mobile frames */}
+  <div class="project-showcase">
+    {/* Desktop Browser Mockup */}
+    <div class="mockup-desktop">
+      {/* Browser Chrome Header */}
+      <div class="mockup-desktop__header">
+        <div class="mockup-desktop__controls">
+          <span class="control-dot control-dot--close"></span>
+          <span class="control-dot control-dot--minimize"></span>
+          <span class="control-dot control-dot--expand"></span>
+        </div>
+        <div class="mockup-desktop__address">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="address-lock">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span class="address-url">{project.domain}</span>
+        </div>
+      </div>
+
+      {/* Desktop Screen Viewport with Spinner Preloader & Infinite Vertical Scrolling */}
+      <div class="mockup-desktop__screen" data-screen-state="loading">
+        {/* Preloader Spinner */}
+        <div class="screen-preloader" aria-hidden="true">
+          <div class="spinner">
+            <div class="spinner__ring"></div>
+            <div class="spinner__glow"></div>
+          </div>
+          <span class="spinner__label">{loadingText}</span>
+        </div>
+
+        {desktopImage ? (
+          <Image
+            src={desktopImage}
+            alt={`${title} — ${isRu ? 'десктопная версия' : 'desktop version'}`}
+            class="mockup-scroll-img mockup-scroll-desktop"
+            loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
+            format="webp"
+            quality={80}
+            width={800}
+            onload="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+            onerror="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+          />
+        ) : (
+          <img
+            src={desktopFallbackSrc}
+            alt={`${title} — ${isRu ? 'десктопная версия' : 'desktop version'}`}
+            class="mockup-scroll-img mockup-scroll-desktop"
+            loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
+            onload="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+            onerror="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+          />
+        )}
+      </div>
+    </div>
+
+    {/* Overlapping Mobile Smartphone Mockup */}
+    <div class="mockup-mobile" aria-label={isRu ? 'Мобильная версия сайта' : 'Mobile version of website'}>
+      <div class="mockup-mobile__speaker"></div>
+      <div class="mockup-mobile__screen" data-screen-state="loading">
+        {/* Preloader Spinner */}
+        <div class="screen-preloader screen-preloader--mobile" aria-hidden="true">
+          <div class="spinner spinner--sm">
+            <div class="spinner__ring"></div>
+            <div class="spinner__glow"></div>
+          </div>
+        </div>
+
+        {mobileImage ? (
+          <Image
+            src={mobileImage}
+            alt={`${title} — ${isRu ? 'мобильная версия' : 'mobile version'}`}
+            class="mockup-scroll-img mockup-scroll-mobile"
+            loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
+            format="webp"
+            quality={80}
+            width={280}
+            onload="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+            onerror="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+          />
+        ) : (
+          <img
+            src={mobileFallbackSrc}
+            alt={`${title} — ${isRu ? 'мобильная версия' : 'mobile version'}`}
+            class="mockup-scroll-img mockup-scroll-mobile"
+            loading={priority ? 'eager' : 'lazy'}
+            decoding="async"
+            onload="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+            onerror="this.parentElement?.setAttribute('data-screen-state', 'loaded')"
+          />
+        )}
+      </div>
+      <div class="mockup-mobile__home"></div>
+    </div>
+
+    {/* Subtle status badge on bottom-left */}
+    <div class="showcase-status">
+      <span class="status-indicator"></span>
+      <span class="status-text">{pauseHint}</span>
+    </div>
+  </div>
+
+  {/* Card Content: Title, Description & Action Bar */}
+  <div class="project-content">
+    {description && (
+      <div class="project-info">
+        <h3 class="project-title">{title}</h3>
+        <p class="project-desc">{description}</p>
+      </div>
+    )}
+
+    <div class="project-action-bar">
+      <a 
+        href={`${homeLink}#contact`} 
+        class="btn-discuss-project"
+        data-open-modal="lead-modal"
+        data-modal-title={discussText}
+        data-modal-service={`Проект: ${title}`}
+        data-modal-source={`Проект: ${title}`}
+        data-modal-prefill={isRu ? `Здравствуйте! Понравился проект «${title}» (${project.domain}). Хочу обсудить сотрудничество.` : `Hello! I liked project "${title}" (${project.domain}). I would like to discuss collaboration.`}
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>{discussText}</span>
+      </a>
+
+      {project.url ? (
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="project-site-link"
+          title={isRu ? `Перейти на сайт ${project.domain || project.url}` : `Visit website ${project.domain || project.url}`}
+        >
+          <span>{project.domain || project.url.replace(/^https?:\/\//, '')}</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="external-icon">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+      ) : (
+        <span
+          class="project-site-link project-site-link--disabled"
+          title={isRu ? 'Ссылка появится позже' : 'Link coming soon'}
+        >
+          <span>{project.domain}</span>
+        </span>
+      )}
+    </div>
+  </div>
+</article>
+
+<noscript>
+  <style>
+    .mockup-scroll-img { opacity: 1 !important; }
+    .screen-preloader { display: none !important; }
+  </style>
+</noscript>
+
+<script>
+  function markReadyImages() {
+    const screens = document.querySelectorAll('.mockup-desktop__screen, .mockup-mobile__screen');
+    screens.forEach((screen) => {
+      const img = screen.querySelector('.mockup-scroll-img') as HTMLImageElement | null;
+      if (!img) return;
+      if (img.complete && img.naturalWidth > 0) {
+        screen.setAttribute('data-screen-state', 'loaded');
+      } else {
+        img.addEventListener('load', () => {
+          screen.setAttribute('data-screen-state', 'loaded');
+        }, { once: true });
+        img.addEventListener('error', () => {
+          screen.setAttribute('data-screen-state', 'loaded');
+        }, { once: true });
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', markReadyImages);
+  } else {
+    markReadyImages();
+  }
+
+  window.addEventListener('load', markReadyImages);
+  document.addEventListener('astro:page-load', markReadyImages);
+</script>
+
+<style>
+  :root {
+    --desktop-viewport-h: 270px;
+    --mobile-viewport-h: 200px;
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--card-gradient, rgba(255, 255, 255, 0.04));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    position: relative;
+  }
+
+  .project-card:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 5px 15px #0006, 0 0 10px var(--color-amethyst-glow);
+  }
+
+  /* Showcase Container */
+  .project-showcase {
+    position: relative;
+    padding: 16px 16px 20px 16px;
+    background: linear-gradient(180deg, rgba(28, 18, 43, 0.5) 0%, rgba(14, 9, 21, 0.8) 100%);
+    border-bottom: 1px solid var(--glass-border);
+    user-select: none;
+  }
+
+  :global([data-theme="light"]) .project-showcase {
+    background: linear-gradient(180deg, #F0EDF5 0%, #E6E0F0 100%);
+  }
+
+  /* Desktop Mockup */
+  .mockup-desktop {
+    width: 100%;
+    background: #171124;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    transition: box-shadow var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .mockup-desktop {
+    background: #FFFFFF;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 28px rgba(110, 60, 160, 0.12);
+  }
+
+  .mockup-desktop__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #100A1A;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 12px;
+  }
+
+  :global([data-theme="light"]) .mockup-desktop__header {
+    background: #F4F1F8;
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .mockup-desktop__controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .control-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+
+  .control-dot--close { background: #FF5F56; }
+  .control-dot--minimize { background: #FFBD2E; }
+  .control-dot--expand { background: #27C93F; }
+
+  .mockup-desktop__address {
+    flex: 1;
+    max-width: 220px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 3px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+  }
+
+  :global([data-theme="light"]) .mockup-desktop__address {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .address-lock {
+    opacity: 0.7;
+    color: var(--color-gold);
+  }
+
+  /* Desktop Screen Viewport */
+  .mockup-desktop__screen {
+    width: 100%;
+    height: var(--desktop-viewport-h);
+    position: relative;
+    overflow: hidden;
+    background: #0B0710;
+  }
+
+  /* Mobile Smartphone Mockup */
+  .mockup-mobile {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    width: 110px;
+    height: var(--mobile-viewport-h);
+    background: #140D22;
+    border: 3px solid #2B1D44;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.12);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .mockup-mobile {
+    background: #FFFFFF;
+    border-color: #D8D0E5;
+    box-shadow: 0 14px 32px rgba(110, 60, 160, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  }
+
+  .project-card:hover .mockup-mobile {
+    transform: scale(1.02);
+  }
+
+  .mockup-mobile__speaker {
+    width: 24px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 2px;
+    margin: 5px auto 4px;
+    flex-shrink: 0;
+  }
+
+  :global([data-theme="light"]) .mockup-mobile__speaker {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .mockup-mobile__screen {
+    width: calc(100% - 4px);
+    height: calc(100% - 20px);
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #0B0710;
+  }
+
+  .mockup-mobile__home {
+    width: 32px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    margin: 4px auto;
+    flex-shrink: 0;
+  }
+
+  :global([data-theme="light"]) .mockup-mobile__home {
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  /* Preloader Spinner Overlay */
+  .screen-preloader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: radial-gradient(circle at center, #170E28 0%, #0B0710 100%);
+    z-index: 6;
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+    pointer-events: none;
+  }
+
+  :global([data-theme="light"]) .screen-preloader {
+    background: radial-gradient(circle at center, #F6F2FA 0%, #EBE4F4 100%);
+  }
+
+  .screen-preloader--mobile {
+    gap: 0;
+  }
+
+  .spinner {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .spinner--sm {
+    width: 24px;
+    height: 24px;
+  }
+
+  .spinner__ring {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid rgba(157, 78, 221, 0.18);
+    border-top-color: #9D4EDD;
+    border-right-color: #00F5D4;
+    box-sizing: border-box;
+    animation: preloaderSpin 0.85s cubic-bezier(0.4, 0.1, 0.4, 0.9) infinite;
+    box-shadow: 0 0 14px rgba(157, 78, 221, 0.35);
+  }
+
+  .spinner--sm .spinner__ring {
+    border-width: 2.5px;
+    box-shadow: 0 0 8px rgba(157, 78, 221, 0.3);
+  }
+
+  .spinner__glow {
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.28) 0%, transparent 70%);
+    animation: preloaderPulse 1.6s ease-in-out infinite alternate;
+  }
+
+  .spinner__label {
+    font-size: 0.68rem;
+    font-family: var(--font-mono, monospace);
+    color: var(--text-muted, #9D8BA7);
+    letter-spacing: 0.06em;
+    user-select: none;
+  }
+
+  @keyframes preloaderSpin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes preloaderPulse {
+    0% {
+      transform: scale(0.82);
+      opacity: 0.35;
+    }
+    100% {
+      transform: scale(1.15);
+      opacity: 0.85;
+    }
+  }
+
+  /* Scrolling Image Behavior & Preloader State:
+     The image starts with opacity 0, revealing smoothly only when downloaded and loaded.
+     The preloader spinner disappears as soon as data-screen-state="loaded". */
+  .mockup-scroll-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  [data-screen-state="loaded"] .mockup-scroll-img {
+    opacity: 1;
+  }
+
+  [data-screen-state="loaded"] .screen-preloader {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .mockup-scroll-desktop {
+    animation: scrollDesktopLoop 20s ease-in-out infinite;
+  }
+
+  .mockup-scroll-mobile {
+    animation: scrollMobileLoop 20s ease-in-out infinite;
+  }
+
+  /* Pause on hover requirement:
+     "при наведении на конкретную карточку проекта движение останавливается" */
+  .project-card:hover .mockup-scroll-img,
+  .project-card:focus-within .mockup-scroll-img,
+  .project-card:active .mockup-scroll-img {
+    animation-play-state: paused !important;
+  }
+
+  /* Synchronized Keyframes:
+     0% - 7%: Paused at top (0)
+     7% - 48%: Moving smoothly down together
+     48% - 52%: Paused at very bottom together
+     52% - 93%: Moving smoothly back up together
+     93% - 100%: Paused at top (0) together */
+  @keyframes scrollDesktopLoop {
+    0%, 7% {
+      transform: translateY(0);
+    }
+    48%, 52% {
+      transform: translateY(calc(-100% + var(--desktop-viewport-h)));
+    }
+    93%, 100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scrollMobileLoop {
+    0%, 7% {
+      transform: translateY(0);
+    }
+    48%, 52% {
+      transform: translateY(calc(-100% + var(--mobile-viewport-h)));
+    }
+    93%, 100% {
+      transform: translateY(0);
+    }
+  }
+
+  /* Status Indicator */
+  .showcase-status {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    background: rgba(11, 7, 16, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-pill);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    z-index: 2;
+    transition: opacity var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .showcase-status {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00F5D4;
+    box-shadow: 0 0 8px #00F5D4;
+    transition: background var(--transition-fast);
+  }
+
+  :global([data-theme="light"]) .status-indicator {
+    background: var(--color-cyan-neon);
+    box-shadow: 0 0 6px rgba(4, 120, 87, 0.4);
+  }
+
+  .project-card:hover .status-indicator {
+    background: var(--color-gold);
+    box-shadow: 0 0 8px var(--color-gold);
+  }
+
+  /* Card Content & Action Bar */
+  .project-content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 20px;
+    height: 100%;
+    background-color: rgba(17, 12, 26, 0.65);
+    border-top: 1px solid var(--glass-border);
+  }
+
+  :global([data-theme="light"]) .project-content {
+    background: #FAFAFD;
+    border-top-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .project-info {
+    flex: 1;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  :global([data-theme="light"]) .project-info {
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .project-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    margin: 0 0 8px 0;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  :global([data-theme="light"]) .project-title {
+    color: var(--color-gold-hover, #D97706);
+  }
+
+  .project-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  :global([data-theme="light"]) .project-desc {
+    color: var(--text-secondary);
+  }
+
+  .project-action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .btn-discuss-project {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, var(--color-amethyst) 0%, #7B2CBF 100%);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    box-shadow: 0 4px 14px var(--color-amethyst-glow);
+    white-space: nowrap;
+  }
+
+  .btn-discuss-project:hover {
+    box-shadow: 0 6px 20px var(--color-amethyst-glow);
+    background: linear-gradient(135deg, #9D4EDD 0%, #5A189A 100%);
+  }
+
+  .project-site-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--color-gold);
+    font-size: 14px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .project-site-link:hover {
+    background: rgba(238, 178, 47, 0.12);
+    border-color: var(--color-gold);
+    color: var(--color-gold-hover);
+  }
+
+  .project-site-link--disabled {
+    opacity: 0.6;
+    cursor: default;
+    border-style: dashed;
+    color: var(--text-muted);
+  }
+
+  .project-site-link--disabled:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--glass-border);
+    color: var(--text-muted);
+  }
+
+  :global([data-theme="light"]) .project-site-link--disabled:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: var(--text-muted);
+  }
+
+  :global([data-theme="light"]) .project-site-link {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  :global([data-theme="light"]) .project-site-link:hover {
+    background: rgba(238, 178, 47, 0.15);
+    border-color: var(--color-gold);
+  }
+
+  .external-icon {
+    flex-shrink: 0;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 640px) {
+    :root {
+      --desktop-viewport-h: 210px;
+      --mobile-viewport-h: 165px;
+    }
+
+    .project-showcase {
+      padding: 12px 12px 16px 12px;
+    }
+
+    .mockup-mobile {
+      width: 90px;
+      bottom: 6px;
+      border-width: 2px;
+    }
+
+    .mockup-desktop__address {
+      max-width: 140px;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+    }
+
+    .project-content {
+      padding: 12px 14px;
+    }
+  }
+
+  @media(max-width: 480px) {
+    .project-action-bar {
+      flex-direction: column;
+    }
+    .btn-discuss-project,
+    .project-site-link
+     {
+      width: 100%;
+      justify-content: center;
+      font-size: 12px;
+    }
+  }
+</style>
+
+<script>
+  // Ensure cached images have preloader cleared immediately
+  document.querySelectorAll<HTMLImageElement>('.mockup-scroll-img').forEach((img) => {
+    if (img.complete && img.naturalHeight > 0) {
+      img.parentElement?.setAttribute('data-screen-state', 'loaded');
+    }
+  });
+</script>

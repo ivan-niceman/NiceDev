@@ -1,0 +1,222 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+---
+
+<section id="geo-speed" aria-labelledby="geo-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-header__subtitle">{t.geo.subtitle}</div>
+      <h2 id="geo-heading">{t.geo.title}</h2>
+      <p class="section-header__desc">
+        {t.geo.description}
+      </p>
+    </div>
+
+    <div class="geo__grid">
+      {/* 1. Быстрая и плавная работа */}
+      <div class="geo-card reveal delay-1" id="geo-speed-scores">
+        <div class="geo-card__top">
+          <span class="badge geo-card__badge-green">
+            {t.geo.card1Badge}
+          </span>
+        </div>
+
+        <h3 class="geo-card__title">{t.geo.card1Title}</h3>
+        <p class="geo-card__desc">
+          {t.geo.card1Desc}
+        </p>
+
+        <ul class="geo-points-list">
+          {t.geo.card1Points.map((point) => (
+            <li class="geo-point-item">
+              <svg class="geo-point-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-cyan-neon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 2. Понятная структура для поиска */}
+      <div class="geo-card reveal delay-2" id="geo-cdn-coverage">
+        <div class="geo-card__top">
+          <span class="badge geo-card__badge-amethyst">
+            {t.geo.card2Badge}
+          </span>
+        </div>
+
+        <h3 class="geo-card__title">{t.geo.card2Title}</h3>
+        <p class="geo-card__desc">
+          {t.geo.card2Desc}
+        </p>
+
+        <ul class="geo-points-list">
+          {t.geo.card2Points.map((point) => (
+            <li class="geo-point-item">
+              <svg class="geo-point-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-amethyst-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 3. Электронная визитка для роботов */}
+      <div class="geo-card reveal delay-3" id="geo-seo-structured">
+        <div class="geo-card__top">
+          <span class="badge geo-card__badge-gold">
+            {t.geo.card3Badge}
+          </span>
+        </div>
+
+        <h3 class="geo-card__title">{t.geo.card3Title}</h3>
+        <p class="geo-card__desc">
+          {t.geo.card3Desc}
+        </p>
+
+        <ul class="geo-points-list">
+          {t.geo.card3Points.map((point) => (
+            <li class="geo-point-item">
+              <svg class="geo-point-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-header__desc {
+    margin-top: 14px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .geo__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+
+  .geo-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .geo-card:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 5px 15px #0006, 0 0 10px var(--color-amethyst-glow);
+  }
+
+  .geo-card__top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .geo-card__badge-green {
+    background: rgba(0, 245, 212, 0.1);
+    color: var(--color-cyan-neon);
+    border-color: rgba(0, 245, 212, 0.25);
+  }
+
+  .geo-card__badge-amethyst {
+    background: rgba(157, 78, 221, 0.1);
+    color: var(--color-amethyst-light);
+    border-color: rgba(157, 78, 221, 0.25);
+  }
+
+  .geo-card__badge-gold {
+    background: rgba(255, 200, 87, 0.1);
+    color: var(--color-gold);
+    border-color: rgba(255, 200, 87, 0.25);
+  }
+
+  :global([data-theme="light"]) .geo-card__badge-green {
+    background: rgba(4, 120, 87, 0.08);
+    color: var(--color-cyan-neon);
+    border-color: rgba(4, 120, 87, 0.28);
+    font-weight: 600;
+  }
+
+  :global([data-theme="light"]) .geo-card__badge-amethyst {
+    background: rgba(109, 40, 217, 0.08);
+    color: var(--color-amethyst-light);
+    border-color: rgba(109, 40, 217, 0.28);
+    font-weight: 600;
+  }
+
+  :global([data-theme="light"]) .geo-card__badge-gold {
+    background: rgba(207, 130, 71, 0.1);
+    color: var(--color-gold);
+    border-color: rgba(207, 130, 71, 0.3);
+    font-weight: 600;
+  }
+
+  .geo-card__title {
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+
+  .geo-card__desc {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  /* Points List (Clean, readable, no code) */
+  .geo-points-list {
+    list-style: none;
+    padding: 14px 10px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+  }
+
+  :global([data-theme="light"]) .geo-points-list {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .geo-point-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+  }
+
+  .geo-point-check {
+    flex-shrink: 0;
+  }
+</style>

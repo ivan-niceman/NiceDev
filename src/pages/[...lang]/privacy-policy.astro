@@ -1,0 +1,403 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+const { lang: paramLang } = Astro.params;
+const lang = (paramLang === 'en' ? 'en' : 'ru') as 'ru' | 'en';
+
+const isRu = lang === 'ru';
+const homeLink = isRu ? '/' : '/en/';
+const canonicalPath = isRu ? '/privacy-policy' : '/en/privacy-policy';
+---
+
+<Layout
+  title={isRu ? "Политика конфиденциальности | NiceDev Web Studio" : "Privacy Policy | NiceDev Web Studio"}
+  description={isRu 
+    ? "Политика в отношении обработки и защиты персональных данных пользователей студии NiceDev. Требования Федерального закона № 152-ФЗ и международные стандарты защиты информации на 15 сентября 2026 г." 
+    : "Privacy policy regarding the processing and protection of personal data at NiceDev Web Studio in compliance with Federal Law No. 152-FZ and GDPR international standards."}
+  lang={lang}
+  canonicalPath={canonicalPath}
+>
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+  </div>
+
+  <Header lang={lang} />
+
+  <main id="main-content">
+    <div class="container doc-container">
+      
+      {/* Document Header - RU */}
+      <div class="doc-header lang-block lang-block--ru">
+        <a href="/" class="btn btn--glass doc-back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Вернуться на главную
+        </a>
+
+        <div class="section-header__subtitle doc-subtitle">
+          Правовая информация • Федеральный закон № 152-ФЗ • Редакция 2026 года
+        </div>
+        <h1 class="doc-title">
+          Политика конфиденциальности и защиты персональных данных
+        </h1>
+        <p class="doc-intro">
+          Настоящая Политика определяет порядок обработки и обеспечения безопасности персональных данных пользователей веб-ресурса <strong>https://nice-dev.ru</strong> студии <strong>NiceDev</strong>, оператором которых является <strong>Самозанятая Гребнева Наталья Олеговна</strong> (плательщик налога на профессиональный доход), при участии лица, ответственного за организацию обработки и защиту персональных данных — <strong>Снитко Ивана Валерьевича</strong>, в соответствии с нормами Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных».
+        </p>
+      </div>
+
+      {/* Document Header - EN */}
+      <div class="doc-header lang-block lang-block--en">
+        <a href="/en/" class="btn btn--glass doc-back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back to Home
+        </a>
+
+        <div class="section-header__subtitle doc-subtitle">
+          Legal Compliance • Federal Law No. 152-FZ & GDPR Standards • 2026 Edition
+        </div>
+        <h1 class="doc-title">
+          Privacy and Personal Data Protection Policy
+        </h1>
+        <p class="doc-intro">
+          This Policy governs the processing and protection of personal data of users of the website <strong>https://nice-dev.ru</strong> for <strong>NiceDev</strong> studio, operated by <strong>Self-employed Grebneva Natalia Olegovna</strong> (Professional Income Tax payer under Russian law), with the participation of the designated Data Protection and Information Security Officer — <strong>Snitko Ivan Valerievich</strong>, in accordance with Federal Law No. 152-FZ "On Personal Data" and international privacy standards.
+        </p>
+      </div>
+
+      {/* Document Content Card */}
+      <article class="doc-card">
+        {/* Russian Content */}
+        <div class="lang-block lang-block--ru">
+          <div class="doc-section">
+            <h2 class="doc-section-title">1. Общие положения и статус Оператора</h2>
+            <p class="doc-p">
+              1.1. Настоящая Политика в отношении обработки персональных данных (далее — «Политика») разработана во исполнение требований п. 2 ч. 1 ст. 18.1 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» и действует в отношении всей информации, которую Оператор может получить о посетителях веб-сайта <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a> и его языковых версий.
+            </p>
+            <p class="doc-p">
+              1.2. <strong>Оператор персональных данных:</strong> Самозанятая Гребнева Наталья Олеговна (плательщик налога на профессиональный доход, НПД).
+            </p>
+            <p class="doc-p">
+              1.3. <strong>Лицо, ответственное за организацию обработки и безопасность персональных данных (в соответствии со ст. 22.1 Федерального закона № 152-ФЗ):</strong> Снитко Иван Валерьевич (руководитель проектов / технический директор студии NiceDev).
+            </p>
+            <p class="doc-p">
+              1.4. Использование сайта, заполнение онлайн-форм, отправка заявок на расчет стоимости, брифы или обращение через виджеты означает полное и безоговорочное согласие пользователя с условиями настоящей Политики.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">2. Правовые основания обработки персональных данных</h2>
+            <p class="doc-p">
+              Обработка персональных данных осуществляется Оператором на следующих законных основаниях:
+            </p>
+            <ul class="doc-list">
+              <li>Статья 24 Конституции Российской Федерации;</li>
+              <li>Федеральный закон от 27.07.2006 № 152-ФЗ «О персональных данных»;</li>
+              <li>Федеральный закон от 27.07.2006 № 149-ФЗ «Об информации, информационных технологиях и о защите информации»;</li>
+              <li>Гражданский кодекс РФ (при заключении и исполнении договоров на разработку сайтов, дизайн и сопровождение);</li>
+              <li>Согласие субъекта персональных данных на обработку его персональных данных, предоставляемое при заполнении форм на сайте.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">3. Категории субъектов и состав обрабатываемых данных</h2>
+            <p class="doc-p">
+              3.1. К категориям субъектов персональных данных относятся: посетители веб-сайта, потенциальные заказчики, клиенты и их представители, направляющие обращения через сайт.
+            </p>
+            <p class="doc-p">
+              3.2. Оператор обрабатывает следующие категории персональных данных:
+            </p>
+            <ul class="doc-list">
+              <li><strong>Имя / Фамилия:</strong> для идентификации и персонализированного общения;</li>
+              <li><strong>Номер контактного телефона:</strong> для звонков, подтверждения брифа и направления коммерческих расчетов;</li>
+              <li><strong>Адрес электронной почты (E-mail):</strong> для отправки коммерческих предложений, смет, договоров, технической документации;</li>
+              <li><strong>Имя пользователя / аккаунт в Telegram:</strong> для оперативного обсуждения этапов разработки и ведения проекта;</li>
+              <li><strong>Информация о проекте и пожеланиях:</strong> данные, добровольно вносимые пользователем в поля комментариев и формы калькулятора;</li>
+              <li><strong>Технические и телеметрические данные (Cookies):</strong> IP-адрес, географический регион (страна/город), сведения о браузере, типе устройства, разрешении экрана, источнике перехода, длительности сессии и посещенных страницах.</li>
+            </ul>
+            <p class="doc-p">
+              3.3. Специальные категории персональных данных (касающиеся расовой, национальной принадлежности, политических взглядов, религиозных или философских убеждений, состояния здоровья) и биометрические данные Оператором <strong>не обрабатываются</strong>.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">4. Цели сбора и обработки персональных данных</h2>
+            <ul class="doc-list">
+              <li>Обработка входящих заявок, проведение первичных консультаций и предпроектного анализа;</li>
+              <li>Расчет предварительной и итоговой стоимости разработки веб-сайтов, интернет-магазинов, сервисов и цифровых решений;</li>
+              <li>Подготовка, согласование, заключение и исполнение договоров на оказание услуг по разработке и технической поддержке;</li>
+              <li>Обеспечение оперативной связи с клиентом по ходу реализации проекта в удобных каналах (телефон, email, Telegram);</li>
+              <li>Технический мониторинг стабильности работы сайта, защита от несанкционированного доступа (DDoS, боты), улучшение скорости загрузки и пользовательского опыта.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">5. Порядок, условия и принципы обработки персональных данных</h2>
+            <p class="doc-p">
+              5.1. Обработка персональных данных осуществляется на основе принципов законности, справедливости, ограничения обработки достижением конкретных, заранее определенных и законных целей.
+            </p>
+            <p class="doc-p">
+              5.2. <strong>Локализация баз данных (ч. 5 ст. 18 Федерального закона № 152-ФЗ):</strong> Запись, систематизация, накопление, хранение, уточнение (обновление, изменение) и извлечение персональных данных граждан Российской Федерации осуществляются с использованием баз данных, находящихся на территории Российской Федерации.
+            </p>
+            <p class="doc-p">
+              5.3. Оператор и ответственное лицо обеспечивают конфиденциальность персональных данных. Персональные данные не раскрываются и не передаются третьим лицам без согласия субъекта персональных данных, за исключением случаев, прямо предусмотренных действующим законодательством РФ (по официальным запросам уполномоченных государственных органов).
+            </p>
+            <p class="doc-p">
+              5.4. Оператор принимает необходимые правовые, организационные и технические меры (включая шифрование каналов связи HTTPS/TLS, антивирусную защиту, разграничение прав доступа) для защиты персональных данных от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">6. Сроки обработки, порядок отзыва согласия и уничтожения данных</h2>
+            <p class="doc-p">
+              6.1. Персональные данные обрабатываются до достижения целей их обработки, до истечения срока действия договора либо до момента отзыва согласия субъектом персональных данных.
+            </p>
+            <p class="doc-p">
+              6.2. Субъект персональных данных вправе в любой момент отозвать ранее данное согласие на обработку персональных данных, направив соответствующее заявление в свободной форме на адрес электронной почты: <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a> с темой письма «Отзыв согласия на обработку персональных данных».
+            </p>
+            <p class="doc-p">
+              6.3. В случае отзыва согласия Оператор прекращает обработку персональных данных и уничтожает их в срок, не превышающий 10 (десяти) рабочих дней с даты поступления указанного отзыва в соответствии с ч. 4 и ч. 5 ст. 21 Федерального закона № 152-ФЗ, если иное не предусмотрено законодательством РФ.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">7. Права субъекта персональных данных</h2>
+            <p class="doc-p">
+              Субъект персональных данных имеет право:
+            </p>
+            <ul class="doc-list">
+              <li>Получать сведения, касающиеся обработки его персональных данных, включая подтверждение факта обработки, правовые основания, цели и применяемые способы обработки;</li>
+              <li>Требовать от Оператора уточнения своих персональных данных, их блокирования или уничтожения в случае, если данные являются неполными, устаревшими, неточными или незаконно полученными;</li>
+              <li>Отозвать согласие на обработку персональных данных в любое время;</li>
+              <li>Обжаловать действия или бездействие Оператора в уполномоченный орган по защите прав субъектов персональных данных (Роскомнадзор) или в судебном порядке.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">8. Использование файлов Cookie и веб-аналитики</h2>
+            <p class="doc-p">
+              8.1. Сайт <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a> использует файлы cookie и обезличенные сервисы веб-аналитики (включая Яндекс.Метрику) для анализа посещаемости, корректной работы языковых переключателей и сохранения настроек пользователя.
+            </p>
+            <p class="doc-p">
+              8.2. Пользователь может отключить сохранение файлов cookie в настройках своего браузера. Отключение некоторых файлов cookie может повлиять на доступность отдельных интерактивных функций сайта.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">9. Реквизиты Оператора и контактная информация</h2>
+            <div class="doc-requisites">
+              <p class="doc-p"><strong>Оператор персональных данных:</strong> Самозанятая Гребнева Наталья Олеговна (плательщик НПД)</p>
+              <p class="doc-p"><strong>Лицо, ответственное за организацию обработки и безопасность персональных данных:</strong> Снитко Иван Валерьевич</p>
+              <p class="doc-p"><strong>Сайт:</strong> <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a></p>
+              <p class="doc-p"><strong>Электронная почта для обращений:</strong> <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a></p>
+            </div>
+          </div>
+        </div>
+
+        {/* English Content */}
+        <div class="lang-block lang-block--en">
+          <div class="doc-section">
+            <h2 class="doc-section-title">1. General Provisions & Data Operator Status</h2>
+            <p class="doc-p">
+              1.1. This Policy regarding the processing of personal data (hereinafter referred to as the "Policy") is established in compliance with Federal Law No. 152-FZ "On Personal Data" and applies to all information that the Operator may obtain about visitors of the website <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a> and its localized editions.
+            </p>
+            <p class="doc-p">
+              1.2. <strong>Data Operator:</strong> Self-employed Grebneva Natalia Olegovna (Professional Income Tax payer under Russian Federation law).
+            </p>
+            <p class="doc-p">
+              1.3. <strong>Designated Data Protection & Information Security Officer (pursuant to Art. 22.1 of Federal Law No. 152-FZ):</strong> Snitko Ivan Valerievich (Project Director & Technical Lead at NiceDev studio).
+            </p>
+            <p class="doc-p">
+              1.4. Using the website, submitting online forms, requesting cost calculations, briefs, or communicating via interactive widgets constitutes full and unconditional consent of the user to the terms of this Policy.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">2. Legal Grounds for Data Processing</h2>
+            <p class="doc-p">
+              Personal data processing is performed on the following legitimate grounds:
+            </p>
+            <ul class="doc-list">
+              <li>Article 24 of the Constitution of the Russian Federation;</li>
+              <li>Federal Law No. 152-FZ "On Personal Data";</li>
+              <li>Federal Law No. 149-FZ "On Information, Information Technologies, and Information Protection";</li>
+              <li>The Civil Code of the Russian Federation (governing service contracts, web development, and design agreements);</li>
+              <li>Explicit consent provided by the personal data subject when submitting inquiry forms on the website.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">3. Categories of Data Subjects & Processed Information</h2>
+            <p class="doc-p">
+              3.1. Categories of data subjects include website visitors, prospective customers, clients, and corporate representatives submitting project inquiries.
+            </p>
+            <p class="doc-p">
+              3.2. The Operator processes the following categories of personal data:
+            </p>
+            <ul class="doc-list">
+              <li><strong>First / Last Name:</strong> for identification and personalized communication;</li>
+              <li><strong>Contact Phone Number:</strong> for consultations, brief confirmation, and commercial estimate discussions;</li>
+              <li><strong>Email Address:</strong> for transmitting commercial proposals, quotes, contracts, and technical specifications;</li>
+              <li><strong>Telegram Username / Handle:</strong> for streamlined project status updates and direct project coordination;</li>
+              <li><strong>Project Details & Preferences:</strong> data voluntarily provided in message fields and online cost calculator options;</li>
+              <li><strong>Technical & Telemetric Data (Cookies):</strong> IP address, geographic region (country/city), browser details, device type, screen resolution, referral source, session duration, and page interactions.</li>
+            </ul>
+            <p class="doc-p">
+              3.3. Special categories of sensitive personal data (race, political opinions, religious beliefs, medical history) and biometric data are <strong>strictly not processed</strong>.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">4. Purposes of Personal Data Collection & Processing</h2>
+            <ul class="doc-list">
+              <li>Processing incoming consultation requests and performing preliminary project scoping;</li>
+              <li>Calculating preliminary and final cost estimates for bespoke websites, digital platforms, and design services;</li>
+              <li>Drafting, negotiating, concluding, and executing service agreements for web engineering and ongoing maintenance;</li>
+              <li>Maintaining prompt communication with clients throughout project milestones via preferred channels (phone, email, Telegram);</li>
+              <li>Technical monitoring of platform reliability, cybersecurity protection (anti-DDoS, bot prevention), loading speed optimization, and UX enhancements.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">5. Processing Principles, Conditions & Security Measures</h2>
+            <p class="doc-p">
+              5.1. Personal data processing is conducted under principles of lawfulness, fairness, and strict limitation to predefined, legitimate purposes.
+            </p>
+            <p class="doc-p">
+              5.2. <strong>Database Localization (Part 5, Art. 18 of Federal Law No. 152-FZ):</strong> Recording, systematization, accumulation, storage, updating, and extraction of personal data of Russian Federation citizens are maintained using secure databases located within the territory of the Russian Federation.
+            </p>
+            <p class="doc-p">
+              5.3. The Operator and the designated officer ensure strict confidentiality. Personal data is never sold, disclosed, or transferred to third parties without prior subject consent, except where explicitly mandated by applicable statutory law (e.g., official court or regulatory requests).
+            </p>
+            <p class="doc-p">
+              5.4. Comprehensive legal, organizational, and technical safeguards are enforced (including HTTPS/TLS transport encryption, access control partitioning, and firewall protection) to safeguard personal data against unauthorized or accidental access, destruction, alteration, or disclosure.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">6. Retention Periods, Revocation & Data Destruction</h2>
+            <p class="doc-p">
+              6.1. Personal data is retained until processing purposes are fulfilled, the contract duration concludes, or until consent is revoked by the data subject.
+            </p>
+            <p class="doc-p">
+              6.2. The data subject has the right to revoke consent at any time by sending a written notice to the official email address: <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a> with the subject line "Personal Data Consent Revocation".
+            </p>
+            <p class="doc-p">
+              6.3. Upon receipt of a revocation notice, the Operator terminates data processing and permanently destroys the relevant personal records within 10 (ten) business days in accordance with Art. 21 of Federal Law No. 152-FZ, unless otherwise required by law.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">7. Data Subject Rights</h2>
+            <p class="doc-p">
+              Personal data subjects possess the following legal rights:
+            </p>
+            <ul class="doc-list">
+              <li>To obtain detailed information regarding the processing of their data, legal grounds, purposes, and methods employed;</li>
+              <li>To demand rectification, blocking, or erasure of incomplete, outdated, inaccurate, or unlawfully obtained personal data;</li>
+              <li>To revoke consent to personal data processing at any time;</li>
+              <li>To lodge appeals or complaints regarding Operator actions with the supervisory authority (Roskomnadzor) or in court.</li>
+            </ul>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">8. Cookies & Web Analytics</h2>
+            <p class="doc-p">
+              8.1. The website <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a> utilizes cookies and anonymized web telemetry tools (including Yandex.Metrica) to analyze user traffic, ensure seamless language switching, and store user preferences.
+            </p>
+            <p class="doc-p">
+              8.2. Users may configure their browser settings to decline or delete cookies at any time. Note that disabling essential cookies may affect the interactive functionality of certain website modules.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h2 class="doc-section-title">9. Operator Details & Contact Information</h2>
+            <div class="doc-requisites">
+              <p class="doc-p"><strong>Data Operator:</strong> Self-employed Grebneva Natalia Olegovna (Professional Income Tax payer)</p>
+              <p class="doc-p"><strong>Data Protection & Information Security Officer:</strong> Snitko Ivan Valerievich</p>
+              <p class="doc-p"><strong>Website:</strong> <a href="https://nice-dev.ru" class="doc-link">https://nice-dev.ru</a></p>
+              <p class="doc-p"><strong>Official Email:</strong> <a href="mailto:info@nice-dev.ru" class="doc-link">info@nice-dev.ru</a></p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</Layout>
+
+<style>
+  .doc-container {
+    max-width: 880px;
+  }
+
+  .doc-header {
+    margin-bottom: 40px;
+  }
+
+  .doc-back-btn {
+    margin-bottom: 24px;
+    padding: 6px 14px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .doc-subtitle {
+    text-align: left;
+  }
+
+  .doc-title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .doc-intro {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .doc-p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  .doc-list {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-left: 20px;
+    margin-bottom: 14px;
+  }
+
+  .doc-link {
+    color: var(--color-gold);
+    text-decoration: underline;
+  }
+
+  /* Dual-language dynamic switching */
+  html[lang="ru"] .lang-block--en {
+    display: none !important;
+  }
+  html[lang="en"] .lang-block--ru {
+    display: none !important;
+  }
+</style>
+

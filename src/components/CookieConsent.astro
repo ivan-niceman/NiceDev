@@ -1,0 +1,330 @@
+---
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+
+const texts = {
+  ru: {
+    title: 'Файлы Cookie',
+    textLead: 'Мы используем cookie для работы сайта и аналитики согласно',
+    privacyLinkText: 'политике конфиденциальности',
+    privacyHref: '/privacy-policy',
+    btnAcceptAll: 'Принять все',
+    btnReject: 'Отклонить',
+    btnSettings: 'Настройки',
+    btnSave: 'Сохранить',
+    btnHide: 'Скрыть',
+    catEssentialTitle: 'Обязательные (Технические)',
+    catEssentialDesc: 'Необходимы для работы сайта, бронирования и безопасности',
+    catAnalyticsTitle: 'Аналитические',
+    catAnalyticsDesc: 'Для анализа посещаемости и удобства',
+  },
+  en: {
+    title: 'Cookie Files',
+    textLead: 'We use cookies for site operation and analytics in accordance with our',
+    privacyLinkText: 'privacy policy',
+    privacyHref: '/en/privacy-policy',
+    btnAcceptAll: 'Accept all',
+    btnReject: 'Decline',
+    btnSettings: 'Settings',
+    btnSave: 'Save',
+    btnHide: 'Hide',
+    catEssentialTitle: 'Essential (Technical)',
+    catEssentialDesc: 'Required for site functionality, booking and security',
+    catAnalyticsTitle: 'Analytics',
+    catAnalyticsDesc: 'To measure performance and user experience',
+  }
+};
+
+const t = texts[lang];
+---
+
+{/* Compact Cookie Consent Banner */}
+<aside 
+  id="cookie-consent-banner" 
+  class="nd-cookie-card is-hidden" 
+  role="region" 
+  aria-label={t.title}
+>
+  <div class="nd-cookie-card__inner">
+    
+    {/* 1. Header: Cookie Icon + Title */}
+    <div class="nd-cookie-card__header">
+      <span class="nd-cookie-card__icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+          <path d="M8.5 8.5v.01"></path>
+          <path d="M16 15.5v.01"></path>
+          <path d="M12 12v.01"></path>
+          <path d="M11 17v.01"></path>
+          <path d="M7 13v.01"></path>
+        </svg>
+      </span>
+      <h3 class="nd-cookie-card__title">{t.title}</h3>
+    </div>
+
+    {/* 2. Text Message */}
+    <div class="nd-cookie-card__body">
+      <p class="nd-cookie-card__text">
+        {t.textLead} <a href={t.privacyHref} class="nd-cookie-card__link">{t.privacyLinkText}</a>.
+      </p>
+    </div>
+
+    {/* 3. Settings Checklist (Hidden by default, slides down smoothly) */}
+    <div id="cookie-settings-section" class="nd-cookie-card__settings is-hidden" aria-hidden="true">
+      <div class="nd-cookie-checklist">
+        
+        {/* Item 1: Essential (Technical, always active) */}
+        <div class="nd-checkbox-row is-disabled" aria-label={t.catEssentialTitle}>
+          <span class="nd-custom-checkbox checked disabled" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+          <div class="nd-checkbox-text">
+            <span class="nd-checkbox-title">{t.catEssentialTitle}</span>
+            <span class="nd-checkbox-desc">{t.catEssentialDesc}</span>
+          </div>
+        </div>
+
+        {/* Item 2: Analytics (User toggleable) */}
+        <label class="nd-checkbox-row" for="cookie-chk-analytics">
+          <input type="checkbox" id="cookie-chk-analytics" class="nd-native-checkbox" checked />
+          <div class="nd-checkbox-text">
+            <span class="nd-checkbox-title">{t.catAnalyticsTitle}</span>
+            <span class="nd-checkbox-desc">{t.catAnalyticsDesc}</span>
+          </div>
+        </label>
+
+      </div>
+    </div>
+
+    {/* 4. Action Row */}
+    {/* Initial State: [Принять все] [Отклонить] .................... [Настройки] */}
+    <div id="cookie-actions-initial" class="nd-cookie-card__actions">
+      <div class="nd-cookie-card__left-buttons">
+        <button type="button" class="nd-btn-cookie nd-btn-cookie--purple" id="btn-cookie-accept-all-1">
+          {t.btnAcceptAll}
+        </button>
+        <button type="button" class="nd-btn-cookie nd-btn-cookie--outline" id="btn-cookie-reject-1">
+          {t.btnReject}
+        </button>
+      </div>
+      <button type="button" class="nd-cookie-link-btn" id="btn-cookie-show-settings">
+        {t.btnSettings}
+      </button>
+    </div>
+
+    {/* Expanded State: [Принять все] [Отклонить] [Сохранить] .................... [Скрыть] */}
+    <div id="cookie-actions-expanded" class="nd-cookie-card__actions is-hidden">
+      <div class="nd-cookie-card__left-buttons">
+        <button type="button" class="nd-btn-cookie nd-btn-cookie--purple" id="btn-cookie-accept-all-2">
+          {t.btnAcceptAll}
+        </button>
+        <button type="button" class="nd-btn-cookie nd-btn-cookie--outline" id="btn-cookie-reject-2">
+          {t.btnReject}
+        </button>
+        <button type="button" class="nd-btn-cookie nd-btn-cookie--dark" id="btn-cookie-save">
+          {t.btnSave}
+        </button>
+      </div>
+      <button type="button" class="nd-cookie-link-btn" id="btn-cookie-hide-settings">
+        {t.btnHide}
+      </button>
+    </div>
+
+  </div>
+</aside>
+
+<style>
+  .nd-cookie-card.is-hidden,
+  .nd-cookie-card__settings.is-hidden,
+  .nd-cookie-card__actions.is-hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  interface CookiePreferences {
+    essential: boolean;
+    analytics: boolean;
+    marketing: boolean;
+    updatedAt: string;
+  }
+
+  const STORAGE_KEY = 'nicedev_cookie_consent_v2026';
+
+  function initCookieMockupBanner() {
+    const banner = document.getElementById('cookie-consent-banner');
+    const settingsSection = document.getElementById('cookie-settings-section');
+    const actionsInitial = document.getElementById('cookie-actions-initial');
+    const actionsExpanded = document.getElementById('cookie-actions-expanded');
+
+    const btnShowSettings = document.getElementById('btn-cookie-show-settings');
+    const btnHideSettings = document.getElementById('btn-cookie-hide-settings');
+    
+    const btnAccept1 = document.getElementById('btn-cookie-accept-all-1');
+    const btnAccept2 = document.getElementById('btn-cookie-accept-all-2');
+    const btnReject1 = document.getElementById('btn-cookie-reject-1');
+    const btnReject2 = document.getElementById('btn-cookie-reject-2');
+    const btnSave = document.getElementById('btn-cookie-save');
+
+    const chkAnalytics = document.getElementById('cookie-chk-analytics') as HTMLInputElement | null;
+
+    function getPreferences(): CookiePreferences | null {
+      try {
+        const item = localStorage.getItem(STORAGE_KEY);
+        return item ? JSON.parse(item) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    // Helper to clean analytical/third-party cookies when rejected
+    function purgeNonEssentialCookies() {
+      try {
+        const cookies = document.cookie.split(';');
+        const hostParts = window.location.hostname.split('.');
+        const domainLevels = [
+          window.location.hostname,
+          '.' + window.location.hostname,
+          hostParts.length > 2 ? '.' + hostParts.slice(-2).join('.') : null
+        ].filter(Boolean);
+
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i];
+          const eqPos = cookie.indexOf('=');
+          const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+          
+          // Identify typical non-essential analytics cookies (_ym_, _ga, _gid, _gat, amp_, etc.)
+          if (
+            name.startsWith('_ym') || 
+            name.startsWith('_ga') || 
+            name.startsWith('_gid') || 
+            name.startsWith('_gat') || 
+            name.startsWith('amp_') ||
+            name.startsWith('_fbp') ||
+            name.startsWith('tmr_')
+          ) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+            domainLevels.forEach(dom => {
+              if (dom) {
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${dom}`;
+              }
+            });
+          }
+        }
+      } catch {}
+    }
+
+    function savePreferences(prefs: CookiePreferences) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+        if (!prefs.analytics) {
+          purgeNonEssentialCookies();
+        }
+      } catch {}
+
+      if (banner) {
+        banner.style.display = 'none';
+        banner.classList.add('is-hidden');
+      }
+      if (settingsSection) {
+        settingsSection.style.display = 'none';
+        settingsSection.classList.add('is-hidden');
+      }
+
+      window.dispatchEvent(new CustomEvent('cookie-preferences-updated', { detail: prefs }));
+    }
+
+    function setSettingsExpanded(expanded: boolean) {
+      if (!settingsSection || !actionsInitial || !actionsExpanded) return;
+
+      if (expanded) {
+        const cur = getPreferences();
+        if (chkAnalytics) chkAnalytics.checked = cur ? !!cur.analytics : true;
+
+        settingsSection.classList.remove('is-hidden');
+        settingsSection.style.display = 'block';
+        settingsSection.setAttribute('aria-hidden', 'false');
+        actionsInitial.classList.add('is-hidden');
+        actionsInitial.style.display = 'none';
+        actionsExpanded.classList.remove('is-hidden');
+        actionsExpanded.style.display = 'flex';
+      } else {
+        settingsSection.classList.add('is-hidden');
+        settingsSection.style.display = 'none';
+        settingsSection.setAttribute('aria-hidden', 'true');
+        actionsInitial.classList.remove('is-hidden');
+        actionsInitial.style.display = 'flex';
+        actionsExpanded.classList.add('is-hidden');
+        actionsExpanded.style.display = 'none';
+      }
+    }
+
+    const current = getPreferences();
+
+    // Show banner after brief delay if no preference set yet
+    if (!current) {
+      setTimeout(() => {
+        if (banner) banner.style.display = 'block';
+      }, 700);
+    } else {
+      if (chkAnalytics) chkAnalytics.checked = !!current.analytics;
+    }
+
+    // Accept All
+    const handleAcceptAll = () => {
+      savePreferences({
+        essential: true,
+        analytics: true,
+        marketing: true,
+        updatedAt: '2026-09-15'
+      });
+    };
+
+    // Reject All Non-essential
+    const handleReject = () => {
+      savePreferences({
+        essential: true,
+        analytics: false,
+        marketing: false,
+        updatedAt: '2026-09-15'
+      });
+    };
+
+    // Save Selected Settings
+    const handleSave = () => {
+      savePreferences({
+        essential: true,
+        analytics: !!chkAnalytics?.checked,
+        marketing: false,
+        updatedAt: '2026-09-15'
+      });
+    };
+
+    btnAccept1?.addEventListener('click', handleAcceptAll);
+    btnAccept2?.addEventListener('click', handleAcceptAll);
+    btnReject1?.addEventListener('click', handleReject);
+    btnReject2?.addEventListener('click', handleReject);
+    btnSave?.addEventListener('click', handleSave);
+
+    btnShowSettings?.addEventListener('click', () => setSettingsExpanded(true));
+    btnHideSettings?.addEventListener('click', () => setSettingsExpanded(false));
+
+    // Listen to footer trigger: open in collapsed (initial compact) state
+    window.addEventListener('open-cookie-settings', () => {
+      if (banner) {
+        banner.classList.remove('is-hidden');
+        banner.style.display = 'block';
+        setSettingsExpanded(false);
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+
+  initCookieMockupBanner();
+  document.addEventListener('astro:page-load', initCookieMockupBanner);
+</script>

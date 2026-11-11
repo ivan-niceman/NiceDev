@@ -1,0 +1,172 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+  variant?: 'desktop' | 'drawer' | 'footer';
+  className?: string;
+}
+
+const { lang = 'ru', variant = 'desktop', className = '' } = Astro.props;
+const t = translations[lang];
+const homeLink = '/';
+
+const navItems = [
+  { id: 'services', label: t.nav.services, href: '/#services' },
+  { id: 'templates', label: t.nav.templates, href: '/templates' },
+  { id: 'portfolio', label: t.nav.portfolio, href: '/portfolio' },
+  { id: 'reviews', label: t.nav.reviews, href: '/#reviews' },
+  { id: 'calculator', label: t.nav.calculator, href: '/#calculator' },
+  { id: 'faq', label: t.nav.faq, href: '/#faq' },
+  { id: 'contact', label: t.nav.contact, href: '/#contact' }
+];
+
+// Filter items according to view variant
+const visibleItems = navItems.filter((item) => {
+  if (variant === 'desktop') return item.showInDesktop !== false;
+  if (variant === 'drawer') return true;
+  if (variant === 'footer') return true;
+  return true;
+});
+---
+
+{variant === 'desktop' && (
+  <nav class={`nav ${className}`} id="primary-navigation" aria-label="Main Navigation">
+    {visibleItems.map((item) => (
+      <a href={item.href} class="nav__link" data-nav-id={item.id}>
+        {item.label}
+      </a>
+    ))}
+  </nav>
+)}
+
+{variant === 'drawer' && (
+  <nav class={`drawer__nav ${className}`} aria-label="Mobile Navigation">
+    {visibleItems.map((item) => (
+      <a href={item.href} class="drawer__link mobile-link" data-nav-id={item.id}>
+        <span>{item.label}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+    ))}
+  </nav>
+)}
+
+{variant === 'footer' && (
+  <ul class={`footer__links ${className}`}>
+    {visibleItems.map((item) => (
+      <li>
+        <a href={item.href} class="footer__link" data-nav-id={item.id}>
+          {item.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  @media (max-width: 960px) {
+    .nav {
+      display: none !important;
+    }
+  }
+
+  .nav__link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    position: relative;
+    padding: 6px 0;
+    transition: color var(--transition-fast);
+  }
+
+  .nav__link:hover {
+    color: var(--text-primary);
+  }
+
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-amethyst), var(--color-gold));
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform var(--transition-fast);
+  }
+
+  .nav__link:hover::after,
+  .nav__link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+
+
+  /* Drawer Variant */
+  .drawer__nav {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 12px;
+    gap: 6px;
+  }
+
+  .drawer__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .drawer__link svg {
+    color: var(--text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+
+  .drawer__link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-amethyst-light);
+    transform: translateX(4px);
+  }
+
+  .drawer__link:hover svg {
+    color: var(--color-gold);
+    transform: translateX(2px);
+  }
+
+  :global([data-theme="light"]) .drawer__link:hover {
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--color-amethyst);
+  }
+
+  /* Footer Variant */
+  .footer__links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .footer__link {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .footer__link:hover {
+    color: var(--color-gold);
+  }
+</style>

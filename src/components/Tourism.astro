@@ -1,0 +1,271 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const portfolioLink = '/portfolio';
+const homeLink = '/';
+---
+
+<section id="templates" aria-labelledby="templates-heading">
+  <div class="container">
+    {/* Main Section Header */}
+    <div class="section-header reveal">
+      {t.templates.subtitle && <div class="section-header__subtitle">{t.templates.subtitle}</div>}
+      <h1 id="templates-heading" class="templates__main-title">{t.templates.title}</h1>
+      <p class="section-header__desc templates__main-desc">
+        {t.templates.description}
+      </p>
+    </div>
+
+    {/* Story & Positioning Block */}
+    <div class="templates-story-card reveal delay-1">
+      <div class="templates-story-card__glow" aria-hidden="true"></div>
+      <div class="templates-story-card__content">
+        <div class="templates-story-card__header">
+          <div class="templates-story-badge">
+            <span>{t.templates.whyHeading}</span>
+          </div>
+        </div>
+
+        <div class="templates-story-text">
+          <p class="templates-story-p">{t.templates.whyParagraph1}</p>
+          <p class="templates-story-p">{t.templates.whyParagraph2}</p>
+          <p class="templates-story-p templates-story-p--highlight">{t.templates.whyParagraph3}</p>
+        </div>
+      </div>
+    </div>
+
+    {/* 3 Advantage / Solution Cards */}
+    <div class="templates-cards-grid">
+      {t.templates.cards.map((card, index) => (
+        <article class={`templates-card templates-card--${index + 1} reveal delay-${index + 1}`} id={`templates-card-${card.id}`}>
+          <div class="templates-card__top">
+            <div class="templates-card__badge-row">
+              <span class="badge templates-card__badge">{card.badge}</span>
+            </div>
+
+            <h2 class="templates-card__title">{card.title}</h2>
+            <p class="templates-card__desc">{card.description}</p>
+          </div>
+
+          {card.buttonText && (
+            <div class="templates-card__action">
+              <a 
+                href={`${homeLink}#contact`} 
+                class="btn btn--gold templates-card__btn"
+                data-open-modal="lead-modal"
+                data-modal-title={card.buttonText}
+                data-modal-service={card.title}
+                data-modal-source={`templates Card: ${card.title}`}
+              >
+                <span>{card.buttonText}</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+
+    {/* Bottom Action CTAs */}
+    <div class="templates-actions reveal delay-2">
+      <a href={portfolioLink} class="btn btn--glass templates-action-btn" id="templates-portfolio-btn">
+        <svg class="icon-amethyst" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-amethyst-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+        </svg>
+        <span>{t.templates.btnPortfolio}</span>
+      </a>
+
+      <a 
+        href={`${homeLink}#contact`} 
+        class="btn btn--gold templates-action-btn" 
+        id="templates-contact-btn"
+        data-open-modal="lead-modal"
+        data-modal-title={t.templates.btnOrder}
+        data-modal-source="templates: Заказать сайт для туризма"
+      >
+        <span>{t.templates.btnOrder}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .templates__main-title {
+    font-size: clamp(1.8rem, 3.2vw, 2.7rem);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .templates__main-desc {
+    max-width: 820px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* Story Positioning Card */
+  .templates-story-card {
+    position: relative;
+    margin: 50px auto;
+    max-width: 1040px;
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+  }
+
+  .templates-story-card__glow {
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(255, 200, 87, 0.12) 0%, rgba(157, 78, 221, 0.08) 50%, transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  .templates-story-badge {
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 200, 87, 0.1);
+    border: 1px solid rgba(255, 200, 87, 0.25);
+    color: var(--color-gold);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  :global([data-theme="light"]) .templates-story-badge {
+    background: rgba(207, 130, 71, 0.1);
+    border-color: rgba(207, 130, 71, 0.3);
+    color: var(--color-gold);
+  }
+
+  .templates-story-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .templates-story-p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .templates-story-p--highlight {
+    color: var(--text-primary);
+    font-weight: 600;
+    padding-top: 8px;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  /* 3 Cards Grid */
+  .templates-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  @media (max-width: 960px) {
+    .templates-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .templates-card {
+    position: relative;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .templates-card:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), 0 0 10px var(--color-amethyst-glow);
+  }
+
+  .templates-card__badge-row {
+    margin-bottom: 20px;
+  }
+
+  .templates-card__badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .templates-card__title {
+    font-size: clamp(1.2rem, 1.4vw, 1.35rem);
+    line-height: 1.35;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+  }
+
+  .templates-card__desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .templates-card__action {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .templates-card__btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 14px;
+    padding: 10px 18px;
+  }
+
+  /* Bottom Actions */
+  .templates-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 56px;
+  }
+
+  .templates-action-btn {
+    padding: 13px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+</style>

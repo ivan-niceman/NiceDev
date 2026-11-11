@@ -1,0 +1,80 @@
+---
+import Hero3DIsland from './Hero3DIsland.astro';
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+---
+
+<section class="nd-hero" id="top" aria-labelledby="hero-heading">
+  <div class="nd-container">
+    <div class="nd-hero__grid">
+      {/* Left Column: Bold Typography & CTAs */}
+      <div>
+        <div class="nd-hero__tag">
+          <span class="nd-hero__tag-pulse"></span>
+          <span>{t.hero.tag}</span>
+        </div>
+
+        <h1 class="nd-hero__title" id="hero-heading">
+          {t.hero.titleLine1} <br />
+          <span class="nd-hero__title-accent">{t.hero.titleAccent}</span>
+        </h1>
+
+        <p class="nd-hero__desc">
+          {t.hero.description}
+        </p>
+
+        <div class="nd-hero__actions">
+          <a href="#contact" class="nd-btn nd-btn--gold" id="hero-primary-cta">
+            <span>{t.hero.orderDev}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+
+          <a href="#portfolio" class="nd-btn nd-btn--glass" id="hero-secondary-cta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-amethyst-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+            </svg>
+            <span>{t.hero.viewPortfolio}</span>
+          </a>
+        </div>
+
+        {/* Quick Metrics / Signals */}
+        <div class="nd-hero__stats">
+          <div class="nd-stat-item">
+            <div class="nd-stat-item__value">
+              {t.hero.stat1Value}<span class="nd-stat-item__value-accent">{t.hero.stat1Unit}</span>
+            </div>
+            <div class="nd-stat-item__label">{t.hero.stat1Label}</div>
+          </div>
+
+          <div class="nd-stat-item">
+            <div class="nd-stat-item__value">
+              {t.hero.stat2Value}<span class="nd-stat-item__value-accent">{t.hero.stat2Unit}</span>
+            </div>
+            <div class="nd-stat-item__label">{t.hero.stat2Label}</div>
+          </div>
+
+          <div class="nd-stat-item">
+            <div class="nd-stat-item__value">
+              {t.hero.stat3Value}<span class="nd-stat-item__value-accent">{t.hero.stat3Unit}</span>
+            </div>
+            <div class="nd-stat-item__label">{t.hero.stat3Label}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column: 3D Glassmorphic Interactive Island */}
+      <div>
+        <Hero3DIsland lang={lang} />
+      </div>
+    </div>
+  </div>
+</section>

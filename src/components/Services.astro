@@ -1,0 +1,194 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+---
+
+<section id="services" aria-labelledby="services-heading">
+  <div class="container">
+    {/* Section Header */}
+    <div class="section-header reveal">
+      {t.services.subtitle && <div class="section-header__subtitle">{t.services.subtitle}</div>}
+      <h2 id="services-heading">{t.services.title}</h2>
+      <p class="section-header__desc">
+        {t.services.description}
+      </p>
+    </div>
+
+    {/* Services Cards Grid */}
+    <div class="services-grid">
+      {t.services.items.map((service, index) => (
+        <article class={`service-card reveal delay-${(index % 3) + 1}`} id={`service-card-${service.id}`}>
+          <div>
+            <h3 class="service-card__title">{service.title}</h3>
+            <p class="service-card__desc">{service.description}</p>
+            
+            <ul class="service-card__features">
+              {service.features.map((feature) => (
+                <li class="service-card__feature-item">
+                  <svg class="service-card__check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="service-card__footer">
+            <div class="service-card__tags">
+              {service.tags.map((tag) => (
+                <span class="badge">{tag}</span>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              class="service-card__order-btn"
+              data-open-modal="lead-modal"
+              data-modal-title={`${lang === 'en' ? 'Order' : 'Заказать'}: ${service.title}`}
+              data-modal-service={service.title}
+              data-modal-source={`${lang === 'en' ? 'Service' : 'Услуга'}: ${service.title}`}
+              data-modal-prefill={lang === 'en' ? `Hello! I am interested in the service: "${service.title}". I would like to get an estimate.` : `Здравствуйте! Интересует услуга: «${service.title}». Хочу получить расчет сметы и обсудить детали.`}
+            >
+              <span>{t.services.orderService}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-header__desc {
+    margin-top: 14px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .service-card {
+    position: relative;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-amethyst), var(--color-gold), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .service-card:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), 0 0 10px var(--color-amethyst-glow);
+  }
+
+  .service-card:hover::before {
+    opacity: 1;
+  }
+
+  .service-card__title {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .service-card__desc {
+    margin-bottom: 24px;
+    font-size: 16px;
+    flex-grow: 1;
+  }
+
+  .service-card__features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .service-card__feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .service-card__check-icon {
+    flex-shrink: 0;
+  }
+
+  .service-card__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 16px;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .service-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .service-card__order-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255, 200, 87, 0.08);
+    border: 1px solid rgba(255, 200, 87, 0.25);
+    border-radius: var(--radius-md);
+    color: var(--color-gold);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .service-card__order-btn:hover {
+    background: var(--color-gold);
+    color: #0A0D14;
+    border-color: var(--color-gold);
+    box-shadow: 0 4px 18px var(--color-gold-glow);
+  }
+
+  :global([data-theme="light"]) .service-card__order-btn {
+    background: rgba(212, 160, 23, 0.1);
+    border-color: rgba(212, 160, 23, 0.35);
+  }
+</style>

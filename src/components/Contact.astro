@@ -1,0 +1,1275 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const privacyLink = '/privacy-policy';
+const consentLink = '/personal-data-consent';
+---
+
+<section class="section" id="contact" aria-labelledby="contact-heading">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-header__subtitle">{t.contact.subtitle}</div>
+      <h2 id="contact-heading">{t.contact.title}</h2>
+      <p class="section-header__desc">
+        {t.contact.description}
+      </p>
+    </div>
+
+    <div class="contact__grid">
+      {/* Left: Contact Info & Channels */}
+      <div class="contact-info-col reveal reveal--left">
+
+        <div class="contact-methods">
+          {/* Telegram */}
+          <a href="https://t.me/ivan_niceman" target="_blank" rel="noopener noreferrer" class="contact-method-card tg" aria-label="Telegram">
+            <div class="contact-method-icon contact-method-icon--tg">
+              <svg class="social-icon telegram-icon" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 50 50" fill="transparent" xml:space="preserve"><path stroke="currentColor" stroke-width="2" stroke-miterlimit="10" d="M43.361,7.242
+	C42.077,7.758,5.633,23.389,5.633,23.389s-1.765,0.614-1.625,1.748s1.58,1.653,1.58,1.653l9.38,3.212c0,0,2.832,9.448,3.39,11.241
+	c0.558,1.796,1.004,1.838,1.004,1.838c0.518,0.23,0.992-0.137,0.992-0.137l6.061-5.622l9.448,7.369
+	c2.554,1.134,3.483-1.228,3.483-1.228l6.509-33.925C46.431,6.913,44.717,6.699,43.361,7.242z"></path><polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="15,30 39,14 22,34 "></polyline><polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="20,43 22,34 26,37 "></polyline></svg>
+            </div>
+            <div>
+              <div class="contact-method-handle">Telegram</div>
+            </div>
+          </a>
+
+          {/* WhatsApp */}
+          <a href="https://wa.me/79067075235" target="_blank" rel="noopener noreferrer" class="contact-method-card wa" aria-label="WhatsApp">
+            <div class="contact-method-icon contact-method-icon--wa">
+              <svg class="social-icon whatsapp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="25px" height="25px"><path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2" d="M19.102,15.022c-0.479-1.137-0.966-0.983-1.329-1.001C17.429,14.005,17.036,14,16.642,14c-0.394,0-1.033,0.146-1.575,0.73S13,16.724,13,19.594s2.116,5.641,2.411,6.031c0.296,0.389,4.164,6.278,10.087,8.804c1.409,0.6,2.509,0.959,3.366,1.228c1.414,0.444,2.702,0.381,3.72,0.231c1.134-0.167,3.494-1.411,3.986-2.772c0.492-1.362,0.492-2.529,0.344-2.772c-0.148-0.243-0.542-0.389-1.132-0.681c-0.59-0.292-3.494-1.703-4.036-1.896c-0.542-0.195-0.935-0.292-1.329,0.292c-0.394,0.584-1.525,1.896-1.869,2.286c-0.344,0.389-0.689,0.438-1.279,0.146c-0.59-0.292-2.494-0.907-4.748-2.894c-1.756-1.546-2.941-3.455-3.285-4.039s-0.037-0.899,0.259-1.19c0.266-0.262,0.59-0.681,0.886-1.022c0.296-0.341,0.394-0.584,0.59-0.973s0.098-0.73-0.05-1.022C20.775,19.059,19.594,16.19,19.102,15.022z"></path><path fill="none" stroke="currentColor" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M25,3C12.85,3,3,12.85,3,25c0,4.072,1.111,7.884,3.04,11.155L3,47l11.274-2.793C17.448,45.983,21.104,47,25,47c12.15,0,22-9.85,22-22S37.15,3,25,3z"></path></svg>
+            </div>
+            <div>
+              <div class="contact-method-handle">WhatsApp</div>
+            </div>
+          </a>
+
+          <a href="https://max.ru/u/f9LHodD0cOKVE5qofs_rxTYqArSbNOWAMh5acGm-JdIQJTRyQVCBrugo8Zk" target="_blank" rel="noopener noreferrer" class="contact-method-card max" aria-label="Max">
+            <div class="contact-method-icon contact-method-icon--max">
+              <svg class="social-icon max-icon" xmlns="http://www.w3.org/2000/svg" viewBox="-40 -40 800 800">
+  <path fill="none" stroke="currentColor" stroke-width="15mm" stroke-linecap="round" stroke-linejoin="round" d="M350.4,9.6C141.8,20.5,4.1,184.1,12.8,390.4c3.8,90.3,40.1,168,48.7,253.7,2.2,22.2-4.2,49.6,21.4,59.3,31.5,11.9,79.8-8.1,106.2-26.4,9-6.1,17.6-13.2,24.2-22,27.3,18.1,53.2,35.6,85.7,43.4,143.1,34.3,299.9-44.2,369.6-170.3C799.6,291.2,622.5-4.6,350.4,9.6Z"></path>
+</svg>
+            </div>
+            <div>
+              <div class="contact-method-handle">Max</div>
+            </div>
+          </a>
+
+          {/* Email */}
+          <a href="mailto:info@nice-dev.ru" class="contact-method-card email" aria-label="E-mail">
+            <div class="contact-method-icon contact-method-icon--email">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="contact-method-handle">E-mail</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      {/* Right: Premium Interactive Contact Form */}
+      <div class="contact-form-col reveal reveal--right delay-1">
+        <form class="contact-form" id="main-contact-form" novalidate data-lang={lang}>
+          {/* Anti-spam hidden honeypot fields for bot traps */}
+          <div style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden;" aria-hidden="true" tabindex="-1">
+            <input type="text" name="company_website" id="contact-company-website" tabindex="-1" autocomplete="off" />
+            <input type="text" name="_gotcha" id="contact-gotcha" tabindex="-1" autocomplete="off" />
+          </div>
+
+          {/* Name Field */}
+          <div class="form-group floating-field" id="field-group-name">
+            <input 
+              type="text" 
+              id="contact-name" 
+              name="name" 
+              class="form-input floating-input" 
+              placeholder=" " 
+              autocomplete="name"
+            />
+            <label for="contact-name" class="floating-label">{t.contact.formName}</label>
+            <div class="field-error-msg" id="error-contact-name" role="alert"></div>
+          </div>
+
+          <div class="form-row">
+            {/* Phone Field */}
+            <div class="form-group floating-field" id="field-group-phone">
+              <input 
+                type="tel" 
+                id="contact-phone" 
+                name="phone" 
+                class="form-input floating-input" 
+                placeholder=" " 
+                autocomplete="tel"
+              />
+              <label for="contact-phone" class="floating-label">{t.contact.formPhone}</label>
+              <div class="field-error-msg" id="error-contact-phone" role="alert"></div>
+            </div>
+
+            {/* Email Field */}
+            <div class="form-group floating-field" id="field-group-email">
+              <input 
+                type="email" 
+                id="contact-email" 
+                name="email" 
+                class="form-input floating-input" 
+                placeholder=" " 
+                autocomplete="email"
+              />
+              <label for="contact-email" class="floating-label">{t.contact.formEmail}</label>
+              <div class="field-error-msg" id="error-contact-email" role="alert"></div>
+            </div>
+          </div>
+
+          {/* Message Field */}
+          <div class="form-group floating-field" id="field-group-message">
+            <textarea 
+              id="contact-message" 
+              name="message" 
+              rows="4" 
+              class="form-textarea floating-textarea" 
+              placeholder=" "
+            ></textarea>
+            <label for="contact-message" class="floating-label floating-label--textarea">{t.contact.formMessage}</label>
+            <div class="field-error-msg" id="error-contact-message" role="alert"></div>
+          </div>
+
+          <button type="submit" class="btn btn--gold form-submit-btn" id="contact-submit-btn">
+            <span>{t.contact.formSubmit}</span>
+          </button>
+
+          <p class="form-disclaimer">
+            {lang === 'ru' ? (
+              <>
+                Отправляя заявку, вы соглашаетесь с <a href={privacyLink} target="_blank" class="legal-link">Политикой конфиденциальности</a> и даете согласие на <a href={consentLink} target="_blank" class="legal-link">обработку персональных данных</a>
+              </>
+            ) : (
+              <>
+                By submitting this form, you agree to the <a href={privacyLink} target="_blank" class="legal-link">Privacy Policy</a> and <a href={consentLink} target="_blank" class="legal-link">personal data processing</a>
+              </>
+            )}
+          </p>
+
+          <div class="form-status-msg" id="contact-form-status" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {/* Dedicated 10-Second Auto-Dismiss Success Modal Dialog */}
+  <div 
+    class="contact-success-backdrop" 
+    id="contact-success-backdrop" 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="contact-success-title"
+    aria-hidden="true"
+  >
+    <div class="contact-success-modal" id="contact-success-modal">
+      {/* Subtle Luxury Ambient Glow */}
+      <div class="contact-success-glow" aria-hidden="true"></div>
+
+      {/* Close "X" Button */}
+      <button 
+        type="button" 
+        class="contact-success-close-btn" 
+        id="contact-success-close" 
+        aria-label={lang === 'en' ? 'Close' : 'Закрыть'}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      {/* Success Animated Icon */}
+      <div class="contact-success-icon-wrap">
+        <div class="contact-success-icon-halo" aria-hidden="true"></div>
+        <svg class="contact-success-icon-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+
+      {/* Modal Title & Description */}
+      <h3 class="contact-success-title" id="contact-success-title">
+        {lang === 'en' ? 'Thank you for reaching out!' : 'Спасибо за обращение!'}
+      </h3>
+      <p class="contact-success-desc" id="contact-success-desc">
+        {lang === 'en' ? 'We will contact you shortly.' : 'Мы скоро с вами свяжемся.'}
+      </p>
+
+      {/* Action Button */}
+      <div class="contact-success-actions">
+        <button 
+          type="button" 
+          class="btn btn--gold contact-success-ok-btn" 
+          id="contact-success-ok-btn"
+        >
+          <span id="contact-success-ok-label">{lang === 'en' ? 'Got it' : 'Понятно'}</span>
+        </button>
+      </div>
+
+      {/* 10-Second Countdown Progress Bar */}
+      <div class="contact-success-timer" aria-hidden="true">
+        <div class="contact-success-timer-bar" id="contact-success-timer-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .form-status-success {
+    color: var(--color-cyan-neon);
+    font-weight: 600;
+  }
+
+  .section-header__desc {
+    margin-top: 14px;
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(32px, 5vw, 64px);
+    align-items: flex-start;
+  }
+
+  @media (max-width: 960px) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .contact-method-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 15px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all var(--transition-fast);
+  }
+
+  .contact-method-card:hover {
+    transform: translateX(6px);
+    background: var(--glass-bg-hover);
+  }
+  .contact-method-card.tg:hover {
+    border-color: rgb(0, 136, 204);
+    box-shadow: 0 0 15px rgba(0, 136, 204, .5);
+  }
+  .contact-method-card.wa:hover {
+    border-color: rgb(37, 211, 102);
+    box-shadow: 0 0 15px rgba(37, 211, 102, .5);
+  }
+  .contact-method-card.max:hover {
+    border-color: rgb(168, 85, 247);
+    box-shadow: 0 0 15px rgba(168, 85, 247, .5);
+  }
+  .contact-method-card.email:hover {
+    border-color: rgb(255, 200, 87);
+    box-shadow: 0 0 15px rgba(255, 200, 87, .5);
+  }
+
+  .contact-method-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contact-method-icon--tg {
+    background: rgba(0, 136, 204, 0.15);
+    color: #0088CC;
+    border: 1px solid rgba(0, 136, 204, 0.3);
+  }
+
+  .contact-method-icon--wa {
+    background: rgba(37, 211, 102, 0.15);
+    color: #25D366;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+  }
+
+  .contact-method-icon--max {
+    background: rgba(168, 85, 247, 0.15);
+    color: #A855F7;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+
+  .contact-method-icon--phone {
+    background: rgba(0, 245, 212, 0.15);
+    color: var(--color-cyan-neon);
+    border: 1px solid rgba(0, 245, 212, 0.3);
+  }
+
+  .contact-method-icon--email {
+    background: rgba(255, 200, 87, 0.15);
+    color: var(--color-gold);
+    border: 1px solid rgba(255, 200, 87, 0.3);
+  }
+
+  :global([data-theme="light"]) .contact-method-icon--wa {
+    background: rgba(37, 211, 102, 0.12);
+    color: #1ea952;
+    border-color: rgba(37, 211, 102, 0.35);
+  }
+
+  :global([data-theme="light"]) .contact-method-icon--max {
+    background: rgba(168, 85, 247, 0.12);
+    color: #9333ea;
+    border-color: rgba(168, 85, 247, 0.35);
+  }
+
+  :global([data-theme="light"]) .contact-method-icon--phone {
+    background: rgba(4, 120, 87, 0.08);
+    color: var(--color-cyan-neon);
+    border-color: rgba(4, 120, 87, 0.28);
+  }
+
+  :global([data-theme="light"]) .contact-method-icon--email {
+    background: rgba(207, 130, 71, 0.1);
+    color: var(--color-gold);
+    border-color: rgba(207, 130, 71, 0.3);
+  }
+
+  .contact-method-name {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .contact-method-handle {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  /* Form Styling */
+  .contact-form {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .floating-field {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .floating-input {
+    width: 100%;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 5px 16px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    outline: none;
+  }
+
+  .floating-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 26px 16px 12px 16px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    outline: none;
+    resize: vertical;
+    margin-bottom: 0;
+  }
+
+  :global([data-theme="light"]) .floating-input,
+  :global([data-theme="light"]) .floating-textarea {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .floating-input:focus,
+  .floating-textarea:focus {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 15px var(--color-gold-glow);
+    background: rgba(0, 0, 0, 0.4);
+  }
+
+  :global([data-theme="light"]) .floating-input:focus,
+  :global([data-theme="light"]) .floating-textarea:focus {
+    background: #FFFFFF;
+  }
+
+  /* Floating placeholder label */
+  .floating-label {
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1;
+    pointer-events: none;
+    transform-origin: left top;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                font-weight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  /* Float up on focus, non-empty, or autofill */
+  .floating-input:focus ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label,
+  .floating-input:-webkit-autofill ~ .floating-label {
+    transform: translateY(-12px) scale(0.74);
+    color: var(--color-gold);
+    font-weight: 600;
+  }
+
+  .floating-textarea:focus ~ .floating-label--textarea,
+  .floating-textarea:not(:placeholder-shown) ~ .floating-label--textarea {
+    transform: translateY(-12px) scale(0.74);
+    color: var(--color-gold);
+    font-weight: 600;
+  }
+
+  /* When filled with text but not active focus, keep at top in secondary color */
+  .floating-input:not(:placeholder-shown):not(:focus) ~ .floating-label,
+  .floating-input:-webkit-autofill:not(:focus) ~ .floating-label,
+  .floating-textarea:not(:placeholder-shown):not(:focus) ~ .floating-label--textarea {
+    color: var(--text-secondary);
+  }
+
+  /* Error and Validation Feedback Styles */
+  .floating-input.has-error,
+  .floating-textarea.has-error {
+    border-color: rgba(255, 92, 119, 0.85) !important;
+    box-shadow: 0 0 14px rgba(255, 92, 119, 0.25) !important;
+    background: rgba(255, 92, 119, 0.05) !important;
+  }
+
+  .floating-input.has-error ~ .floating-label,
+  .floating-textarea.has-error ~ .floating-label--textarea {
+    color: #FF5C77 !important;
+  }
+
+  .floating-input.is-valid,
+  .floating-textarea.is-valid {
+    border-color: rgba(0, 245, 212, 0.5) !important;
+  }
+
+  .floating-field.shake {
+    animation: fieldShake 0.35s ease-in-out;
+  }
+
+  .form-submit-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .form-disclaimer {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.5;
+    margin-top: 14px;
+    margin-bottom: 0;
+  }
+
+  .legal-link {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-fast);
+  }
+
+  .legal-link:hover {
+    color: var(--color-gold);
+  }
+
+  /* Success Modal Backdrop */
+  .contact-success-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10002;
+    background: rgba(5, 7, 12, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 2.5vw, 32px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    cursor: pointer;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contact-success-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Success Modal Window */
+  .contact-success-modal {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    background: rgba(12, 16, 26, 0.96);
+    border: 1px solid rgba(255, 200, 87, 0.3);
+    border-radius: var(--radius-xl, 20px);
+    padding: clamp(32px, 4.5vw, 42px) clamp(24px, 3.5vw, 36px) clamp(22px, 3vw, 28px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.88), 0 0 50px rgba(255, 200, 87, 0.12);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    text-align: center;
+    cursor: default;
+    overflow: hidden;
+    transform: scale(0.92) translateY(12px);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contact-success-backdrop.is-open .contact-success-modal {
+    transform: scale(1) translateY(0);
+  }
+
+  /* Ambient Glow inside Modal */
+  .contact-success-glow {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255, 200, 87, 0.22) 0%, rgba(157, 78, 221, 0.16) 50%, transparent 75%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Close "X" Button */
+  .contact-success-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-muted, #94A3B8);
+    cursor: pointer;
+    transition: all var(--transition-fast, 0.2s ease);
+    z-index: 2;
+  }
+
+  .contact-success-close-btn:hover {
+    background: rgba(255, 200, 87, 0.15);
+    border-color: rgba(255, 200, 87, 0.4);
+    color: var(--color-gold, #FFC857);
+    transform: rotate(90deg);
+  }
+
+  /* Icon */
+  .contact-success-icon-wrap {
+    position: relative;
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 200, 87, 0.16), rgba(157, 78, 221, 0.18));
+    border: 1.5px solid rgba(255, 200, 87, 0.45);
+    color: var(--color-gold, #FFC857);
+    box-shadow: 0 0 30px rgba(255, 200, 87, 0.25);
+    z-index: 1;
+  }
+
+  .contact-success-icon-halo {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255, 200, 87, 0.35);
+    animation: contactSuccessSpin 14s linear infinite;
+  }
+
+  @keyframes contactSuccessSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .contact-success-icon-svg {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Title & Desc */
+  .contact-success-title {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(1.25rem, 2.8vw, 1.55rem);
+    font-weight: 700;
+    color: var(--color-text-primary, #FFFFFF);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .contact-success-desc {
+    position: relative;
+    z-index: 1;
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+    color: var(--color-text-secondary, #CBD5E1);
+    line-height: 1.55;
+    margin: 0 0 24px;
+  }
+
+  /* Action Button */
+  .contact-success-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .contact-success-ok-btn {
+    min-width: 140px;
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  /* 10s Timer progress bar */
+  .contact-success-timer {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 24px;
+  }
+
+  .contact-success-timer-bar {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #FFC857, #9D4EDD);
+    border-radius: 999px;
+    transform-origin: left center;
+    transform: scaleX(1);
+  }
+
+  .contact-success-modal.is-running .contact-success-timer-bar {
+    animation: contactSuccessCountdown 10s linear forwards;
+  }
+
+  @keyframes contactSuccessCountdown {
+    0% {
+      transform: scaleX(1);
+    }
+    100% {
+      transform: scaleX(0);
+    }
+  }
+
+  /* Light Theme Adaptations */
+  :global([data-theme="light"]) .contact-success-modal {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(212, 160, 23, 0.35);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22), 0 0 40px rgba(212, 160, 23, 0.12);
+  }
+
+  :global([data-theme="light"]) .contact-success-close-btn {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #4B5563;
+  }
+
+  :global([data-theme="light"]) .contact-success-close-btn:hover {
+    color: #111827;
+    background: rgba(212, 160, 23, 0.15);
+    border-color: rgba(212, 160, 23, 0.4);
+  }
+
+  :global([data-theme="light"]) .contact-success-title {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .contact-success-desc {
+    color: #475569;
+  }
+
+  :global([data-theme="light"]) .contact-success-timer {
+    background: rgba(0, 0, 0, 0.08);
+  }
+</style>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('main-contact-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    const formInitTime = Date.now();
+    function getLang(): 'ru' | 'en' {
+      return (form?.getAttribute('data-lang') || document.documentElement.lang || 'ru') as 'ru' | 'en';
+    }
+    const statusEl = document.getElementById('contact-form-status');
+    const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
+
+    const nameInput = document.getElementById('contact-name') as HTMLInputElement | null;
+    const phoneInput = document.getElementById('contact-phone') as HTMLInputElement | null;
+    const emailInput = document.getElementById('contact-email') as HTMLInputElement | null;
+    const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement | null;
+
+    const nameErrorEl = document.getElementById('error-contact-name');
+    const phoneErrorEl = document.getElementById('error-contact-phone');
+    const emailErrorEl = document.getElementById('error-contact-email');
+    const messageErrorEl = document.getElementById('error-contact-message');
+
+    // Pre-fill from hash if redirected from calculator
+    function applyHashPrefill() {
+      const currentHash = window.location.hash;
+      if (currentHash.includes('prefill=') && messageInput) {
+        try {
+          const query = currentHash.split('?')[1];
+          if (query) {
+            const params = new URLSearchParams(query);
+            const prefill = params.get('prefill');
+            if (prefill) {
+              messageInput.value = decodeURIComponent(prefill);
+              messageInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+          }
+        } catch {
+          // Ignore malformed URI prefill
+        }
+      }
+    }
+
+    applyHashPrefill();
+    window.addEventListener('hashchange', applyHashPrefill);
+
+    // Phone input: block letters on keydown and format phone numbers cleanly
+    if (phoneInput) {
+      phoneInput.addEventListener('keydown', (e: KeyboardEvent) => {
+        // Allow navigation and system shortcut keys
+        if (
+          ['Backspace', 'Tab', 'Enter', 'Escape', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key) ||
+          e.ctrlKey || e.metaKey || e.altKey
+        ) {
+          return;
+        }
+        // Block letters and disallowed characters (only allow 0-9, +, -, (, ), spaces)
+        if (e.key.length === 1 && !/^[0-9+\-\s()]$/.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+
+      phoneInput.addEventListener('input', (e) => {
+        const input = e.target as HTMLInputElement;
+        const rawValue = input.value;
+        const inputEvent = e as InputEvent;
+        const isDelete = inputEvent.inputType?.includes('delete');
+        if (isDelete) {
+          // Clean non-phone characters even on delete
+          const cleaned = rawValue.replace(/[^0-9+\-\s()]/g, '');
+          if (cleaned !== rawValue) input.value = cleaned;
+          return;
+        }
+
+        // Strip all letters and disallowed characters
+        const digits = rawValue.replace(/\D/g, '');
+        if (!digits) {
+          input.value = rawValue.startsWith('+') ? '+' : '';
+          return;
+        }
+
+        // Russian numbers auto-formatting: +7 (XXX) XXX-XX-XX
+        if (digits[0] === '7' || digits[0] === '8' || digits[0] === '9') {
+          let numDigits = digits;
+          if (digits[0] === '9') {
+            numDigits = '7' + digits;
+          } else if (digits[0] === '8') {
+            numDigits = '7' + digits.slice(1);
+          }
+          // Cap at 11 digits for RU
+          numDigits = numDigits.substring(0, 11);
+
+          let formatted = '+7';
+          if (numDigits.length > 1) {
+            formatted += ' (' + numDigits.substring(1, Math.min(4, numDigits.length));
+          }
+          if (numDigits.length >= 4) {
+            formatted += ') ' + numDigits.substring(4, Math.min(7, numDigits.length));
+          }
+          if (numDigits.length >= 7) {
+            formatted += '-' + numDigits.substring(7, Math.min(9, numDigits.length));
+          }
+          if (numDigits.length >= 9) {
+            formatted += '-' + numDigits.substring(9, 11);
+          }
+          input.value = formatted;
+        } else {
+          // International format: restrict to digits with optional leading +, max 15 digits (E.164)
+          const limitedDigits = digits.substring(0, 15);
+          input.value = (rawValue.startsWith('+') ? '+' : '') + limitedDigits;
+        }
+      });
+    }
+
+    let hasAttemptedSubmit = false;
+
+    // Validation rules
+    function validateNameField(showUiError = hasAttemptedSubmit, shouldShake = false): boolean {
+      if (!nameInput || !nameErrorEl) return true;
+      const val = nameInput.value.trim();
+      const group = document.getElementById('field-group-name');
+
+      let errorMsg = '';
+      if (!val) {
+        errorMsg = getLang() === 'en' ? 'Enter your name' : 'Укажите ваше имя';
+      } else if (val.length < 2) {
+        errorMsg = getLang() === 'en' ? 'Name must be at least 2 letters' : 'Имя должно содержать не менее 2 букв';
+      } else if (val.length > 60) {
+        errorMsg = getLang() === 'en' ? 'Name is too long' : 'Имя слишком длинное';
+      } else {
+        const nameRegex = /^[A-Za-zА-Яа-яЁё\s\-'\u00C0-\u024F]+$/;
+        if (!nameRegex.test(val)) {
+          errorMsg = getLang() === 'en' ? 'Name can only contain letters and hyphens' : 'Имя может содержать только буквы и дефис';
+        }
+      }
+
+      if (errorMsg) {
+        if (showUiError) {
+          showError(nameInput, nameErrorEl, group, errorMsg, shouldShake);
+        }
+        return false;
+      }
+
+      clearError(nameInput, nameErrorEl, group);
+      return true;
+    }
+
+    function validatePhoneField(showUiError = hasAttemptedSubmit, shouldShake = false): boolean {
+      if (!phoneInput || !phoneErrorEl) return true;
+      const val = phoneInput.value.trim();
+      const group = document.getElementById('field-group-phone');
+      const digits = val.replace(/\D/g, '');
+
+      let errorMsg = '';
+      if (!val || !digits) {
+        errorMsg = getLang() === 'en' ? 'Enter your phone number' : 'Укажите номер телефона';
+      } else if (digits.length < 10) {
+        errorMsg = getLang() === 'en' ? 'Enter a complete phone number (at least 10 digits)' : 'Введите полный номер телефона (не менее 10 цифр)';
+      } else if (digits.length > 15) {
+        errorMsg = getLang() === 'en' ? 'Phone number is too long' : 'Номер телефона слишком длинный';
+      } else if (/^(\d)\1{9,}$/.test(digits)) {
+        errorMsg = getLang() === 'en' ? 'Enter a valid phone number' : 'Укажите реальный номер телефона';
+      }
+
+      if (errorMsg) {
+        if (showUiError) {
+          showError(phoneInput, phoneErrorEl, group, errorMsg, shouldShake);
+        }
+        return false;
+      }
+
+      clearError(phoneInput, phoneErrorEl, group);
+      return true;
+    }
+
+    function validateEmailField(showUiError = hasAttemptedSubmit, shouldShake = false): boolean {
+      if (!emailInput || !emailErrorEl) return true;
+      const val = emailInput.value.trim();
+      const group = document.getElementById('field-group-email');
+
+      let errorMsg = '';
+      if (!val) {
+        errorMsg = getLang() === 'en' ? 'Enter your email address' : 'Укажите электронную почту';
+      } else if (val.length < 5) {
+        errorMsg = getLang() === 'en' ? 'Email is too short' : 'Email слишком короткий';
+      } else if (val.length > 254) {
+        errorMsg = getLang() === 'en' ? 'Email is too long' : 'Email слишком длинный';
+      } else {
+        // Robust RFC-standard email regex requiring user@domain.tld structure with >= 2 chars TLD
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+        const parts = val.split('@');
+        const domain = parts[1] || '';
+        const tld = domain.split('.').pop() || '';
+
+        if (!emailRegex.test(val) || parts.length !== 2 || !domain.includes('.') || tld.length < 2) {
+          errorMsg = getLang() === 'en' ? 'Enter a valid email (e.g. name@company.com)' : 'Введите корректный email (например, name@company.ru)';
+        }
+      }
+
+      if (errorMsg) {
+        if (showUiError) {
+          showError(emailInput, emailErrorEl, group, errorMsg, shouldShake);
+        }
+        return false;
+      }
+
+      clearError(emailInput, emailErrorEl, group);
+      return true;
+    }
+
+    function validateMessageField(showUiError = hasAttemptedSubmit, shouldShake = false): boolean {
+      if (!messageInput || !messageErrorEl) return true;
+      const val = messageInput.value.trim();
+      const group = document.getElementById('field-group-message');
+
+      let errorMsg = '';
+      if (!val) {
+        errorMsg = getLang() === 'en' ? 'Describe your project or task' : 'Опишите вашу задачу или проект';
+      } else if (val.length < 6) {
+        errorMsg = getLang() === 'en' ? 'Add a few more words (at least 6 characters)' : 'Опишите задачу подробнее (минимум 6 символов)';
+      } else if (val.length > 2000) {
+        errorMsg = getLang() === 'en' ? 'Message exceeds 2000 characters limit' : 'Сообщение превышает лимит в 2000 символов';
+      }
+
+      if (errorMsg) {
+        if (showUiError) {
+          showError(messageInput, messageErrorEl, group, errorMsg, shouldShake);
+        }
+        return false;
+      }
+
+      clearError(messageInput, messageErrorEl, group);
+      return true;
+    }
+
+    function showError(input: HTMLElement, errorEl: HTMLElement, group: HTMLElement | null, text: string, shouldShake = false) {
+      input.classList.add('has-error');
+      input.classList.remove('is-valid');
+      errorEl.textContent = text;
+      errorEl.classList.add('is-visible');
+      if (group && shouldShake) {
+        group.classList.remove('shake');
+        // Trigger reflow to restart shake animation on submit attempt only
+        void group.offsetWidth;
+        group.classList.add('shake');
+        setTimeout(() => {
+          group.classList.remove('shake');
+        }, 450);
+      }
+    }
+
+    function clearError(input: HTMLElement, errorEl: HTMLElement, group: HTMLElement | null) {
+      input.classList.remove('has-error');
+      errorEl.textContent = '';
+      errorEl.classList.remove('is-visible');
+      if (group) {
+        group.classList.remove('shake');
+      }
+    }
+
+    // Attach real-time validation listeners only when already attempted to submit or input has error
+    // Never shake on input keystrokes
+    nameInput?.addEventListener('input', () => {
+      if (hasAttemptedSubmit || nameInput.classList.contains('has-error')) {
+        validateNameField(true, false);
+      }
+    });
+
+    phoneInput?.addEventListener('input', () => {
+      if (hasAttemptedSubmit || phoneInput.classList.contains('has-error')) {
+        validatePhoneField(true, false);
+      }
+    });
+
+    emailInput?.addEventListener('input', () => {
+      if (hasAttemptedSubmit || emailInput.classList.contains('has-error')) {
+        validateEmailField(true, false);
+      }
+    });
+
+    messageInput?.addEventListener('input', () => {
+      if (hasAttemptedSubmit || messageInput.classList.contains('has-error')) {
+        validateMessageField(true, false);
+      }
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hasAttemptedSubmit = true;
+
+      const isNameValid = validateNameField(true, true);
+      const isPhoneValid = validatePhoneField(true, true);
+      const isEmailValid = validateEmailField(true, true);
+      const isMessageValid = validateMessageField(true, true);
+
+      if (!isNameValid || !isPhoneValid || !isEmailValid || !isMessageValid) {
+        // Focus first erroneous field
+        if (!isNameValid) nameInput?.focus();
+        else if (!isPhoneValid) phoneInput?.focus();
+        else if (!isEmailValid) emailInput?.focus();
+        else if (!isMessageValid) messageInput?.focus();
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>${getLang() === 'en' ? 'Sending...' : 'Отправка...'}</span>`;
+      }
+      if (statusEl) {
+        statusEl.innerHTML = '';
+      }
+
+      const honeypotInput = document.getElementById('contact-company-website') as HTMLInputElement | null;
+      const gotchaInput = document.getElementById('contact-gotcha') as HTMLInputElement | null;
+
+      const payload = {
+        name: nameInput?.value.trim() || '',
+        phone: phoneInput?.value.trim() || '',
+        email: emailInput?.value.trim() || '',
+        message: messageInput?.value.trim() || '',
+        source: 'Main Contact Form',
+        company_website: honeypotInput?.value || '',
+        _gotcha: gotchaInput?.value || '',
+        _time: formInitTime,
+      };
+
+      try {
+        const response = await fetch('/api/send-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const resData = await response.json().catch(() => null);
+
+        if (response.ok && resData?.success !== false) {
+          if (statusEl) {
+            statusEl.innerHTML = '';
+          }
+          openContactSuccessModal();
+          hasAttemptedSubmit = false;
+          form.reset();
+          [nameInput, phoneInput, emailInput, messageInput].forEach(el => {
+            el?.classList.remove('has-error');
+            el?.classList.remove('is-valid');
+          });
+          [nameErrorEl, phoneErrorEl, emailErrorEl, messageErrorEl].forEach(el => {
+            if (el) {
+              el.textContent = '';
+              el.classList.remove('is-visible');
+            }
+          });
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<span>${getLang() === 'en' ? 'Discuss Project' : 'Обсудить проект'}</span>`;
+          }
+        } else {
+          const errorMessage = resData?.error || (
+            getLang() === 'en'
+              ? 'Submission error. Please write info@nice-dev.ru'
+              : 'Ошибка при отправке заявки. Пожалуйста, напишите нам: info@nice-dev.ru'
+          );
+          if (statusEl) {
+            statusEl.innerHTML = `<span style="color: #FF5C77; font-weight: 500;">⚠ ${errorMessage}</span>`;
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<span>${getLang() === 'en' ? 'Discuss Project' : 'Обсудить проект'}</span>`;
+          }
+        }
+      } catch (err) {
+        console.warn('Network issue during lead submission:', err);
+        if (statusEl) {
+          statusEl.innerHTML = `<span style="color: #FF5C77; font-weight: 500;">⚠ ${
+            getLang() === 'en' 
+              ? 'Network error. Please try again or write: info@nice-dev.ru' 
+              : 'Ошибка сети. Пожалуйста, попробуйте еще раз или напишите: info@nice-dev.ru'
+          }</span>`;
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>${getLang() === 'en' ? 'Discuss Project' : 'Обсудить проект'}</span>`;
+        }
+      }
+    });
+
+    // Success Modal elements & 10s auto-dismiss timer
+    const successBackdrop = document.getElementById('contact-success-backdrop');
+    const successModal = document.getElementById('contact-success-modal');
+    const successCloseBtn = document.getElementById('contact-success-close');
+    const successOkBtn = document.getElementById('contact-success-ok-btn');
+    const successTitleEl = document.getElementById('contact-success-title');
+    const successDescEl = document.getElementById('contact-success-desc');
+    const successOkLabel = document.getElementById('contact-success-ok-label');
+    let successTimer: number | null = null;
+
+    function updateContactSuccessContent() {
+      const isEnglish = getLang() === 'en';
+      if (successTitleEl) {
+        successTitleEl.textContent = isEnglish ? 'Thank you for reaching out!' : 'Спасибо за обращение!';
+      }
+      if (successDescEl) {
+        successDescEl.textContent = isEnglish ? 'We will contact you shortly.' : 'Мы скоро с вами свяжемся.';
+      }
+      if (successOkLabel) {
+        successOkLabel.textContent = isEnglish ? 'Got it' : 'Понятно';
+      }
+      if (successCloseBtn) {
+        successCloseBtn.setAttribute('aria-label', isEnglish ? 'Close' : 'Закрыть');
+      }
+    }
+
+    function openContactSuccessModal() {
+      if (!successBackdrop || !successModal) return;
+      updateContactSuccessContent();
+
+      if (successTimer) {
+        window.clearTimeout(successTimer);
+        successTimer = null;
+      }
+
+      successBackdrop.classList.add('is-open');
+      successBackdrop.setAttribute('aria-hidden', 'false');
+
+      // Restart progress countdown bar cleanly
+      successModal.classList.remove('is-running');
+      void successModal.offsetWidth; // Force reflow
+      successModal.classList.add('is-running');
+
+      // Auto-close after 10 seconds (10 000 ms)
+      successTimer = window.setTimeout(() => {
+        closeContactSuccessModal();
+      }, 10000);
+    }
+
+    function closeContactSuccessModal() {
+      if (successTimer) {
+        window.clearTimeout(successTimer);
+        successTimer = null;
+      }
+      if (successBackdrop) {
+        successBackdrop.classList.remove('is-open');
+        successBackdrop.setAttribute('aria-hidden', 'true');
+      }
+      if (successModal) {
+        successModal.classList.remove('is-running');
+      }
+    }
+
+    successCloseBtn?.addEventListener('click', closeContactSuccessModal);
+    successOkBtn?.addEventListener('click', closeContactSuccessModal);
+    successBackdrop?.addEventListener('click', (evt) => {
+      if (evt.target === successBackdrop) {
+        closeContactSuccessModal();
+      }
+    });
+
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape' && successBackdrop?.classList.contains('is-open')) {
+        closeContactSuccessModal();
+      }
+    });
+
+    // Instantly translate active validation errors and status message upon language switch
+    function refreshContactFormLanguage() {
+      const isEnglish = getLang() === 'en';
+
+      updateContactSuccessContent();
+
+      if (statusEl) {
+        if (statusEl.querySelector('.form-status-success') || statusEl.textContent?.includes('Спасибо за обращение') || statusEl.textContent?.includes('Thank you for reaching out')) {
+          statusEl.innerHTML = '';
+        } else if (statusEl.textContent?.includes('Ошибка сети') || statusEl.textContent?.includes('Network error')) {
+          statusEl.innerHTML = `<span style="color: #FF5C77; font-weight: 500;">⚠ ${
+            isEnglish 
+              ? 'Network error. Please try again or write: info@nice-dev.ru' 
+              : 'Ошибка сети. Пожалуйста, попробуйте еще раз или напишите: info@nice-dev.ru'
+          }</span>`;
+        } else if (statusEl.textContent?.includes('Ошибка при отправке') || statusEl.textContent?.includes('Submission error')) {
+          statusEl.innerHTML = `<span style="color: #FF5C77; font-weight: 500;">⚠ ${
+            isEnglish
+              ? 'Submission error. Please write: info@nice-dev.ru'
+              : 'Ошибка при отправке заявки. Пожалуйста, напишите нам: info@nice-dev.ru'
+          }</span>`;
+        }
+      }
+
+      if (submitBtn) {
+        const btnText = submitBtn.textContent || '';
+        if (btnText.includes('Заявка отправлена') || btnText.includes('Submitted')) {
+          submitBtn.innerHTML = `<span>✓ ${isEnglish ? 'Submitted' : 'Заявка отправлена'}</span>`;
+        } else if (!btnText.includes('Отправка') && !btnText.includes('Sending')) {
+          submitBtn.innerHTML = `<span>${isEnglish ? 'Discuss Project' : 'Обсудить проект'}</span>`;
+        }
+      }
+
+      if (nameErrorEl && nameErrorEl.classList.contains('is-visible')) {
+        validateNameField(true, false);
+      }
+      if (phoneErrorEl && phoneErrorEl.classList.contains('is-visible')) {
+        validatePhoneField(true, false);
+      }
+      if (emailErrorEl && emailErrorEl.classList.contains('is-visible')) {
+        validateEmailField(true, false);
+      }
+      if (messageErrorEl && messageErrorEl.classList.contains('is-visible')) {
+        validateMessageField(true, false);
+      }
+    }
+
+    window.addEventListener('nice-dev:language-change', refreshContactFormLanguage);
+    (window as unknown as { refreshContactFormLanguage?: () => void }).refreshContactFormLanguage = refreshContactFormLanguage;
+  }
+
+  initContactForm();
+  document.addEventListener('astro:page-load', initContactForm);
+</script>

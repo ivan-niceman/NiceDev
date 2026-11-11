@@ -1,0 +1,479 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const calc = t.calculator;
+
+function formatDays(count: number, lang: string = 'ru'): string {
+  if (lang === 'en') {
+    return count === 1 ? 'business day' : 'business days';
+  }
+
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+
+  // Исключение для чисел от 11 до 19 (11 дней, 12 дней, 14 дней и т.д.)
+  if (mod100 >= 11 && mod100 <= 19) {
+    return 'рабочих дней';
+  }
+
+  // Оканчивается на 1 (1 день, 21 день, 31 день)
+  if (mod10 === 1) {
+    return 'рабочий день';
+  }
+
+  // Оканчивается на 2, 3, 4 (2 дня, 3 дня, 4 дня, 24 дня)
+  if (mod10 >= 2 && mod10 <= 4) {
+    return 'рабочих дня';
+  }
+
+  // Все остальные (0, 5, 6, 7, 8, 9, 20, 30)
+  return 'рабочих дней';
+}
+---
+
+<section
+  id="calculator"
+  aria-labelledby="calc-heading"
+  data-deadline-text={calc.deadline}
+  data-workdays-text={calc.workDays}
+  data-currency={calc.currency}
+  data-lang={lang}
+>
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-header__subtitle">{calc.subtitle}</div>
+      <h2 id="calc-heading">{calc.title}</h2>
+      <p class="section-header__desc">
+        {calc.description}
+      </p>
+    </div>
+
+    <div class="calculator-card reveal reveal--scale">
+      <div class="calc-grid">
+        {/* Step 1: Project Type Selection */}
+        <div class="calc-step-section">
+          <label class="calc-step-label">
+            {calc.step1}
+          </label>
+          <div class="calc-types-grid">
+            {calc.projectTypes.map((type, idx) => (
+              <button
+                type="button"
+                class={`calc-type-btn ${idx === 0 ? 'is-selected' : ''}`}
+                data-type-price={type.basePrice}
+                data-type-days={type.days}
+                data-type-name={type.name}
+              >
+                <div class="calc-type-btn__title">{type.name}</div>
+                <div class="calc-type-btn__days">~{type.days} {calc.workDays}</div>
+                <div class="calc-type-btn__price">
+                  {lang === 'ru' ? 'от' : 'from'} {type.basePrice.toLocaleString(lang === 'ru' ? 'ru-RU' : 'en-US')} {calc.currency}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Step 2: Additional Modules (Click to toggle on/off) */}
+        <div class="calc-step-section">
+          <label class="calc-step-label">
+            {calc.step2}
+          </label>
+          <div class="calc-options-grid">
+            {calc.addons.map((opt) => (
+              <button
+                type="button"
+                class="calc-opt-btn"
+                data-opt-price={opt.price}
+                data-opt-days={opt.days}
+                data-opt-name={opt.name}
+                aria-pressed="false"
+              >
+                <div class="calc-opt-btn__title">{opt.name}</div>
+                <div class="calc-opt-btn__days">{opt.days} {formatDays(opt.days, lang)}</div>
+                <div class="calc-opt-btn__price">
+                  {lang === 'ru' ? 'от' : 'from'} {opt.price.toLocaleString(lang === 'ru' ? 'ru-RU' : 'en-US')} {calc.currency}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Final Estimate Bar & Quick Order Transfer */}
+        <div class="calc-result-box">
+          <div class="calc-result-info">
+            <span class="calc-result-tag">{calc.budgetEst}</span>
+            <div class="calc-price-display">
+              <span id="calc-final-price">{(calc.projectTypes[0]?.basePrice || 120000).toLocaleString(lang === 'ru' ? 'ru-RU' : 'en-US')}</span>
+              <span class="calc-currency">{calc.currency}</span>
+            </div>
+            <div class="calc-result-hint">
+              <span id="calc-final-days">{calc.deadline} {calc.projectTypes[0]?.days || 10} {calc.workDays}</span>
+            </div>
+          </div>
+
+          <a href="#contact" class="btn btn--gold calc-order-btn" id="calc-submit-cta">
+            <span>{calc.submitBtn}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-header__desc {
+    margin-top: 14px;
+  }
+
+  .calculator-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .calc-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .calc-step-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calc-step-label {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .calc-types-grid,
+  .calc-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .calc-type-btn,
+  .calc-opt-btn {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: left;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  :global([data-theme="light"]) .calc-type-btn,
+  :global([data-theme="light"]) .calc-opt-btn {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  .calc-type-btn:hover,
+  .calc-opt-btn:hover {
+    border-color: var(--color-amethyst);
+    background: rgba(157, 78, 221, 0.08);
+  }
+
+  .calc-type-btn.is-selected,
+  .calc-opt-btn.is-selected {
+    border-color: var(--color-gold);
+    background: rgba(255, 200, 87, 0.1);
+    box-shadow: 0 0 15px var(--color-gold-glow);
+  }
+
+  :global([data-theme="light"]) .calc-type-btn.is-selected,
+  :global([data-theme="light"]) .calc-opt-btn.is-selected {
+    background: rgba(255, 200, 87, 0.15);
+  }
+
+  .calc-type-btn__title,
+  .calc-opt-btn__title {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    line-height: 1.35;
+  }
+
+  .calc-type-btn__days,
+  .calc-opt-btn__days {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .calc-type-btn__price,
+  .calc-opt-btn__price {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-gold);
+  }
+
+  /* Result Box */
+  .calc-result-box {
+    background: linear-gradient(135deg, rgba(157, 78, 221, 0.15) 0%, rgba(255, 200, 87, 0.1) 100%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .calc-result-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calc-result-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .calc-price-display {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--color-gold);
+    line-height: 1.1;
+  }
+
+  .calc-currency {
+    font-size: 1.2rem;
+    margin-left: 6px;
+  }
+
+  .calc-result-hint {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+</style>
+
+<script>
+  import { translations } from '../i18n/translations';
+
+  function initCalculator() {
+    const calcSection = document.getElementById('calculator');
+    if (!calcSection) return;
+
+    const typeButtons = calcSection.querySelectorAll<HTMLButtonElement>('.calc-type-btn');
+    const optionButtons = calcSection.querySelectorAll<HTMLButtonElement>('.calc-opt-btn');
+    const finalPriceEl = document.getElementById('calc-final-price');
+    const finalDaysEl = document.getElementById('calc-final-days');
+    const submitBtn = document.getElementById('calc-submit-cta');
+
+    function getCurrentLang(): 'ru' | 'en' {
+      try {
+        const stored = localStorage.getItem('nicedev-language-preference');
+        if (stored === 'en' || stored === 'ru') return stored;
+      } catch {}
+      const htmlLang = document.documentElement.getAttribute('lang');
+      if (htmlLang === 'en' || calcSection?.getAttribute('data-lang') === 'en') {
+        return 'en';
+      }
+      return 'ru';
+    }
+
+    function formatDays(count: number, currentLang: 'ru' | 'en' = 'ru'): string {
+      if (currentLang === 'en') {
+        return count === 1 ? 'business day' : 'business days';
+      }
+      const mod10 = count % 10;
+      const mod100 = count % 100;
+      if (mod100 >= 11 && mod100 <= 19) {
+        return 'рабочих дней';
+      }
+      if (mod10 === 1) {
+        return 'рабочий день';
+      }
+      if (mod10 >= 2 && mod10 <= 4) {
+        return 'рабочих дня';
+      }
+      return 'рабочих дней';
+    }
+
+    let selectedTypeIndex = 0;
+    typeButtons.forEach((btn, idx) => {
+      if (btn.classList.contains('is-selected')) selectedTypeIndex = idx;
+    });
+
+    const selectedAddonIndices = new Set<number>();
+    optionButtons.forEach((btn, idx) => {
+      if (btn.classList.contains('is-selected')) selectedAddonIndices.add(idx);
+    });
+
+    function calculate() {
+      const currentLang = getCurrentLang();
+      const calcData = translations[currentLang].calculator;
+      const isRu = currentLang === 'ru';
+      const numberLocale = isRu ? 'ru-RU' : 'en-US';
+
+      // 1. Обновляем карточки тарифов (названия, сроки и цены в активной валюте)
+      typeButtons.forEach((btn, idx) => {
+        const typeData = calcData.projectTypes[idx];
+        if (!typeData) return;
+        const tTitle = btn.querySelector('.calc-type-btn__title');
+        const tDays = btn.querySelector('.calc-type-btn__days');
+        const tPrice = btn.querySelector('.calc-type-btn__price');
+        if (tTitle) tTitle.textContent = typeData.name;
+        if (tDays) tDays.textContent = `~${typeData.days} ${formatDays(typeData.days, currentLang)}`;
+        if (tPrice) {
+          tPrice.textContent = `${isRu ? 'от' : 'from'} ${typeData.basePrice.toLocaleString(numberLocale)} ${calcData.currency}`;
+        }
+      });
+
+      // 2. Обновляем кнопки опций (названия, дни и цены)
+      optionButtons.forEach((btn, idx) => {
+        const optData = calcData.addons[idx];
+        if (!optData) return;
+        const oTitle = btn.querySelector('.calc-opt-btn__title');
+        const oDays = btn.querySelector('.calc-opt-btn__days');
+        const oPrice = btn.querySelector('.calc-opt-btn__price');
+        if (oTitle) oTitle.textContent = optData.name;
+        if (oDays) oDays.textContent = `~${optData.days} ${formatDays(optData.days, currentLang)}`;
+        if (oPrice) {
+          oPrice.textContent = `${isRu ? 'от' : 'from'} ${optData.price.toLocaleString(numberLocale)} ${calcData.currency}`;
+        }
+      });
+
+      // 3. Считаем итоговую цену и срок в активной валюте ($ или ₽)
+      const currentType = calcData.projectTypes[selectedTypeIndex] || calcData.projectTypes[0];
+      let totalPrice = currentType.basePrice;
+      let totalDays = currentType.days;
+      const selectedOptionNames: string[] = [];
+
+      selectedAddonIndices.forEach((idx) => {
+        const addon = calcData.addons[idx];
+        if (addon) {
+          totalPrice += addon.price;
+          totalDays += addon.days;
+          selectedOptionNames.push(addon.name);
+        }
+      });
+
+      // 4. Выводим итоговую сумму
+      if (finalPriceEl) {
+        finalPriceEl.textContent = totalPrice.toLocaleString('ru-RU');
+      }
+
+      const currencyEl = calcSection?.querySelector('.calc-currency');
+      if (currencyEl) {
+        currencyEl.textContent = calcData.currency;
+      }
+
+      const budgetTag = calcSection?.querySelector('.calc-result-tag');
+      if (budgetTag) {
+        budgetTag.textContent = calcData.budgetEst;
+      }
+
+      if (finalDaysEl) {
+        finalDaysEl.textContent = `${calcData.deadline} ${totalDays} ${formatDays(totalDays, currentLang)}`;
+      }
+
+      if (submitBtn) {
+        const btnSpan = submitBtn.querySelector('span');
+        if (btnSpan) btnSpan.textContent = calcData.submitBtn;
+
+        const textPayload = isRu
+          ? `Здравствуйте! Интересует разработка: ${currentType.name}, опции: ${selectedOptionNames.join(', ') || 'базовый пакет'}, расчетная смета ~${totalPrice.toLocaleString('ru-RU')} ${calcData.currency}, срок ~${totalDays} ${formatDays(totalDays, 'ru')}.`
+          : `Hello! I am interested in: ${currentType.name}, options: ${selectedOptionNames.join(', ') || 'base package'}, estimated budget ~${totalPrice.toLocaleString('en-US')} ${calcData.currency}, timeline ~${totalDays} ${formatDays(totalDays, 'en')}.`;
+        submitBtn.setAttribute('data-prefill-text', textPayload);
+        submitBtn.setAttribute('href', `#contact?prefill=${encodeURIComponent(textPayload)}`);
+      }
+    }
+
+    // Клик по типу проекта
+    typeButtons.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        typeButtons.forEach((b) => b.classList.remove('is-selected'));
+        btn.classList.add('is-selected');
+        selectedTypeIndex = idx;
+        calculate();
+      });
+    });
+
+    // Клик по дополнительной опции
+    optionButtons.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        const isSelected = btn.classList.toggle('is-selected');
+        btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+        if (isSelected) {
+          selectedAddonIndices.add(idx);
+        } else {
+          selectedAddonIndices.delete(idx);
+        }
+        calculate();
+      });
+    });
+
+    // Мгновенная реакция на переключение языка без перезагрузки:
+    window.addEventListener('nice-dev:language-change', calculate);
+
+    if (submitBtn) {
+      submitBtn.addEventListener('click', (e) => {
+        const textToFill = submitBtn.getAttribute('data-prefill-text');
+        const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement | null;
+        const nameInput = document.getElementById('contact-name') as HTMLInputElement | null;
+        const contactSection = document.getElementById('contact');
+
+        if (messageInput && textToFill) {
+          messageInput.value = textToFill;
+          messageInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        if (contactSection) {
+          e.preventDefault();
+          contactSection.scrollIntoView({ behavior: 'smooth' });
+          setTimeout(() => {
+            nameInput?.focus();
+          }, 450);
+        }
+      });
+    }
+
+    calculate();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCalculator);
+  } else {
+    initCalculator();
+  }
+
+  document.addEventListener('astro:page-load', initCalculator);
+</script>

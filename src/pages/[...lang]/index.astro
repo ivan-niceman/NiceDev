@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Hero from '../../components/Hero.astro';
+import Services from '../../components/Services.astro';
+import Geo from '../../components/Geo.astro';
+import Portfolio from '../../components/Portfolio.astro';
+import Reviews from '../../components/Reviews.astro';
+import Calculator from '../../components/Calculator.astro';
+import FAQ from '../../components/FAQ.astro';
+import Contact from '../../components/Contact.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+const { lang: paramLang } = Astro.params;
+const lang = (paramLang === 'en' ? 'en' : 'ru') as 'ru' | 'en';
+
+const pageTitle = lang === 'ru' 
+  ? "NiceDev — Создание сайтов под ключ и веб-разработка"
+  : "NiceDev — Turnkey Web Development & Website Studio";
+
+const pageDescription = lang === 'ru'
+  ? "Создание сайтов под ключ и готовых шаблонов от веб-студии NiceDev. Авторский дизайн, быстрая загрузка и адаптивность. Рассчитайте стоимость проекта онлайн!"
+  : "Turnkey website development and ready templates by NiceDev Web Studio. Bespoke UX/UI design, ultra-fast loading, and transparent online project estimates.";
+
+const pageKeywords = lang === 'ru'
+  ? "создание сайтов под ключ, разработка сайтов, веб студия, заказать сайт, шаблоны сайтов, дизайн сайтов, разработка сайтов под ключ, NiceDev"
+  : "turnkey website development, bespoke web studio, web development, website templates, custom web design, fast websites, NiceDev";
+---
+
+<Layout 
+  title={pageTitle}
+  description={pageDescription}
+  keywords={pageKeywords}
+  lang={lang}
+  canonicalPath={lang === 'ru' ? '/' : '/en'}
+>
+  {/* Luminous Ambient Background Engine */}
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <Header lang={lang} />
+  <main id="main-content">
+    <Hero lang={lang} />
+    <Services lang={lang} />
+    <Geo lang={lang} />
+    <Portfolio lang={lang} />
+    <Reviews lang={lang} />
+    <Calculator lang={lang} />
+    <FAQ lang={lang} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

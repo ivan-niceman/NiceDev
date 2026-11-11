@@ -1,0 +1,925 @@
+---
+import { translations } from '../i18n/translations';
+
+export interface Props {
+  lang?: 'ru' | 'en';
+}
+
+const { lang = 'ru' } = Astro.props;
+const t = translations[lang];
+const privacyLink = '/privacy-policy';
+const consentLink = '/personal-data-consent';
+---
+
+{/* Lead Modal Backdrop & Dialog Container */}
+<div 
+  class="lead-modal-backdrop" 
+  id="lead-modal-backdrop" 
+  role="dialog" 
+  aria-modal="true" 
+  aria-labelledby="lead-modal-title"
+  aria-hidden="true"
+  data-lang={lang}
+>
+  <div class="lead-modal-container">
+    <div class="lead-modal-card" id="lead-modal-card">
+      {/* Subtle Luxury Ambient Glow */}
+      <div class="lead-modal-glow" aria-hidden="true"></div>
+
+      {/* Close Button */}
+      <button 
+        type="button" 
+        class="lead-modal-close-btn" 
+        id="lead-modal-close" 
+        aria-label={lang === 'en' ? 'Close modal' : 'Закрыть окно'}
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      {/* Success State Box */}
+      <div class="lead-modal-success-box" id="lead-modal-success" style="display: none;">
+        <div class="lead-modal-success-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h3 class="lead-modal-success-title">{t.contact.successTitle}</h3>
+        <p class="lead-modal-success-desc">{t.contact.successDesc}</p>
+        <button type="button" class="btn btn--gold lead-modal-success-btn" id="lead-modal-success-close">
+          <span>{lang === 'en' ? 'Great, close' : 'Отлично, закрыть'}</span>
+        </button>
+      </div>
+
+      {/* Main Interactive Form */}
+      <div class="lead-modal-body" id="lead-modal-form-wrapper">
+        <div class="lead-modal-header">
+          <div class="lead-modal-badge">{lang === 'en' ? 'Fast Consultation' : 'Экспресс-консультация'}</div>
+          <h2 class="lead-modal-title" id="lead-modal-title">
+            {lang === 'en' ? 'Order Web Development' : 'Заказать разработку'}
+          </h2>
+          <p class="lead-modal-subtitle" id="lead-modal-subtitle">
+            {lang === 'en' 
+              ? 'Leave your contacts — we will contact you shortly.' 
+              : 'Оставьте контакты — мы скоро с вами свяжемся.'
+            }
+          </p>
+        </div>
+
+        <form class="lead-modal-form" id="lead-modal-form" novalidate>
+          {/* Invisible Anti-spam Honeypots */}
+          <div style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden;" aria-hidden="true" tabindex="-1">
+            <input type="text" name="company_website" id="modal-company-website" tabindex="-1" autocomplete="off" />
+            <input type="text" name="_gotcha" id="modal-gotcha" tabindex="-1" autocomplete="off" />
+          </div>
+
+          {/* Name Field */}
+          <div class="form-group floating-field" id="modal-group-name">
+            <input 
+              type="text" 
+              id="modal-name" 
+              name="name" 
+              class="form-input floating-input" 
+              placeholder=" " 
+              autocomplete="name"
+            />
+            <label for="modal-name" class="floating-label">{t.contact.formName}</label>
+            <div class="field-error-msg" id="error-modal-name" role="alert"></div>
+          </div>
+
+          <div class="form-row">
+            {/* Phone Field */}
+            <div class="form-group floating-field" id="modal-group-phone">
+              <input 
+                type="tel" 
+                id="modal-phone" 
+                name="phone" 
+                class="form-input floating-input" 
+                placeholder=" " 
+                autocomplete="tel"
+              />
+              <label for="modal-phone" class="floating-label">{t.contact.formPhone}</label>
+              <div class="field-error-msg" id="error-modal-phone" role="alert"></div>
+            </div>
+
+            {/* Email Field */}
+            <div class="form-group floating-field" id="modal-group-email">
+              <input 
+                type="email" 
+                id="modal-email" 
+                name="email" 
+                class="form-input floating-input" 
+                placeholder=" " 
+                autocomplete="email"
+              />
+              <label for="modal-email" class="floating-label">{t.contact.formEmail}</label>
+              <div class="field-error-msg" id="error-modal-email" role="alert"></div>
+            </div>
+          </div>
+
+          {/* Message Field */}
+          <div class="form-group floating-field" id="modal-group-message">
+            <textarea 
+              id="modal-message" 
+              name="message" 
+              rows="3" 
+              class="form-textarea floating-textarea" 
+              placeholder=" "
+            ></textarea>
+            <label for="modal-message" class="floating-label">{t.contact.formMessage}</label>
+            <div class="field-error-msg" id="error-modal-message" role="alert"></div>
+          </div>
+
+          <button type="submit" class="btn btn--gold lead-modal-submit-btn" id="modal-submit-btn">
+            <span>{t.contact.formSubmit}</span>
+          </button>
+
+          <p class="form-disclaimer lead-modal-disclaimer">
+            {lang === 'ru' ? (
+              <>
+                Отправляя заявку, вы соглашаетесь с <a href={privacyLink} target="_blank" class="legal-link">Политикой конфиденциальности</a> и даете согласие на <a href={consentLink} target="_blank" class="legal-link">обработку персональных данных</a>
+              </>
+            ) : (
+              <>
+                By submitting this form, you agree to the <a href={privacyLink} target="_blank" class="legal-link">Privacy Policy</a> and consent to <a href={consentLink} target="_blank" class="legal-link">personal data processing</a>
+              </>
+            )}
+          </p>
+
+          <div class="form-status-msg" id="modal-form-status" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Fixed Backdrop Overlay */
+  .lead-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(5, 7, 12, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 2.5vw, 32px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lead-modal-backdrop.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Centered Modal Container */
+  .lead-modal-container {
+    width: 100%;
+    max-width: 580px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Modal Card Shell with Inset Scrollbar Inside */
+  .lead-modal-card {
+    position: relative;
+    width: 100%;
+    max-height: min(92vh, 660px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(12, 16, 26, 0.95);
+    border: 1px solid rgba(255, 200, 87, 0.28);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    backdrop-filter: blur(24px);
+    cursor: default;
+    -webkit-backdrop-filter: blur(24px);
+    transform: scale(0.94) translateY(12px);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 200, 87, 0.45) transparent;
+  }
+
+  /* Custom Webkit Scrollbar inside the card */
+  .lead-modal-card::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .lead-modal-card::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 16px 0;
+  }
+
+  .lead-modal-card::-webkit-scrollbar-thumb {
+    background: rgba(255, 200, 87, 0.4);
+    border-radius: 6px;
+  }
+
+  .lead-modal-card::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold);
+    box-shadow: 0 0 8px var(--color-gold-glow);
+  }
+
+  :global([data-theme="light"]) .lead-modal-card {
+    background: rgba(255, 255, 255, 0.97);
+    border-color: rgba(212, 160, 23, 0.35);
+  }
+
+  .lead-modal-backdrop.is-open .lead-modal-card {
+    transform: scale(1) translateY(0);
+  }
+
+  /* Glow Ambient Accent */
+  .lead-modal-glow {
+    position: absolute;
+    top: -40px;
+    right: 20%;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(255, 200, 87, 0.18) 0%, rgba(157, 78, 221, 0.12) 50%, transparent 70%);
+    filter: blur(35px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Close Button */
+  .lead-modal-close-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    z-index: 2;
+  }
+
+  .lead-modal-close-btn:hover {
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+    background: rgba(255, 200, 87, 0.12);
+    transform: rotate(90deg);
+  }
+
+  /* Header Section */
+  .lead-modal-header {
+    margin-bottom: 16px;
+    padding-right: 36px;
+  }
+
+  .lead-modal-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-gold);
+    margin-bottom: 6px;
+  }
+
+  .lead-modal-title {
+    font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.25;
+    margin: 0 0 6px 0;
+  }
+
+  .lead-modal-subtitle {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* Form Elements */
+  .lead-modal-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group {
+    margin-bottom: 13px;
+  }
+
+  .floating-field {
+    position: relative;
+    margin-bottom: 13px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 540px) {
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  .floating-input {
+    width: 100%;
+    height: 46px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 5px 14px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: all var(--transition-fast);
+    outline: none;
+  }
+
+  :global([data-theme="light"]) .floating-input {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .floating-textarea {
+    width: 100%;
+    min-height: 74px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 22px 14px 8px 14px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: all var(--transition-fast);
+    outline: none;
+    resize: vertical;
+    margin-bottom: 0;
+  }
+
+  :global([data-theme="light"]) .floating-textarea {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .floating-input:focus,
+  .floating-textarea:focus {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 16px var(--color-gold-glow);
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  :global([data-theme="light"]) .floating-input:focus,
+  :global([data-theme="light"]) .floating-textarea:focus {
+    background: #FFFFFF;
+  }
+
+  .floating-label {
+    position: absolute;
+    left: 14px;
+    top: 17px;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1;
+    pointer-events: none;
+    transform-origin: left top;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+                color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .floating-input:focus ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label,
+  .floating-input:-webkit-autofill ~ .floating-label,
+  .floating-textarea:focus ~ .floating-label,
+  .floating-textarea:not(:placeholder-shown) ~ .floating-label {
+    transform: translateY(-11px) scale(0.74);
+    color: var(--color-gold);
+    font-weight: 600;
+  }
+
+  .floating-input:not(:placeholder-shown):not(:focus) ~ .floating-label,
+  .floating-textarea:not(:placeholder-shown):not(:focus) ~ .floating-label {
+    color: var(--text-secondary);
+  }
+
+  .floating-input.has-error,
+  .floating-textarea.has-error {
+    border-color: rgba(255, 92, 119, 0.85);
+    box-shadow: 0 0 12px rgba(255, 92, 119, 0.25);
+    background: rgba(255, 92, 119, 0.05);
+  }
+
+  /* .field-error-msg {
+    display: none;
+    font-size: 0.76rem;
+    color: #FF758F;
+    margin-top: 5px;
+    padding-left: 2px;
+  }
+
+  .field-error-msg.is-visible {
+    display: block;
+  } */
+
+  .lead-modal-submit-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    margin-top: 2px;
+  }
+
+  .lead-modal-disclaimer {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.4;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+
+  .legal-link {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .legal-link:hover {
+    color: var(--color-gold);
+  }
+
+  /* Success Screen */
+  .lead-modal-success-box {
+    text-align: center;
+    padding: 24px 12px;
+  }
+
+  .lead-modal-success-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(0, 245, 212, 0.15);
+    color: var(--color-cyan-neon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px auto;
+    border: 1px solid rgba(0, 245, 212, 0.3);
+  }
+
+  :global([data-theme="light"]) .lead-modal-success-icon {
+    background: rgba(4, 120, 87, 0.08);
+    color: var(--color-cyan-neon);
+    border-color: rgba(4, 120, 87, 0.28);
+  }
+
+  .lead-modal-success-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .lead-modal-success-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .lead-modal-success-btn {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+</style>
+
+<script>
+  interface OpenModalOptions {
+    title?: string;
+    subtitle?: string;
+    service?: string;
+    prefill?: string;
+    source?: string;
+  }
+
+  declare global {
+    interface Window {
+      openLeadModal?: (options?: OpenModalOptions) => void;
+      closeLeadModal?: () => void;
+    }
+  }
+
+  function initLeadModal() {
+    const backdrop = document.getElementById('lead-modal-backdrop');
+    const closeBtn = document.getElementById('lead-modal-close');
+    const successBox = document.getElementById('lead-modal-success');
+    const formWrapper = document.getElementById('lead-modal-form-wrapper');
+    const form = document.getElementById('lead-modal-form') as HTMLFormElement | null;
+    const titleEl = document.getElementById('lead-modal-title');
+    const subtitleEl = document.getElementById('lead-modal-subtitle');
+    const successCloseBtn = document.getElementById('lead-modal-success-close');
+    const statusEl = document.getElementById('modal-form-status');
+    const submitBtn = document.getElementById('modal-submit-btn') as HTMLButtonElement | null;
+
+    if (!backdrop || !form) return;
+
+    function getLang(): 'ru' | 'en' {
+      return (document.documentElement.lang || backdrop?.getAttribute('data-lang') || 'ru') as 'ru' | 'en';
+    }
+    const nameInput = document.getElementById('modal-name') as HTMLInputElement | null;
+    const phoneInput = document.getElementById('modal-phone') as HTMLInputElement | null;
+    const emailInput = document.getElementById('modal-email') as HTMLInputElement | null;
+    const messageInput = document.getElementById('modal-message') as HTMLTextAreaElement | null;
+
+    const nameErrorEl = document.getElementById('error-modal-name');
+    const phoneErrorEl = document.getElementById('error-modal-phone');
+    const emailErrorEl = document.getElementById('error-modal-email');
+    const messageErrorEl = document.getElementById('error-modal-message');
+
+    let currentSource = 'Lead Modal';
+    let formOpenTimestamp = Date.now();
+    let hasAttemptedSubmit = false;
+
+    // Phone key masking & RU auto-formatting
+    if (phoneInput) {
+      phoneInput.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (
+          ['Backspace', 'Tab', 'Enter', 'Escape', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key) ||
+          e.ctrlKey || e.metaKey || e.altKey
+        ) {
+          return;
+        }
+        if (e.key.length === 1 && !/^[0-9+\-\s()]$/.test(e.key)) {
+          e.preventDefault();
+        }
+      });
+
+      phoneInput.addEventListener('input', (e) => {
+        const input = e.target as HTMLInputElement;
+        const rawValue = input.value;
+        const inputEvent = e as InputEvent;
+        if (inputEvent.inputType?.includes('delete')) {
+          const cleaned = rawValue.replace(/[^0-9+\-\s()]/g, '');
+          if (cleaned !== rawValue) input.value = cleaned;
+          return;
+        }
+
+        const digits = rawValue.replace(/\D/g, '');
+        if (!digits) {
+          input.value = rawValue.startsWith('+') ? '+' : '';
+          return;
+        }
+
+        if (digits[0] === '7' || digits[0] === '8' || digits[0] === '9') {
+          let numDigits = digits;
+          if (digits[0] === '9') {
+            numDigits = '7' + digits;
+          } else if (digits[0] === '8') {
+            numDigits = '7' + digits.slice(1);
+          }
+          numDigits = numDigits.substring(0, 11);
+
+          let formatted = '+7';
+          if (numDigits.length > 1) {
+            formatted += ' (' + numDigits.substring(1, Math.min(4, numDigits.length));
+          }
+          if (numDigits.length >= 4) {
+            formatted += ') ' + numDigits.substring(4, Math.min(7, numDigits.length));
+          }
+          if (numDigits.length >= 7) {
+            formatted += '-' + numDigits.substring(7, Math.min(9, numDigits.length));
+          }
+          if (numDigits.length >= 9) {
+            formatted += '-' + numDigits.substring(9, 11);
+          }
+          input.value = formatted;
+        } else {
+          input.value = (rawValue.startsWith('+') ? '+' : '') + digits.substring(0, 15);
+        }
+
+        if (hasAttemptedSubmit || phoneInput.classList.contains('has-error')) {
+          validatePhone();
+        }
+      });
+    }
+
+    function validateName(): boolean {
+      if (!nameInput || !nameErrorEl) return true;
+      const val = nameInput.value.trim();
+      let error = '';
+      if (!val) {
+        error = getLang() === 'en' ? 'Enter your name' : 'Укажите ваше имя';
+      } else if (val.length < 2) {
+        error = getLang() === 'en' ? 'Name must be at least 2 letters' : 'Имя должно содержать не менее 2 букв';
+      } else if (val.length > 60) {
+        error = getLang() === 'en' ? 'Name is too long' : 'Имя слишком длинное';
+      }
+
+      if (error) {
+        nameInput.classList.add('has-error');
+        nameErrorEl.textContent = error;
+        nameErrorEl.classList.add('is-visible');
+        return false;
+      }
+      nameInput.classList.remove('has-error');
+      nameErrorEl.textContent = '';
+      nameErrorEl.classList.remove('is-visible');
+      return true;
+    }
+
+    function validatePhone(): boolean {
+      if (!phoneInput || !phoneErrorEl) return true;
+      const val = phoneInput.value.trim();
+      const digits = val.replace(/\D/g, '');
+      let error = '';
+      if (!val || !digits) {
+        error = getLang() === 'en' ? 'Enter your phone number' : 'Укажите номер телефона';
+      } else if (digits.length < 10) {
+        error = getLang() === 'en' ? 'Enter at least 10 digits' : 'Введите полный номер телефона (не менее 10 цифр)';
+      }
+
+      if (error) {
+        phoneInput.classList.add('has-error');
+        phoneErrorEl.textContent = error;
+        phoneErrorEl.classList.add('is-visible');
+        return false;
+      }
+      phoneInput.classList.remove('has-error');
+      phoneErrorEl.textContent = '';
+      phoneErrorEl.classList.remove('is-visible');
+      return true;
+    }
+
+    function validateEmail(): boolean {
+      if (!emailInput || !emailErrorEl) return true;
+      const val = emailInput.value.trim();
+      let error = '';
+      if (!val) {
+        error = getLang() === 'en' ? 'Enter your email' : 'Укажите email';
+      } else if (val.length < 5 || !val.includes('@') || !val.includes('.')) {
+        error = getLang() === 'en' ? 'Enter a valid email' : 'Введите корректный email (например, name@company.ru)';
+      }
+
+      if (error) {
+        emailInput.classList.add('has-error');
+        emailErrorEl.textContent = error;
+        emailErrorEl.classList.add('is-visible');
+        return false;
+      }
+      emailInput.classList.remove('has-error');
+      emailErrorEl.textContent = '';
+      emailErrorEl.classList.remove('is-visible');
+      return true;
+    }
+
+    function validateMessage(): boolean {
+      if (!messageInput || !messageErrorEl) return true;
+      const val = messageInput.value.trim();
+      let error = '';
+      if (!val) {
+        error = getLang() === 'en' ? 'Describe your task' : 'Опишите вашу задачу или проект';
+      } else if (val.length < 6) {
+        error = getLang() === 'en' ? 'At least 6 characters required' : 'Опишите задачу подробнее (минимум 6 символов)';
+      }
+
+      if (error) {
+        messageInput.classList.add('has-error');
+        messageErrorEl.textContent = error;
+        messageErrorEl.classList.add('is-visible');
+        return false;
+      }
+      messageInput.classList.remove('has-error');
+      messageErrorEl.textContent = '';
+      messageErrorEl.classList.remove('is-visible');
+      return true;
+    }
+
+    nameInput?.addEventListener('input', () => {
+      if (hasAttemptedSubmit || nameInput.classList.contains('has-error')) validateName();
+    });
+    emailInput?.addEventListener('input', () => {
+      if (hasAttemptedSubmit || emailInput.classList.contains('has-error')) validateEmail();
+    });
+    messageInput?.addEventListener('input', () => {
+      if (hasAttemptedSubmit || messageInput.classList.contains('has-error')) validateMessage();
+    });
+
+    // Open & Close API
+    function openModal(options?: OpenModalOptions) {
+      formOpenTimestamp = Date.now();
+      hasAttemptedSubmit = false;
+
+      if (options?.title && titleEl) {
+        titleEl.textContent = options.title;
+      } else if (titleEl) {
+        titleEl.textContent = getLang() === 'en' ? 'Order Web Development' : 'Заказать разработку';
+      }
+
+      if (options?.subtitle && subtitleEl) {
+        subtitleEl.textContent = options.subtitle;
+      } else if (subtitleEl) {
+        subtitleEl.textContent = getLang() === 'en'
+          ? 'Leave your contacts — we will contact you shortly.'
+          : 'Оставьте контакты — мы скоро с вами свяжемся.';
+      }
+
+      if (options?.source) {
+        currentSource = options.source;
+      } else {
+        currentSource = options?.service ? `Заказ услуги: ${options.service}` : 'Lead Modal';
+      }
+
+      if (options?.prefill && messageInput) {
+        messageInput.value = options.prefill;
+        messageInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+
+      if (formWrapper && successBox) {
+        formWrapper.style.display = 'block';
+        successBox.style.display = 'none';
+      }
+
+      backdrop.classList.add('is-open');
+      backdrop.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        nameInput?.focus();
+      }, 200);
+    }
+
+    function closeModal() {
+      backdrop.classList.remove('is-open');
+      backdrop.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (statusEl) statusEl.innerHTML = '';
+    }
+
+    window.openLeadModal = openModal;
+    window.closeLeadModal = closeModal;
+
+    closeBtn?.addEventListener('click', closeModal);
+    successCloseBtn?.addEventListener('click', closeModal);
+
+    // Close on click outside card
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && backdrop.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+
+    // Attach to all CTA buttons on the site
+    function attachModalTriggers() {
+      const triggers = document.querySelectorAll(
+        '[data-open-modal="lead-modal"], .js-open-lead-modal, #hero-primary-cta, #header-cta-btn, #templates-contact-btn'
+      );
+
+      triggers.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = btn as HTMLElement;
+          const customTitle = target.getAttribute('data-modal-title') || undefined;
+          const customSubtitle = target.getAttribute('data-modal-subtitle') || undefined;
+          const serviceName = target.getAttribute('data-modal-service') || undefined;
+          const prefill = target.getAttribute('data-modal-prefill') || undefined;
+          const source = target.getAttribute('data-modal-source') || target.textContent?.trim() || 'CTA Button';
+
+          openModal({
+            title: customTitle,
+            subtitle: customSubtitle,
+            service: serviceName,
+            prefill,
+            source: `CTA: ${source}`
+          });
+        });
+      });
+    }
+
+    attachModalTriggers();
+
+    // Form Submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hasAttemptedSubmit = true;
+
+      const isNameValid = validateName();
+      const isPhoneValid = validatePhone();
+      const isEmailValid = validateEmail();
+      const isMessageValid = validateMessage();
+
+      if (!isNameValid || !isPhoneValid || !isEmailValid || !isMessageValid) {
+        if (!isNameValid) nameInput?.focus();
+        else if (!isPhoneValid) phoneInput?.focus();
+        else if (!isEmailValid) emailInput?.focus();
+        else if (!isMessageValid) messageInput?.focus();
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>${getLang() === 'en' ? 'Sending...' : 'Отправка...'}</span>`;
+      }
+      if (statusEl) statusEl.innerHTML = '';
+
+      const honeypotInput = document.getElementById('modal-company-website') as HTMLInputElement | null;
+      const gotchaInput = document.getElementById('modal-gotcha') as HTMLInputElement | null;
+
+      const payload = {
+        name: nameInput?.value.trim() || '',
+        phone: phoneInput?.value.trim() || '',
+        email: emailInput?.value.trim() || '',
+        message: messageInput?.value.trim() || '',
+        source: currentSource || 'Lead Modal',
+        company_website: honeypotInput?.value || '',
+        _gotcha: gotchaInput?.value || '',
+        _time: formOpenTimestamp,
+      };
+
+      try {
+        const response = await fetch('/api/send-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const resData = await response.json().catch(() => null);
+
+        if (response.ok && resData?.success !== false) {
+          form.reset();
+          hasAttemptedSubmit = false;
+          [nameInput, phoneInput, emailInput, messageInput].forEach(el => el?.classList.remove('has-error'));
+          if (formWrapper && successBox) {
+            formWrapper.style.display = 'none';
+            successBox.style.display = 'block';
+          }
+        } else {
+          const errMsg = resData?.error || (
+            getLang() === 'en' 
+              ? 'Submission error. Please write: info@nice-dev.ru' 
+              : 'Ошибка при отправке заявки. Пожалуйста, напишите нам: info@nice-dev.ru'
+          );
+          if (statusEl) {
+            statusEl.innerHTML = `<span style="color: #FF5C77; font-weight: 500;">⚠ ${errMsg}</span>`;
+          }
+        }
+      } catch (err) {
+        console.warn('Network issue during modal lead submission:', err);
+        if (statusEl) {
+          statusEl.innerHTML = `<span style="color: #FF5C77; font-weight: 500;">⚠ ${
+            getLang() === 'en' 
+              ? 'Connection error. Please write: info@nice-dev.ru' 
+              : 'Ошибка соединения. Пожалуйста, напишите: info@nice-dev.ru'
+          }</span>`;
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `
+            <span>${t.contact.formSubmit}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          `;
+        }
+      }
+    });
+
+    function refreshLeadModalLanguage() {
+      if (nameErrorEl && nameErrorEl.classList.contains('is-visible')) validateName();
+      if (phoneErrorEl && phoneErrorEl.classList.contains('is-visible')) validatePhone();
+      if (emailErrorEl && emailErrorEl.classList.contains('is-visible')) validateEmail();
+      if (messageErrorEl && messageErrorEl.classList.contains('is-visible')) validateMessage();
+    }
+
+    window.addEventListener('nice-dev:language-change', refreshLeadModalLanguage);
+    (window as unknown as { refreshLeadModalLanguage?: () => void }).refreshLeadModalLanguage = refreshLeadModalLanguage;
+  }
+
+  initLeadModal();
+  document.addEventListener('astro:page-load', initLeadModal);
+</script>
